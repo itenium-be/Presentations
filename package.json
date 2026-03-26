@@ -1,0 +1,25 @@
+{
+  "name": "slidev-theme-itenium",
+  "version": "0.1.0",
+  "description": "Slidev theme for itenium technical presentations",
+  "keywords": [
+    "slidev-theme"
+  ],
+  "homepage": "https://github.com/itenium-be/presentations",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itenium-be/presentations.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "slidev example.md",
+    "build": "slidev build example.md"
+  },
+  "peerDependencies": {
+    "@slidev/types": ">=0.1.0"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^51.0.0",
+    "@slidev/types": "^51.0.0"
+  }
+}

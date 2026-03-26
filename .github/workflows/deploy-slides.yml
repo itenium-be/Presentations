@@ -1,0 +1,47 @@
+name: Deploy Slides to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      slides-dir:
+        description: 'Path to the slides directory'
+        type: string
+        default: 'slides'
+        required: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+        working-directory: ${{ inputs.slides-dir }}
+
+      - name: Build slides
+        run: bun run build
+        working-directory: ${{ inputs.slides-dir }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ inputs.slides-dir }}/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

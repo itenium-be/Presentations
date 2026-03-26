@@ -1,0 +1,20 @@
+- title: "Git: How to Get Out of a Mess"
+  description: "Practical strategies for recovering from Git disasters — rebasing, reflog, bisect, and more."
+  repo: itenium-be/git-how-to-get-out-of-a-mess
+  slides_url: https://itenium-be.github.io/git-how-to-get-out-of-a-mess/
+  date: 2024-01-01
+  tags: [git, devtools]
+
+- title: "Design Patterns"
+  description: "Introductory talk about classic design patterns with practical examples."
+  repo: itenium-be/Talk-DesignPatterns
+  slides_url: https://itenium-be.github.io/Talk-DesignPatterns/
+  date: 2023-01-01
+  tags: [architecture, patterns]
+
+- title: "Garbage Collection: .NET vs Java"
+  description: "Deep dive into how garbage collection works in .NET and Java runtimes."
+  repo: itenium-be/Talk-GC
+  slides_url: https://itenium-be.github.io/Talk-GC/
+  date: 2023-06-01
+  tags: [dotnet, java, performance]

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+dist-site/
+.slidev/
+*.local
+.DS_Store

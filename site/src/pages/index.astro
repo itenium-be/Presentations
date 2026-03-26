@@ -1,0 +1,186 @@
+---
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+import yaml from 'js-yaml'
+import TalkCard from '../components/TalkCard.astro'
+
+interface Talk {
+  title: string
+  description: string
+  repo: string
+  slides_url?: string
+  date: string
+  tags: string[]
+}
+
+const talksPath = resolve(process.cwd(), '../talks.yaml')
+const talks = yaml.load(readFileSync(talksPath, 'utf-8')) as Talk[]
+const sorted = talks.sort((a, b) => b.date.localeCompare(a.date))
+
+const allTags = [...new Set(talks.flatMap(t => t.tags))].sort()
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>itenium — Technical Talks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <style>
+      @font-face {
+        font-family: 'Michroma';
+        src: url('/presentations/Michroma.ttf') format('truetype');
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #f5f5f5;
+        color: #343434;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background: #343434;
+        color: white;
+        padding: 2rem 2rem 1.5rem;
+      }
+      .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .header-logo {
+        height: 45px;
+        width: auto;
+      }
+      .header-text h1 {
+        font-family: 'Michroma', sans-serif;
+        font-size: 1.6rem;
+        margin: 0 0 0.2rem;
+      }
+      .header-text p {
+        margin: 0;
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+      }
+
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        align-items: center;
+      }
+      .filter-label {
+        font-size: 0.85rem;
+        color: #7e7e7e;
+        margin-right: 0.25rem;
+      }
+      .filter-btn {
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        background: white;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: #e84700;
+        color: white;
+        border-color: #e84700;
+      }
+
+      .talks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1.5rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        color: #7e7e7e;
+        font-size: 0.8rem;
+        margin-top: 3rem;
+        border-top: 1px solid #e0e0e0;
+      }
+      footer a {
+        color: #e84700;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <img
+          src="/presentations/logo-full-white.svg"
+          alt="itenium"
+          class="header-logo"
+        />
+        <div class="header-text">
+          <h1>Technical Talks</h1>
+          <p>Presentations by the itenium team</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="filter-bar">
+        <span class="filter-label">Filter by tag:</span>
+        <button class="filter-btn active" data-tag="all">All ({sorted.length})</button>
+        {allTags.map(tag => (
+          <button class="filter-btn" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
+
+      <div class="talks-grid" id="talks-grid">
+        {sorted.map(talk => (
+          <div class="talk-item" data-tags={talk.tags.join(',')}>
+            <TalkCard talk={talk} />
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        <a href="https://itenium.be" target="_blank">itenium.be</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/itenium-be/presentations" target="_blank">Theme source</a>
+      </p>
+    </footer>
+
+    <script>
+      const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
+      const items = document.querySelectorAll<HTMLElement>('.talk-item')
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'))
+          btn.classList.add('active')
+          const tag = btn.dataset.tag
+
+          items.forEach(item => {
+            const tags = item.dataset.tags?.split(',') ?? []
+            item.style.display = tag === 'all' || tags.includes(tag!) ? '' : 'none'
+          })
+        })
+      })
+    </script>
+  </body>
+</html>

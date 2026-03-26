@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'Michroma';
+  src: url('../assets/Michroma.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --color-primary: #e84700;
+  --color-primary-muted: #e78200;
+  --color-bg: #343434;
+  --color-bg-light: #f5f5f5;
+  --color-text: #fefefe;
+  --color-text-dark: #343434;
+  --color-text-muted: #7e7e7e;
+  --font-heading: 'Michroma', sans-serif;
+  --font-body: system-ui, -apple-system, sans-serif;
+}
+
+.slidev-layout {
+  font-family: var(--font-body);
+  color: var(--color-text-dark);
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: var(--font-heading);
+}
+
+/* Dark layouts (cover, section) */
+.slidev-layout.dark {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.slidev-layout.dark h1,
+.slidev-layout.dark h2,
+.slidev-layout.dark h3 {
+  color: var(--color-text);
+}
+
+/* Orange accent */
+.accent {
+  color: var(--color-primary);
+}
+
+.accent-border {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 0.75rem;
+}
+
+/* Code blocks */
+.slidev-code {
+  font-size: 0.85em;
+}

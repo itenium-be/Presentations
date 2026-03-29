@@ -2,91 +2,44 @@
 
 Official [Slidev](https://sli.dev/) theme for itenium technical presentations.
 
-## Features
 
-- itenium brand colors, fonts, and logo
-- Michroma heading font
-- Orange ellipse decorative element (signature itenium design)
-- 5 layouts: `cover`, `default`, `section`, `two-cols-code`, `demo`
-- Live code execution via Monaco editor (`demo` layout)
-- Auto-deploys slides to GitHub Pages via reusable workflow
-
-## Usage in a talk repo
-
-### 1. Scaffold (recommended)
-
-From the root of your talk repo:
+## Quick start
 
 ```bash
-bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts
+bun install
+bunx slidev talks/bootcamp-ai/slides.md
 ```
 
-This creates `slides/package.json`, `slides/slides.md`, and `slides/.gitignore`, then runs `bun install`.
-
-### 2. Manual setup
-
-Create `slides/package.json`:
-
-```json
-{
-  "private": true,
-  "scripts": {
-    "dev": "slidev",
-    "build": "slidev build --base /<repo-name>/",
-    "export": "slidev export --format pdf"
-  },
-  "dependencies": {
-    "@slidev/cli": "^51.0.0",
-    "slidev-theme-itenium": "github:itenium-be/presentations#main"
-  }
-}
-```
-
-Create `slides/slides.md`:
-
-```markdown
----
-theme: itenium
-title: My Talk Title
-speaker: Your Name
-date: 2026-01-01
----
-
-# My Talk Title
-## Subtitle
-```
-
-Run:
-
-```bash
-cd slides && bun install && bun run dev
-```
+Presenter mode: `http://localhost:3030/presenter`
 
 ## Layouts
 
 ### `cover`
 
-The title slide. Uses dark background + OrangeEllipse.
+Title slide. Orange background, logo top-left, image on the right via named slot.
 
-Frontmatter:
-
-```yaml
+```markdown
 ---
-layout: cover       # (default for first slide when theme is set)
+theme: ../../
 title: My Talk
-subtitle: Optional subtitle
-speaker: Jane Doe
-date: 2026-03-15
+transition: fade
 ---
+
+# Title
+# Subtitle
+
+::image::
+
+![](./images/cover-art.jpg)
 ```
 
 ### `default`
 
-Standard content slide with footer.
+Standard content slide. White background, orange/green dot decorations, footer with slide number and favicon. Font size auto-scales based on bullet count.
 
 ### `section`
 
-Section divider. Dark background + OrangeEllipse + orange vertical accent.
+Section divider. Full-bleed photo background with dark overlay, white title near top with decorative line. Supports subtitle slot.
 
 ```markdown
 ---
@@ -94,76 +47,122 @@ layout: section
 ---
 
 # Section Title
+
+::subtitle::
+
+Optional subtitle text
 ```
 
-### `two-cols-code`
+### `agenda`
 
-Two-column layout: code on left, notes on right.
+Numbered agenda items with photo on the left. Items passed via frontmatter.
 
 ```markdown
 ---
-layout: two-cols-code
+layout: agenda
+items:
+  - First Topic
+  - Second Topic
+  - Third Topic
+---
+```
+
+### `comparison`
+
+Two-column card layout. Use `.cols` and `.col` divs.
+
+```markdown
+---
+layout: comparison
 ---
 
-```ts
-// left column
+# Title
+
+<div class="cols">
+<div class="col">
+
+### Left Card
+
+- Point one
+- Point two
+
+</div>
+<div class="col">
+
+### Right Card
+
+- Point one
+- Point two
+
+</div>
+</div>
+```
+
+### `content-image`
+
+Content on the left, image on the right via named slot.
+
+```markdown
+---
+layout: content-image
+---
+
+# Title
+
+- Content here
+
+::image::
+
+![](./images/photo.jpg)
+```
+
+### `quote`
+
+Orange background with dot decorations. For standout quotes or transition slides.
+
+```markdown
+---
+layout: quote
+---
+
+# Quote text here
+```
+
+## Features
+
+### Click-to-reveal
+
+Wrap lists in `<v-clicks>` to reveal items on click:
+
+```markdown
+<v-clicks depth="2">
+
+- First item
+- Second item
+  - Sub-item (also needs click with depth="2")
+
+</v-clicks>
+```
+
+### Speaker notes
+
+Add HTML comments at the end of a slide:
+
+```markdown
+# My Slide
+
+Content here
+
+<!-- These notes are only visible in presenter mode -->
+```
+
+### Live code
+
+Use `{monaco-run}` for editable + runnable code blocks:
+
+````markdown
+```ts {monaco-run}
 const x = 42
+console.log(x)
 ```
-
-::right::
-
-Right column content here.
-```
-
-### `demo`
-
-Full-height Monaco editor for live coding.
-
-```markdown
----
-layout: demo
-demoTitle: "TypeScript Demo"
----
-
-```ts {monaco}
-// editable code here
-```
-```
-
-## Components
-
-All components are globally available in slides:
-
-| Component | Props | Usage |
-|-----------|-------|-------|
-| `IteniumLogo` | `variant: 'icon'\|'full'`, `theme: 'light'\|'dark'` | Renders the itenium logo |
-| `SlideFooter` | `theme: 'light'\|'dark'` | Footer with page number + logo |
-| `OrangeEllipse` | `side: 'left'\|'right'` | Decorative half-circle with dots |
-
-## GitHub Actions (per talk repo)
-
-Add `.github/workflows/slides.yml` to your talk repo:
-
-```yaml
-name: Deploy Slides
-on:
-  push:
-    branches: [main]
-    paths:
-      - 'slides/**'
-
-jobs:
-  deploy:
-    uses: itenium-be/presentations/.github/workflows/deploy-slides.yml@main
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-```
-
-## Local development (theme)
-
-```bash
-bun install
-bun run dev   # opens example.md with live reload
-```
+````

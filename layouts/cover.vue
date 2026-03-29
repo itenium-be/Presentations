@@ -63,15 +63,15 @@ const dotsUrl = new URL('../assets/cover-dots.png', import.meta.url).href
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 2rem 0 2rem 0;
+  padding: 2rem 0 6rem 4rem;
 }
 
 .cover-logo {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 3rem;
+  left: 3rem;
   z-index: 2;
-  height: 240px !important;
+  height: 44px !important;
 }
 
 .cover-spacer {

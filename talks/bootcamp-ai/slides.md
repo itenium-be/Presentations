@@ -6,7 +6,7 @@ image: ./images/coding.jpg
 ---
 
 # SkillForge
-## AI Bootcamp
+# AI Bootcamp
 
 ---
 layout: default

@@ -22,6 +22,16 @@
   color: var(--color-text-dark);
 }
 
+/* Full-bleed layouts — remove Slidev's default padding */
+.slidev-layout.cover,
+.slidev-layout.section,
+.slidev-layout.default,
+.slidev-layout.quote,
+.slidev-layout.comparison,
+.slidev-layout.content-image {
+  padding: 0;
+}
+
 .slidev-layout h1,
 .slidev-layout h2,
 .slidev-layout h3 {

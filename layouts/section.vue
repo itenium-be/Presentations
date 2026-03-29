@@ -1,41 +1,70 @@
 <template>
-  <div class="slidev-layout section dark">
-    <OrangeEllipse side="right" />
+  <div class="slidev-layout section">
+    <img :src="sectionBg" class="section-bg" aria-hidden="true" />
+    <div class="section-overlay" />
     <div class="section-content">
-      <div class="section-accent" />
-      <h1 class="section-title">
-        <slot />
-      </h1>
+      <slot />
     </div>
-    <SlideFooter theme="dark" />
+    <IteniumLogo variant="full" theme="dark" class="section-logo" />
   </div>
 </template>
+
+<script setup>
+const sectionBg = new URL('../assets/section-bg.jpg', import.meta.url).href
+</script>
 
 <style scoped>
 .section {
   position: relative;
   overflow: hidden;
+  height: 100%;
 }
+
+.section-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+}
+
 .section-content {
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   height: 100%;
-  padding: 2.5rem 3rem;
-  padding-right: 240px;
+  padding: 3rem 4rem;
 }
-.section-accent {
-  width: 6px;
-  height: 80px;
-  background-color: var(--color-primary);
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-.section-title {
-  font-size: 2.2rem;
-  color: var(--color-text);
+
+.section-content :deep(h1) {
+  font-size: 3rem;
+  color: #fff;
   margin: 0;
+}
+
+.section-content :deep(p),
+.section-content :deep(div) {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.section-logo {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1;
+  height: 30px !important;
 }
 </style>

@@ -63,7 +63,6 @@ layout: section
 
 ---
 layout: content-image
-image: ./images/coding.jpg
 ---
 
 # Claude Code
@@ -77,6 +76,10 @@ image: ./images/coding.jpg
 **Optioneel:** Visual Studio 2026 & Visual Studio Code, Postgres Desktop UI
 
 **Or YOLO Vibe Coding (fuck the code)**
+
+::image::
+
+![](./images/teamwork.jpg)
 
 ---
 layout: section
@@ -139,7 +142,6 @@ layout: default
 
 ---
 layout: content-image
-image: ./images/teamwork.jpg
 ---
 
 # BMAD
@@ -158,6 +160,10 @@ claude
 ```
 
 **Use /bmad-help whenever unsure!**
+
+::image::
+
+![](./images/teamwork.jpg)
 
 ---
 layout: section

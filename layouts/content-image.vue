@@ -2,10 +2,10 @@
   <div class="slidev-layout content-image">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
     <div class="ci-left">
-      <slot />
+      <slot name="default" />
     </div>
-    <div class="ci-right" v-if="$frontmatter?.image">
-      <img :src="$frontmatter.image" alt="" />
+    <div class="ci-right" v-if="$slots.image">
+      <slot name="image" />
     </div>
     <SlideFooter />
   </div>
@@ -28,14 +28,14 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .dots {
   position: absolute;
   pointer-events: none;
-  height: 50%;
+  height: 55%;
   width: auto;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 .dots-orange {
-  bottom: -10%;
-  left: -3%;
-  transform: rotate(45deg) scaleX(-1);
+  bottom: -15%;
+  left: -50px;
+  transform: scaleX(-1);
 }
 
 .ci-left {
@@ -63,7 +63,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   position: relative;
   overflow: hidden;
 }
-.ci-right img {
+.ci-right :deep(img) {
   width: 100%;
   height: 100%;
   object-fit: cover;

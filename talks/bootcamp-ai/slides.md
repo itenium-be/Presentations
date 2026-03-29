@@ -81,64 +81,12 @@ layout: content-image
 
 ![](./images/teamwork.jpg)
 
----
-layout: section
----
-
-# SkillForge
-
----
-layout: default
----
-
-# SkillForge
-## What!?
-
-- Kennis matrix itenium
-- Groeipaden CCs
-
-### Functionaliteiten
-- **Users**: back-office, CC Coaches, consultants
-- **Course Catalogue**: content creation and browsing
-- **Course Enrolment & Learning Experience**: follow courses, progress tracking, feedback
-- **Assessments & Quizzes**: complete quizzes to validate knowledge
-
----
-layout: default
----
-
-# SkillForge
-## Tech Stack
-
-- .NET 10, WebApi, EntityFramework, NUnit, TestContainers, NSubstitute using Itenium.Forge
-- Docker, Postgres
-- React, Vite, Playwright, Vitest, axios, TanStack Router/Query/Table, Radix UI with ChadCN (@itenium-forge/ui), Lucide Icons, Tailwind, Sonner (Toastr), Zod, Zustand (Redux), TypeScript
-
-**But… Who cares ;)**
 
 ---
 layout: section
 ---
 
 # BMAD
-
----
-layout: default
----
-
-# BMAD
-## Optional. Can also go YOLO
-
-### Understanding BMAD
-- Phase 1: Analysis → Brainstorming, research (optional)
-- Phase 2: Planning → Create requirements
-- Phase 3: Solutioning → Design architecture (BMad Method/Enterprise only)
-- Phase 4: Implementation → Build epic by epic, story by story
-
-### Different planning tracks
-- Quick Flow: Bug fixes, simple features, clear scope (1-15 stories)
-- BMad Method: Products, platforms, complex features (10-50+ stories)
-- Enterprise: Compliance, multi-tenant systems (30+ stories)
 
 ---
 layout: content-image
@@ -149,13 +97,7 @@ layout: content-image
 
 ```bash
 npx bmad-method install
-```
-
-```bash
 claude
-```
-
-```
 /bmad-help
 ```
 

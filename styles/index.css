@@ -1,9 +1,4 @@
-@font-face {
-  font-family: 'Michroma';
-  src: url('../assets/Michroma.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&family=Inter:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
   --color-primary: #e84700;
@@ -13,8 +8,9 @@
   --color-text: #fefefe;
   --color-text-dark: #343434;
   --color-text-muted: #7e7e7e;
-  --font-heading: 'Michroma', sans-serif;
-  --font-body: system-ui, -apple-system, sans-serif;
+  --font-heading: 'Rubik', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-code: 'IBM Plex Mono', monospace;
 }
 
 .slidev-layout {
@@ -63,6 +59,7 @@
 
 /* Code blocks */
 .slidev-code {
+  font-family: var(--font-code);
   font-size: 0.85em;
   user-select: text;
 }

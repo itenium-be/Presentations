@@ -2,7 +2,6 @@
 
 Official [Slidev](https://sli.dev/) theme for itenium technical presentations.
 
-
 ## Quick start
 
 ```bash
@@ -12,157 +11,44 @@ bunx slidev talks/bootcamp-ai/slides.md
 
 Presenter mode: `http://localhost:3030/presenter`
 
-## Layouts
+## Layouts & Features
 
-### `cover`
+See [LAYOUTS.md](LAYOUTS.md) for all available layouts, features, and usage examples.
 
-Title slide. Orange background, logo top-left, image on the right via named slot.
+## Using the theme in a talk repo
+
+Each talk lives in its own repository. Add `slidev-theme-itenium` as a dependency:
+
+```json
+{
+  "dependencies": {
+    "@slidev/cli": "^51.0.0",
+    "slidev-theme-itenium": "github:itenium-be/presentations"
+  },
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build --base /<repo-name>/"
+  }
+}
+```
+
+In your `slides.md`:
 
 ```markdown
 ---
-theme: ../../
+theme: itenium
 title: My Talk
 transition: fade
 ---
 
-# Title
-# Subtitle
-
-::image::
-
-![](./images/cover-art.jpg)
+# My Talk Title
 ```
 
-### `default`
+Theme changes are picked up when you `bun install` / `bun update` in the talk repo.
 
-Standard content slide. White background, orange/green dot decorations, footer with slide number and favicon. Font size auto-scales based on bullet count.
+## Local theme development
 
-### `section`
-
-Section divider. Full-bleed photo background with dark overlay, white title near top with decorative line. Supports subtitle slot.
-
-```markdown
----
-layout: section
----
-
-# Section Title
-
-::subtitle::
-
-Optional subtitle text
+```bash
+bun install
+bunx slidev example.md
 ```
-
-### `agenda`
-
-Numbered agenda items with photo on the left. Items passed via frontmatter.
-
-```markdown
----
-layout: agenda
-items:
-  - First Topic
-  - Second Topic
-  - Third Topic
----
-```
-
-### `comparison`
-
-Two-column card layout. Use `.cols` and `.col` divs.
-
-```markdown
----
-layout: comparison
----
-
-# Title
-
-<div class="cols">
-<div class="col">
-
-### Left Card
-
-- Point one
-- Point two
-
-</div>
-<div class="col">
-
-### Right Card
-
-- Point one
-- Point two
-
-</div>
-</div>
-```
-
-### `content-image`
-
-Content on the left, image on the right via named slot.
-
-```markdown
----
-layout: content-image
----
-
-# Title
-
-- Content here
-
-::image::
-
-![](./images/photo.jpg)
-```
-
-### `quote`
-
-Orange background with dot decorations. For standout quotes or transition slides.
-
-```markdown
----
-layout: quote
----
-
-# Quote text here
-```
-
-## Features
-
-### Click-to-reveal
-
-Wrap lists in `<v-clicks>` to reveal items on click:
-
-```markdown
-<v-clicks depth="2">
-
-- First item
-- Second item
-  - Sub-item (also needs click with depth="2")
-
-</v-clicks>
-```
-
-### Speaker notes
-
-Add HTML comments at the end of a slide:
-
-```markdown
-# My Slide
-
-Content here
-
-<!-- These notes are only visible in presenter mode -->
-```
-
-### Live code
-
-Use `{monaco-run}` for editable + runnable code blocks:
-
-````markdown
-```ts {monaco-run}
-const x = 42
-console.log(x)
-```
-````

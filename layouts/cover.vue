@@ -3,15 +3,15 @@
     <div class="cover-dots" aria-hidden="true">
       <img :src="dotsUrl" alt="" />
     </div>
-    <div class="cover-image" v-if="$frontmatter?.image">
-      <img :src="$frontmatter.image" alt="" />
-    </div>
     <IteniumLogo variant="full" theme="dark" class="cover-logo" />
     <div class="cover-content">
       <div class="cover-spacer" />
       <div class="cover-body">
-        <slot />
+        <slot name="default" />
       </div>
+    </div>
+    <div class="cover-image" v-if="$slots.image">
+      <slot name="image" />
     </div>
   </div>
 </template>
@@ -45,16 +45,16 @@ const dotsUrl = new URL('../assets/cover-dots.png', import.meta.url).href
 
 .cover-image {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 38%;
-  height: 100%;
-  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+  top: 2rem;
+  right: 2rem;
+  bottom: 2rem;
+  width: 35%;
 }
-.cover-image img {
+.cover-image :deep(img) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 1rem;
 }
 
 .cover-content {

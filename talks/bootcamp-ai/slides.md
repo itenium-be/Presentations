@@ -2,11 +2,14 @@
 theme: ../../
 title: Bootcamp AI
 date: 3/11/2026
-image: ./images/coding.jpg
 ---
 
 # SkillForge
 # AI Bootcamp
+
+::image::
+
+![](./images/cover-art.jpg)
 
 ---
 layout: default

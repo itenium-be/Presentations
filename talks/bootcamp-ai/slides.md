@@ -2,6 +2,7 @@
 theme: ../../
 title: Bootcamp AI
 date: 3/11/2026
+transition: fade
 ---
 
 # SkillForge
@@ -23,6 +24,11 @@ layout: default
 - 1/10: MCP Servers: Is this how Skynet started?
 - 25/11: Predicting mental fatigue using AI (Pierre)
 - TBD: The Math Behind the AI Curtain (Tom)
+
+<!--
+Speaker notes go here — only visible in presenter mode (localhost:3030/presenter).
+Mention that dates might still shift.
+-->
 
 ---
 layout: agenda

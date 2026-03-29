@@ -3,9 +3,15 @@
     <img :src="sectionBg" class="section-bg" aria-hidden="true" />
     <div class="section-overlay" />
     <div class="section-content">
-      <slot />
+      <div class="section-line" />
+      <slot name="default" />
     </div>
-    <IteniumLogo variant="full" theme="dark" class="section-logo" />
+    <div class="section-bottom">
+      <div class="section-subtitle" v-if="$slots.subtitle">
+        <slot name="subtitle" />
+      </div>
+      <IteniumLogo variant="full" theme="dark" class="section-logo" />
+    </div>
   </div>
 </template>
 
@@ -41,12 +47,14 @@ const sectionBg = new URL('../assets/section-bg.jpg', import.meta.url).href
 .section-content {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100%;
-  padding: 3rem 4rem;
+  padding: 4rem 4rem 0;
+}
+
+.section-line {
+  width: 80%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  margin-bottom: 1.5rem;
 }
 
 .section-content :deep(h1) {
@@ -60,11 +68,23 @@ const sectionBg = new URL('../assets/section-bg.jpg', import.meta.url).href
   color: rgba(255, 255, 255, 0.85);
 }
 
-.section-logo {
+.section-bottom {
   position: absolute;
   bottom: 1.5rem;
+  left: 4rem;
   right: 1.5rem;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.section-logo {
   height: 30px !important;
 }
 </style>

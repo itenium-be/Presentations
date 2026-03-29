@@ -40,6 +40,10 @@ layout: section
 
 # Dagindeling
 
+::subtitle::
+
+AI Bootcamp — 11 maart 2026
+
 ---
 layout: default
 ---

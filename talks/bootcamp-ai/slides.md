@@ -138,6 +138,18 @@ layout: comparison
 </div>
 
 ---
+layout: quote-alt
+---
+
+The best way to predict the future is to invent it.
+
+::author::
+
+**Alan Kay**
+
+Computer Scientist
+
+---
 layout: quote
 ---
 

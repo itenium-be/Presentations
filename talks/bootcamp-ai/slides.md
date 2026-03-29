@@ -73,7 +73,7 @@ claude
 /bmad-help
 ```
 
-**Use /bmad-help whenever unsure!**
+**Use `/bmad-help` whenever unsure!**
 
 ::image::
 
@@ -153,89 +153,3 @@ layout: default
   - Superpowers
 
 </v-clicks>
-
----
-layout: default
----
-
-# Git Worktree
-## What to do while the AI is "thinking"?
-
-- Give it more work!
-
-```bash
-git worktree add ../feature-2
-cd ../feature-2
-claude
-```
-
-- Or:
-  - Write tests (I mean... tell Claude to…)
-  - Sketch the next feature
-  - Review PRs
-
----
-layout: default
----
-
-# Managing Context
-
-- **CLAUDE.md**: Keep it short, it's added to each session and LLMs have bad memory. Should only contain things that are not obvious from the code itself.
-- **/clear**: Clear context when starting on something new. For example when starting on a new user story, or between coding and reviewing.
-- **/compact**: Compact context, for example between planning and coding. When using BMAD, they suggest to use /clear though (different agents).
-
----
-layout: default
----
-
-# Workflow
-## Github Issues? Beads? Yolo? ProjectStatus.md? Agent Teams?
-
-- Example Github Issues:
-  - Create the issues from BMAD hand-off md
-  - Add a tag to the Github Issue to let everyone know you're working on this?
-  - Let Claude create a Skill or Command to handle this (see for example `.claude/commands/PR.md`)
-
-*Whatever you decide upon, if you are doing any manual action: Claude could be doing that while you're getting coffee.*
-
----
-layout: default
----
-
-# Agent Orchestration
-## Conductor, Gas Town, …
-
-Now native support in Claude:
-
-```bash
-CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-```
-
----
-layout: comparison
----
-
-# Pick your team name & logo
-
-<div class="cols">
-<div class="col text-sm">
-
-- **The Hallucination Hunters** — *We chase what shouldn't exist*
-- **The Prompt Injectors** — *Prompts in, magic out*
-- **The Token Burners** — *We learn by burning*
-- **The AI Slop Sommeliers** — *We taste the chaos*
-- **The YOLO Deployers** — *Deploy now, debug later*
-- **The Tab Tab Tab Engineers** — *Automation over hesitation*
-
-</div>
-<div class="col text-sm">
-
-- **The Prompt & Pray Engineers** — *Prompt. Pray. Repeat.*
-- **The "Claude Carries Us" Department** — *We typed. Claude decided.*
-- **The "Tests Are For Cowards" Club** — *Bravery over coverage*
-- **The Model Collapse Survivors** — *Rising from the ashes of failed models*
-- **The Main Branch Pushers** — *No staging, no fear*
-- **The Vibe-Driven Developers** — *Good vibes, great code*
-
-</div>
-</div>

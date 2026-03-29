@@ -32,7 +32,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 .dots-orange {
   top: -5%;
   left: -3%;
-  transform: rotate(45deg);
+  transform: rotate(45deg) scaleX(-1);
 }
 .dots-green {
   top: -10%;

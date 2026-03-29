@@ -22,23 +22,14 @@ layout: default
 - TBD: The Math Behind the AI Curtain (Tom)
 
 ---
-layout: default
+layout: agenda
+items:
+  - Dagindeling
+  - Claude Code
+  - SkillForge
+  - BMAD
+  - Teams
 ---
-
-# Agenda
-
-<div class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-4 items-center mt-8">
-  <span class="w-10 h-10 rounded-full bg-[#E78200] text-white flex items-center justify-center text-xl font-bold">1</span>
-  <span class="text-xl">Dagindeling</span>
-  <span class="w-10 h-10 rounded-full bg-[#E78200] text-white flex items-center justify-center text-xl font-bold">2</span>
-  <span class="text-xl">Claude Code</span>
-  <span class="w-10 h-10 rounded-full bg-[#E78200] text-white flex items-center justify-center text-xl font-bold">3</span>
-  <span class="text-xl">SkillForge</span>
-  <span class="w-10 h-10 rounded-full bg-[#E78200] text-white flex items-center justify-center text-xl font-bold">4</span>
-  <span class="text-xl">BMAD</span>
-  <span class="w-10 h-10 rounded-full bg-[#E78200] text-white flex items-center justify-center text-xl font-bold">5</span>
-  <span class="text-xl">Teams</span>
-</div>
 
 ---
 layout: section

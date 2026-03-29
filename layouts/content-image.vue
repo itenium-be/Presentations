@@ -35,7 +35,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .dots-orange {
   bottom: -10%;
   left: -3%;
-  transform: rotate(45deg);
+  transform: rotate(45deg) scaleX(-1);
 }
 
 .ci-left {

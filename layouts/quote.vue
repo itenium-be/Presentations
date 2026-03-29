@@ -32,12 +32,12 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .dots-left {
   top: -5%;
   left: -3%;
-  transform: rotate(45deg);
+  transform: rotate(45deg) scaleX(-1);
 }
 .dots-right {
   bottom: -5%;
   right: -3%;
-  transform: rotate(-30deg);
+  transform: rotate(-30deg) scaleX(-1);
 }
 
 .quote-line {

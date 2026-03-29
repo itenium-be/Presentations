@@ -5,7 +5,7 @@
     <div class="comparison-content">
       <slot />
     </div>
-    <IteniumLogo variant="icon" theme="light" class="comparison-logo" />
+    <SlideFooter />
   </div>
 </template>
 
@@ -68,11 +68,23 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.comparison-logo {
-  position: absolute;
-  bottom: 1rem;
-  right: 1.5rem;
-  z-index: 1;
-  height: 24px !important;
+.comparison-content :deep(.col h3) {
+  color: #E78200;
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
 }
+
+.comparison-content :deep(.col) {
+  font-size: 1.3rem;
+}
+
+.comparison-content :deep(.col ul) {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.comparison-content :deep(.col li) {
+  margin-bottom: 0.3rem;
+}
+
 </style>

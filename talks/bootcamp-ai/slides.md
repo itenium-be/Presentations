@@ -122,10 +122,11 @@ layout: comparison
 
 ### Winning Team
 
-The winning team is decided by the Product Owners. They will look at:
-- Delivered functionality
-- Architecture
-- Design (UX)
+- The winning team is decided by the Product Owners.
+- They will look at:
+  - Delivered functionality
+  - Architecture
+  - Design (UX)
 
 </div>
 </div>

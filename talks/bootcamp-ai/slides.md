@@ -98,28 +98,6 @@ const devs = team.filter(u => u.role === 'dev')
 console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
 ```
 
----
-layout: section
----
-
-# Teams
-
----
-layout: default
----
-
-# Self-Organising Teams
-
-- Each team has its own code base and backlog
-- Organise however you want…
-  - Traditional Roles with Analysis, Development and Testing?
-  - Everyone Vibe Codes?
-  - Pair or Mob Programming?
-  - Code Reviews or Commit Straight to master?
-  - Assign Priorities and UserStories?
-  - **You decide!**
-
-**Olivier, Michael and Bert act as ProductOwners** — They can answer any functional questions you may have
 
 ---
 layout: comparison

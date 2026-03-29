@@ -31,9 +31,9 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   opacity: 0.6;
 }
 .dots-orange {
-  top: -5%;
-  left: -3%;
-  transform: rotate(45deg);
+  top: 15%;
+  left: -50px;
+  transform: scaleX(-1);
 }
 .dots-green {
   top: -10%;
@@ -44,7 +44,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 .content {
   position: relative;
   z-index: 1;
-  padding: 2rem 2.5rem 3rem;
+  padding: 2rem 2.5rem 3rem 6rem;
   height: 100%;
   box-sizing: border-box;
 }

@@ -55,38 +55,6 @@ layout: default
 - 16u45: Winning Team
 - 17u: Drinks!!
 
----
-layout: section
----
-
-# Claude Code
-
----
-layout: content-image
----
-
-# Claude Code
-## Subscriptions
-
-- Use your @itenium.be email
-- Check Prep.md voor installatie instructies
-
-**Required:** Docker, Claude Code, Git, Node (NVM), Bun, .NET 10 SDK
-
-**Optioneel:** Visual Studio 2026 & Visual Studio Code, Postgres Desktop UI
-
-**Or YOLO Vibe Coding (fuck the code)**
-
-::image::
-
-![](./images/teamwork.jpg)
-
-
----
-layout: section
----
-
-# BMAD
 
 ---
 layout: content-image
@@ -106,6 +74,29 @@ claude
 ::image::
 
 ![](./images/teamwork.jpg)
+
+
+---
+layout: default
+---
+
+# Interactive Code
+
+```ts {monaco-run}
+interface User {
+  name: string
+  role: 'dev' | 'coach' | 'admin'
+}
+
+const team: User[] = [
+  { name: 'Alice', role: 'dev' },
+  { name: 'Bob', role: 'coach' },
+  { name: 'Charlie', role: 'dev' },
+]
+
+const devs = team.filter(u => u.role === 'dev')
+console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
+```
 
 ---
 layout: section

@@ -2,7 +2,7 @@
   <div class="slidev-layout default">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
     <img :src="dotsGreen" class="dots dots-green" aria-hidden="true" />
-    <div class="content">
+    <div ref="contentRef" class="content" :style="{ fontSize: contentFontSize }">
       <slot />
     </div>
     <SlideFooter />
@@ -10,8 +10,24 @@
 </template>
 
 <script setup>
+import { ref, onMounted, nextTick } from 'vue'
+
 const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
+
+const contentRef = ref(null)
+const contentFontSize = ref('1.1rem')
+
+onMounted(async () => {
+  await nextTick()
+  const el = contentRef.value
+  if (!el) return
+  const items = el.querySelectorAll('li').length
+  if (items <= 3) contentFontSize.value = '2.5rem'
+  else if (items <= 5) contentFontSize.value = '2.2rem'
+  else if (items <= 8) contentFontSize.value = '2rem'
+  else contentFontSize.value = '1.8rem'
+})
 </script>
 
 <style scoped>
@@ -49,8 +65,8 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   box-sizing: border-box;
 }
 .content :deep(h1) {
-  font-size: 1.8rem;
-  margin-bottom: 0.75rem;
+  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
   color: var(--color-text-dark);
 }
 .content :deep(h2) {
@@ -58,8 +74,18 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   color: var(--color-text-dark);
   font-weight: normal;
   font-style: italic;
-  margin-top: -0.5rem;
-  margin-bottom: 0.75rem;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+.content :deep(ul) {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+.content :deep(ul ul) {
+  list-style-type: circle;
+}
+.content :deep(li) {
+  margin-bottom: 0.25rem;
 }
 
 </style>

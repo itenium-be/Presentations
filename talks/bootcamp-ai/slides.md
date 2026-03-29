@@ -143,10 +143,15 @@ layout: default
 # Tips
 ## More than Yolo???
 
-- **KEEP FIRING**: When Claude is working on something, pass in other commands. You're looking at a screen? Give each change as a separate command.
-- **BMAD Flow**: If you went to the trouble of creating a PRD and Epics, go through with creating the stories: flesh out as much as possible so that Claude comes back with something substantial.
-- **DINNER**: Try to make Claude do as much as possible while we're eating!
-- **Shift + Tab**: Switch between "Planning" and "Doing". Make sure Claude only starts writing code when you think it knows what you want.
+<v-clicks depth="2">
+
+- Plan Mode
+- Frameworks
+  - BMAD
+  - SpecKit
+  - Superpowers
+
+</v-clicks>
 
 ---
 layout: default

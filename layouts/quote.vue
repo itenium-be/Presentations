@@ -6,12 +6,13 @@
     <div class="quote-content">
       <slot />
     </div>
-    <IteniumLogo variant="icon" theme="dark" class="quote-logo" />
+    <img :src="faviconUrl" class="quote-logo" alt="" />
   </div>
 </template>
 
 <script setup>
 const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
+const faviconUrl = new URL('../assets/favicon-white.png', import.meta.url).href
 </script>
 
 <style scoped>
@@ -27,17 +28,21 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   pointer-events: none;
   height: 40%;
   width: auto;
-  opacity: 0.4;
 }
 .dots-left {
-  top: -5%;
-  left: -3%;
-  transform: rotate(45deg) scaleX(-1);
+  top: -70px;
+  right: calc(100% - 120px);
+  transform: scaleX(-1.5);
+  opacity: 0.4;
+  filter: brightness(10);
 }
 .dots-right {
-  bottom: -5%;
-  right: -3%;
-  transform: rotate(-30deg) scaleX(-1);
+  bottom: -70px;
+  right: 0;
+  opacity: 0.4;
+  filter: brightness(0.3);
+  transform: scaleX(1.5);
+  transform-origin: right bottom;
 }
 
 .quote-line {

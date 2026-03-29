@@ -4,3 +4,4 @@ dist-site/
 .slidev/
 *.local
 .DS_Store
+.claude/settings.local.json

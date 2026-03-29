@@ -7,12 +7,7 @@
     <div class="ci-right" v-if="$frontmatter?.image">
       <img :src="$frontmatter.image" alt="" />
     </div>
-    <div class="footer">
-      <span class="footer-page">{{ $slidev?.nav?.currentPage }}</span>
-      <span class="footer-date">{{ $slidev?.configs?.date }}</span>
-      <span class="footer-title">{{ $slidev?.configs?.title }}</span>
-      <IteniumLogo variant="icon" theme="light" class="footer-logo" />
-    </div>
+    <SlideFooter />
   </div>
 </template>
 
@@ -74,20 +69,4 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   object-fit: cover;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  z-index: 2;
-}
-.footer-page { font-weight: bold; }
-.footer-date { white-space: nowrap; }
-.footer-title { margin-left: auto; }
-.footer-logo { height: 24px !important; }
 </style>

@@ -75,7 +75,7 @@ layout: content-image
 
 ```bash
 npx bmad-method install
-claude == 5
+claude
 /bmad-help
 ```
 
@@ -239,3 +239,20 @@ layout: default
   - Superpowers
 
 </v-clicks>
+
+---
+layout: default
+---
+
+# AI Bootcamp Flow
+
+```mermaid
+graph LR
+  A[☕ Kickoff] --> B[🧠 BMAD Planning]
+  B --> C[💻 Development]
+  C --> D[🍕 Lunch]
+  D --> E[📊 Team Demo]
+  E --> F[💻 Development]
+  F --> G[🏆 Final Demo]
+  G --> H[🍻 Drinks!]
+```

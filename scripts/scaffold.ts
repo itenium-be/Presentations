@@ -107,13 +107,15 @@ const presSection = `
 ## Presentation
 
 \`\`\`bash
-cd presentation && bun install
-bunx slidev slides.md
+cd presentation
+bun install
+bun run dev
 \`\`\`
 
 Update the theme:
 \`\`\`bash
-cd presentation/theme && git pull
+cd presentation/theme
+git pull
 \`\`\`
 `
 if (existsSync(readmePath)) {

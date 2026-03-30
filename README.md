@@ -31,6 +31,7 @@ Each talk lives in its own repo with the theme as a git submodule.
 ### Scaffold (recommended)
 
 ```bash
+cd talks
 mkdir my-talk && cd my-talk
 git init
 bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts

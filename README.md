@@ -6,7 +6,12 @@ Official [Slidev](https://sli.dev/) theme for itenium technical presentations.
 
 ```bash
 bun install
-bunx slidev talks/bootcamp-ai/slides.md
+
+# Presentation with everything that is in the theme
+bunx slidev talks/showcase/slides.md
+
+# Presentation with code examples in ts, c# etc
+bunx slidev talks/rosetta/slides.md
 ```
 
 Presenter mode: `http://localhost:3030/presenter`

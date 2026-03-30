@@ -75,7 +75,7 @@ layout: content-image
 
 ```bash
 npx bmad-method install
-claude
+claude == 5
 /bmad-help
 ```
 

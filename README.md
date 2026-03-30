@@ -1,4 +1,5 @@
-# slidev-theme-itenium
+Presentations
+=============
 
 Official [Slidev](https://sli.dev/) theme for itenium technical presentations.
 
@@ -9,6 +10,9 @@ bun install
 
 # Showcase with all theme features
 bunx slidev talks/showcase/slides.md
+
+# Presentation with code examples in ts, c# etc
+bunx slidev talks/rosetta/slides.md
 
 # Minimal starter template
 bunx slidev talks/starter/slides.md
@@ -45,17 +49,4 @@ my-talk/
 
 ```bash
 cd theme && git pull
-```
-
-### Build for GitHub Pages
-
-```bash
-bun run build
-```
-
-## Local theme development
-
-```bash
-bun install
-bunx slidev talks/showcase/slides.md
 ```

@@ -2,9 +2,6 @@
 theme: ../../
 title: Rosetta
 transition: fade
-highlighter: shiki
-shikiOptions:
-  theme: dracula
 ---
 
 # Rosetta

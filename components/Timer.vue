@@ -21,7 +21,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 
 const props = withDefaults(defineProps<{
-  minutes?: number
+  minutes?: number | string
 }>(), {
   minutes: 15,
 })

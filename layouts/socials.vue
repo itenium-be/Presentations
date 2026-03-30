@@ -77,6 +77,7 @@ const photoUrl = new URL('../assets/socials-photo.png', import.meta.url).href
 .social-icon {
   width: 48px;
   height: 48px;
+  object-fit: contain;
 }
 
 .socials-photo {

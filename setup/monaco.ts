@@ -6,5 +6,6 @@ export default defineMonacoSetup(() => {
     fontLigatures: true,
     fontSize: 16,
     'editor.fontLigatures': true,
+    theme: 'vs',
   }
 })

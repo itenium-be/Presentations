@@ -5,7 +5,7 @@ date: 3/11/2026
 transition: fade
 highlighter: shiki
 shikiOptions:
-  theme: github-light
+  theme: vitesse-dark
 ---
 
 # SkillForge

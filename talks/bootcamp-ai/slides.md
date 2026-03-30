@@ -256,3 +256,9 @@ graph LR
   F --> G[🏆 Final Demo]
   G --> H[🍻 Drinks!]
 ```
+
+---
+layout: socials
+qr: https://github.com/itenium-be/bootcamp-ai
+qrLabel: Bootcamp Repo
+---

@@ -25,22 +25,25 @@ const repoName = basename(cwd)
 const presDir = join(cwd, 'presentation')
 const themeDir = join(presDir, 'theme')
 
+// 1. Create presentation directory (skip if submodule was already added)
 if (existsSync(presDir)) {
-  console.error('presentation/ directory already exists. Aborting.')
-  process.exit(1)
+  console.log('presentation/ already exists (submodule added manually), skipping creation.')
+} else {
+  mkdirSync(presDir)
+  console.log('Created presentation/')
+
+  // 2. Add theme as submodule
+  console.log('Adding theme as git submodule...')
+  execSync('git submodule add https://github.com/itenium-be/presentations.git presentation/theme', {
+    cwd,
+    stdio: 'inherit',
+  })
 }
 
-// 1. Create presentation directory
-mkdirSync(presDir)
-mkdirSync(join(presDir, 'images'))
-console.log('Created presentation/ and presentation/images/')
-
-// 2. Add theme as submodule
-console.log('Adding theme as git submodule...')
-execSync('git submodule add https://github.com/itenium-be/presentations.git presentation/theme', {
-  cwd,
-  stdio: 'inherit',
-})
+if (!existsSync(join(presDir, 'images'))) {
+  mkdirSync(join(presDir, 'images'))
+  console.log('Created presentation/images/')
+}
 
 // 3. Copy starter template
 const starterDir = join(themeDir, 'talks', 'starter')

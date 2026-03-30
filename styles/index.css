@@ -7,6 +7,8 @@
 @font-face { font-family: 'Inter'; font-weight: 700; src: url('../assets/fonts/inter-700.woff2') format('woff2'); }
 @font-face { font-family: 'Fira Code'; font-weight: 400; src: url('../assets/fonts/fira-code-400.woff2') format('woff2'); }
 @font-face { font-family: 'Fira Code'; font-weight: 500; src: url('../assets/fonts/fira-code-500.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('../assets/fonts/ibm-plex-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('../assets/fonts/ibm-plex-mono-500.woff2') format('woff2'); }
 
 :root {
   --color-primary: #e84700;
@@ -18,7 +20,7 @@
   --color-text-muted: #7e7e7e;
   --font-heading: 'Rubik', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --font-code: 'Fira Code', monospace;
+  --font-code: 'Fira Code', 'IBM Plex Mono', monospace;
 }
 
 .slidev-layout {
@@ -67,7 +69,7 @@
 
 /* Code blocks */
 :root {
-  --slidev-code-font-family: 'Fira Code', monospace;
+  --slidev-code-font-family: 'Fira Code', 'IBM Plex Mono', monospace;
 }
 
 .slidev-code,
@@ -77,7 +79,7 @@
 code,
 pre,
 pre code {
-  font-family: 'Fira Code', monospace !important;
+  font-family: 'Fira Code', 'IBM Plex Mono', monospace !important;
   font-feature-settings: 'calt' 1 !important;
   font-variant-ligatures: contextual !important;
   font-size: 1.1em;
@@ -88,7 +90,7 @@ pre code {
 .monaco-editor,
 .monaco-editor .view-lines,
 .monaco-editor .view-line span {
-  font-family: 'Fira Code', monospace !important;
+  font-family: 'Fira Code', 'IBM Plex Mono', monospace !important;
   font-feature-settings: 'calt' 1 !important;
   font-variant-ligatures: contextual !important;
   -webkit-font-feature-settings: 'calt' 1 !important;

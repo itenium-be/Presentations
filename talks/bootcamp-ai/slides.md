@@ -108,6 +108,33 @@ const devs = team.filter(u => u.role === 'dev')
 console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
 ```
 
+---
+layout: default
+---
+
+# Code Walkthrough
+
+```ts {1-4|6-10|12-13}{lines:true,at:0}
+interface User {
+  name: string
+  role: 'dev' | 'coach' | 'admin'
+}
+
+const team: User[] = [
+  { name: 'Alice', role: 'dev' },
+  { name: 'Bob', role: 'coach' },
+  { name: 'Charlie', role: 'dev' },
+]
+
+const devs = team.filter(u => u.role === 'dev')
+console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
+```
+
+<div class="relative h-8">
+<div v-click.hide="1" class="absolute">👆 Define a <strong>User</strong> type with name and role</div>
+<div v-click="[1,2]" class="absolute">👆 Create an array of users with different roles</div>
+<div v-click="2" class="absolute">👆 Filter to keep only the devs, then log their names</div>
+</div>
 
 ---
 layout: comparison

@@ -137,6 +137,47 @@ console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
 </div>
 
 ---
+layout: default
+---
+
+# In-Depth Code Walkthrough
+## Using Magic Move
+
+````md magic-move
+```ts {6-9}{lines:true}
+interface User {
+  name: string
+  role: 'dev' | 'coach' | 'admin'
+}
+
+const team: User[] = [
+  { name: 'Alice', role: 'dev' },       // <-- role
+  { name: 'Bob', role: 'coach' },       // <-- role
+  { name: 'Charlie', role: 'dev' },     // <-- role
+]
+
+const devs = team.filter(u => u.role === 'dev')
+```
+
+```ts {5}{lines:true}
+interface User {
+  name: string
+  role: 'dev' | 'coach' | 'admin'
+}
+
+const team: User[] = [
+  { name: 'Alice', role: 'dev' },
+  { name: 'Bob', role: 'coach' },
+  { name: 'Charlie', role: 'dev' },
+]
+
+const devs = team.filter(u => u.role === 'dev')
+//            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//            Filters by the role property!
+```
+````
+
+---
 layout: comparison
 ---
 

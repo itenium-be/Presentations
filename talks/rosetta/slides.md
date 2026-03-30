@@ -4,7 +4,7 @@ title: Rosetta
 transition: fade
 highlighter: shiki
 shikiOptions:
-  theme: night-owl
+  theme: vitesse-dark
 ---
 
 # Rosetta

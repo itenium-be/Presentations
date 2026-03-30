@@ -12,8 +12,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "slidev example.md",
-    "build": "slidev build example.md"
+    "dev": "slidev talks/showcase/slides.md",
+    "build": "slidev build talks/showcase/slides.md",
+    "scaffold": "bun run scripts/scaffold.ts"
   },
   "peerDependencies": {
     "@slidev/types": ">=0.1.0"

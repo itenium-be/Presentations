@@ -1,23 +1,26 @@
 #!/usr/bin/env bun
 /**
  * Scaffold a new Slidev presentation using the itenium theme.
- * Run from the root of your new talk repo:
  *
- *   bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts
+ * From the Presentations (theme) repo:
+ *   bun run scaffold /path/to/my-talk
  *
- * This will:
- * 1. Create a presentation/ directory
- * 2. Add the theme as a git submodule
- * 3. Copy the starter template
- * 4. Install dependencies
- * 5. Update .gitignore and README.md
+ * From the target repo (after adding submodule):
+ *   git submodule add https://github.com/itenium-be/Presentations.git presentation/theme
+ *   bun run presentation/theme/scripts/scaffold.ts
  */
 
 import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, appendFileSync, readdirSync } from 'fs'
-import { join, basename } from 'path'
+import { join, basename, resolve } from 'path'
 import { execSync } from 'child_process'
 
-const cwd = process.cwd()
+// If argument provided, use it as target. Otherwise use cwd (running from target repo).
+const cwd = process.argv[2] ? resolve(process.argv[2]) : process.cwd()
+if (!existsSync(cwd)) {
+  console.error(`Target directory does not exist: ${cwd}`)
+  process.exit(1)
+}
+
 const repoName = basename(cwd)
 const presDir = join(cwd, 'presentation')
 const themeDir = join(presDir, 'theme')

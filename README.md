@@ -31,10 +31,10 @@ Each talk lives in its own repo with the theme as a git submodule.
 ### Scaffold (recommended)
 
 ```bash
-cd talks
 mkdir my-talk && cd my-talk
 git init
-bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts
+git submodule add https://github.com/itenium-be/Presentations.git presentation/theme
+bun run presentation/theme/scripts/scaffold.ts
 ```
 
 This creates:
@@ -49,5 +49,5 @@ my-talk/
 ### Update the theme
 
 ```bash
-cd theme && git pull
+cd presentation/theme && git pull
 ```

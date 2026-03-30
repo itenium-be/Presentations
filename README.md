@@ -7,11 +7,8 @@ Official [Slidev](https://sli.dev/) theme for itenium technical presentations.
 ```bash
 bun install
 
-# Presentation with everything that is in the theme
+# Showcase with all theme features
 bunx slidev talks/showcase/slides.md
-
-# Presentation with code examples in ts, c# etc
-bunx slidev talks/rosetta/slides.md
 
 # Minimal starter template
 bunx slidev talks/starter/slides.md
@@ -23,40 +20,42 @@ Presenter mode: `http://localhost:3030/presenter`
 
 See [LAYOUTS.md](LAYOUTS.md) for all available layouts, features, and usage examples.
 
-## Using the theme in a talk repo
+## Creating a new presentation
 
-Each talk lives in its own repository. Add `slidev-theme-itenium` as a dependency:
+Each talk lives in its own repo with the theme as a git submodule.
 
-```json
-{
-  "dependencies": {
-    "@slidev/cli": "^51.0.0",
-    "slidev-theme-itenium": "github:itenium-be/presentations"
-  },
-  "scripts": {
-    "dev": "slidev",
-    "build": "slidev build --base /<repo-name>/"
-  }
-}
+### Scaffold (recommended)
+
+```bash
+mkdir my-talk && cd my-talk
+git init
+bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts
 ```
 
-In your `slides.md`:
-
-```markdown
----
-theme: itenium
-title: My Talk
-transition: fade
----
-
-# My Talk Title
+This creates:
+```
+my-talk/
+  theme/          # git submodule (this repo)
+  slides.md       # theme: ./theme
+  images/
+  package.json
 ```
 
-Theme changes are picked up when you `bun install` / `bun update` in the talk repo.
+### Update the theme
+
+```bash
+cd theme && git pull
+```
+
+### Build for GitHub Pages
+
+```bash
+bun run build
+```
 
 ## Local theme development
 
 ```bash
 bun install
-bunx slidev example.md
+bunx slidev talks/showcase/slides.md
 ```

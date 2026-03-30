@@ -1,28 +1,68 @@
 #!/usr/bin/env bun
 /**
- * Scaffold Slidev slides into the current talk repo.
- * Run from the root of any itenium talk repo:
+ * Scaffold a new Slidev presentation using the itenium theme.
+ * Run from the root of your new talk repo:
  *
  *   bun run https://raw.githubusercontent.com/itenium-be/presentations/main/scripts/scaffold.ts
+ *
+ * This will:
+ * 1. Add the theme as a git submodule
+ * 2. Copy the starter template
+ * 3. Install dependencies
  */
 
-import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync } from 'fs'
 import { join, basename } from 'path'
 import { execSync } from 'child_process'
 
 const cwd = process.cwd()
 const repoName = basename(cwd)
-const slidesDir = join(cwd, 'slides')
+const themeDir = join(cwd, 'theme')
+const slidesFile = join(cwd, 'slides.md')
 
-if (existsSync(slidesDir)) {
-  console.error('slides/ directory already exists. Aborting.')
+if (existsSync(slidesFile)) {
+  console.error('slides.md already exists. Aborting.')
   process.exit(1)
 }
 
-mkdirSync(slidesDir)
-mkdirSync(join(slidesDir, 'images'))
-console.log('Created slides/ and slides/images/')
+// 1. Add theme as submodule
+if (!existsSync(themeDir)) {
+  console.log('Adding theme as git submodule...')
+  execSync('git submodule add https://github.com/itenium-be/presentations.git theme', {
+    cwd,
+    stdio: 'inherit',
+  })
+} else {
+  console.log('Theme directory already exists, skipping submodule.')
+}
 
+// 2. Copy starter template
+const starterDir = join(themeDir, 'talks', 'starter')
+if (!existsSync(starterDir)) {
+  console.error('Starter template not found in theme/talks/starter/. Is the theme up to date?')
+  process.exit(1)
+}
+
+// Copy and adjust slides.md (change theme path)
+let starterMd = readFileSync(join(starterDir, 'slides.md'), 'utf-8')
+starterMd = starterMd
+  .replace('theme: ../../', 'theme: ./theme')
+  .replace('title: Talk Title', `title: ${repoName}`)
+writeFileSync(slidesFile, starterMd)
+console.log('Created slides.md')
+
+// Copy images
+mkdirSync(join(cwd, 'images'), { recursive: true })
+const starterImages = join(starterDir, 'images')
+if (existsSync(starterImages)) {
+  const { readdirSync } = await import('fs')
+  for (const file of readdirSync(starterImages)) {
+    copyFileSync(join(starterImages, file), join(cwd, 'images', file))
+  }
+  console.log('Copied starter images/')
+}
+
+// 3. Create package.json
 const packageJson = {
   private: true,
   scripts: {
@@ -32,220 +72,33 @@ const packageJson = {
   },
   dependencies: {
     '@slidev/cli': '^51.0.0',
-    'slidev-theme-itenium': 'github:itenium-be/presentations#main',
   },
 }
 
 writeFileSync(
-  join(slidesDir, 'package.json'),
+  join(cwd, 'package.json'),
   JSON.stringify(packageJson, null, 2) + '\n',
 )
-console.log('Created slides/package.json')
+console.log('Created package.json')
 
-const today = new Date().toISOString().slice(0, 10)
-const slidesMd = `---
-theme: itenium
-title: ${repoName}
-transition: fade
----
-
-# ${repoName}
-# Your Subtitle Here
-
----
-layout: agenda
-items:
-  - The Problem
-  - The Solution
-  - Live Demo
-  - Lessons Learned
----
-
----
-layout: section
----
-
-# The Problem
-
-::subtitle::
-
-Why we can't have nice things
-
----
-layout: default
----
-
-# The Current State of Affairs
-
-- Everything is on fire
-- The tests pass locally but not in CI
-- "It works on my machine" is not a deployment strategy
-- The intern pushed to main
-
-<!-- Speaker note: pause for dramatic effect -->
-
----
-layout: default
----
-
-# Root Cause Analysis
-
-<v-clicks>
-
-- Someone disabled the linter "temporarily" in 2019
-- The database schema was designed on a napkin
-- We have 47 microservices for a TODO app
-- The documentation says "TODO: write documentation"
-
-</v-clicks>
-
----
-layout: section
----
-
-# The Solution
-
-::subtitle::
-
-It's not another framework. Or is it?
-
----
-layout: content-image
----
-
-# Architecture Overview
-
-- Step 1: Delete node_modules
-- Step 2: Turn it off and on again
-- Step 3: Blame DNS
-- Step 4: Actually read the error message
-
-::image::
-
-![](https://picsum.photos/800/600?random=1)
-
----
-layout: comparison
----
-
-# Before vs After
-
-<div class="cols">
-<div class="col">
-
-### Before
-
-- 3 hour build times
-- "Works on my machine"
-- Manual deployments on Fridays
-- Hope-driven development
-
-</div>
-<div class="col">
-
-### After
-
-- 3 minute builds
-- "Works in containers"
-- Automated CI/CD
-- Test-driven confidence
-
-</div>
-</div>
-
----
-layout: quote
----
-
-# First, solve the problem.
-# Then, write the code.
-
----
-layout: section
----
-
-# Live Demo
-
-::subtitle::
-
-Pray to the demo gods
-
----
-layout: default
----
-
-# Interactive Code
-
-\`\`\`ts {monaco-run}
-interface Bug {
-  id: number
-  title: string
-  severity: 'low' | 'medium' | 'critical' | 'the-building-is-on-fire'
-}
-
-const bugs: Bug[] = [
-  { id: 1, title: 'CSS is hard', severity: 'critical' },
-  { id: 2, title: 'Off by one error', severity: 'the-building-is-on-fire' },
-  { id: 3, title: 'Typo in variable name', severity: 'low' },
-]
-
-const panic = bugs.filter(b => b.severity === 'the-building-is-on-fire')
-console.log(\`Bugs requiring panic: \${panic.length}\`)
-console.log(panic.map(b => b.title).join(', '))
-\`\`\`
-
----
-layout: section
----
-
-# Lessons Learned
-
-::subtitle::
-
-What we broke along the way
-
----
-layout: default
----
-
-# Key Takeaways
-
-<v-clicks depth="2">
-
-- Always have a rollback plan
-  - \`git revert\` is your friend
-  - Database migrations should be reversible
-- Automate everything you do twice
-  - If you do it three times without automating, you owe the team coffee
-- Write tests before you need them
-  - Future you will mass high fives
-
-</v-clicks>
-
----
-layout: quote
----
-
-# Questions?
-`
-
-writeFileSync(join(slidesDir, 'slides.md'), slidesMd)
-console.log('Created slides/slides.md')
-
+// 4. Create .gitignore
 writeFileSync(
-  join(slidesDir, '.gitignore'),
+  join(cwd, '.gitignore'),
   'node_modules/\ndist/\n.slidev/\n',
 )
-console.log('Created slides/.gitignore')
+console.log('Created .gitignore')
 
+// 5. Install
 console.log('\nRunning bun install...')
-execSync('bun install', { cwd: slidesDir, stdio: 'inherit' })
+execSync('bun install', { cwd, stdio: 'inherit' })
 
 console.log(`
 Done! Your slides are ready.
 
-   cd slides
    bun run dev     - start dev server
    bun run build   - build for GitHub Pages
    bun run export  - export to PDF
+
+To update the theme:
+   cd theme && git pull
 `)

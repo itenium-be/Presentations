@@ -3,6 +3,9 @@ theme: ../../
 title: Bootcamp AI
 date: 3/11/2026
 transition: fade
+highlighter: shiki
+shikiOptions:
+  theme: github-light
 ---
 
 # SkillForge
@@ -273,3 +276,7 @@ layout: default
   </div>
   <a href="https://github.com/itenium-be/bootcamp-ai" class="mt-4 text-lg">github.com/itenium-be/bootcamp-ai</a>
 </div>
+
+---
+layout: end
+---

@@ -227,6 +227,20 @@ layout: quote
 # Before we get started…
 
 ---
+layout: break
+---
+
+# ☕ Break
+
+::timer::
+
+<Timer minutes="10" />
+
+::image::
+
+![](./images/cover-art.jpg)
+
+---
 layout: default
 ---
 

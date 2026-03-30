@@ -259,6 +259,17 @@ graph LR
 
 ---
 layout: socials
-qr: https://github.com/itenium-be/bootcamp-ai
-qrLabel: Bootcamp Repo
 ---
+
+---
+layout: default
+---
+
+# Powerpoint Source
+
+<div class="flex flex-col items-center justify-center h-full -mt-16">
+  <div class="w-64 h-64">
+    <QRCode url="https://github.com/itenium-be/bootcamp-ai" color="#343434" />
+  </div>
+  <a href="https://github.com/itenium-be/bootcamp-ai" class="mt-4 text-lg">github.com/itenium-be/bootcamp-ai</a>
+</div>

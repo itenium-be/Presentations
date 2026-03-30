@@ -1,37 +1,37 @@
 <template>
-  <svg :viewBox="`0 0 ${size} ${size}`" class="qr-code">
-    <rect v-for="(mod, i) in modules" :key="i"
-      :x="mod.x" :y="mod.y" width="1" height="1"
-      :fill="color"
-    />
-  </svg>
+  <div ref="container" class="qr-code" />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { encode } from 'uqr'
 
 const props = withDefaults(defineProps<{
   url: string
   color?: string
 }>(), {
-  color: '#ffffff',
+  color: '#343434',
 })
 
-const qr = computed(() => encode(props.url))
-const size = computed(() => qr.value.size)
-const modules = computed(() => {
-  const mods: { x: number; y: number }[] = []
-  const data = qr.value.data
-  for (let y = 0; y < size.value; y++) {
-    for (let x = 0; x < size.value; x++) {
-      if (data[y * size.value + x]) {
-        mods.push({ x, y })
+const container = ref<HTMLElement>()
+
+function render() {
+  if (!container.value) return
+  const qr = encode(props.url)
+  const s = qr.size
+  let rects = ''
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      if (qr.data[y][x]) {
+        rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${props.color}"/>`
       }
     }
   }
-  return mods
-})
+  container.value.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${s} ${s}" style="width:100%;height:100%">${rects}</svg>`
+}
+
+onMounted(render)
+watch(() => props.url, render)
 </script>
 
 <style scoped>

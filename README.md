@@ -12,6 +12,9 @@ bunx slidev talks/showcase/slides.md
 
 # Presentation with code examples in ts, c# etc
 bunx slidev talks/rosetta/slides.md
+
+# Minimal starter template
+bunx slidev talks/starter/slides.md
 ```
 
 Presenter mode: `http://localhost:3030/presenter`

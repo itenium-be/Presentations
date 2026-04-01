@@ -131,4 +131,55 @@ type: Theoretical
   typically indicates code syntax highlighting in the original.
 - **`&#160;`**: Non-breaking spaces are used liberally -- strip them when converting.
 - **Speaker notes**: PowerPoint speaker notes are NOT preserved in the PDF export.
-  Add them manually as HTML comments in slides.md.
+  Extract them directly from the PPTX (see Step 6).
+
+## Step 6: Extract speaker notes from PPTX
+
+A `.pptx` file is a ZIP containing XML. Speaker notes live in `ppt/notesSlides/notesSlideN.xml`.
+
+```bash
+mkdir -p /tmp/pptx-notes
+unzip -o MyPresentation.pptx "ppt/notesSlides/notesSlide*.xml" -d /tmp/pptx-notes -x "*/rels/*"
+```
+
+Extract the text content with Python:
+
+```python
+import xml.etree.ElementTree as ET
+
+ns = {
+    'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
+    'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
+}
+
+for i in range(1, 41):  # adjust range to slide count
+    path = f'/tmp/pptx-notes/ppt/notesSlides/notesSlide{i}.xml'
+    try:
+        tree = ET.parse(path)
+    except FileNotFoundError:
+        continue
+
+    for sp in tree.findall('.//p:sp', ns):
+        ph = sp.find('.//p:ph', ns)
+        if ph is not None and ph.get('idx') == '1':
+            lines = []
+            for p in sp.findall('.//a:p', ns):
+                parts = [t.text or '' for t in p.findall('.//a:t', ns)]
+                line = ''.join(parts).strip()
+                if line:
+                    lines.append(line)
+            if lines:
+                print(f'=== SLIDE {i} ===')
+                print('\n'.join(lines))
+                print()
+```
+
+Add the extracted notes as HTML comments at the end of each slide in `slides.md`:
+
+```markdown
+# Slide Title
+
+- Content here
+
+<!-- Speaker notes go here. Only visible in presenter mode. -->
+```

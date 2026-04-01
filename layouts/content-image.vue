@@ -63,7 +63,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   position: relative;
   overflow: hidden;
 }
-.ci-right :deep(img) {
+.ci-right :deep(> img) {
   width: 100%;
   height: 100%;
   object-fit: cover;

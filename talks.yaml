@@ -1,4 +1,5 @@
 - title: "Git: How to Get Out of a Mess"
+  published: false
   description: "Practical strategies for recovering from Git disasters — rebasing, reflog, bisect, and more."
   repo: itenium-be/git-how-to-get-out-of-a-mess
   slides_url: https://itenium-be.github.io/git-how-to-get-out-of-a-mess/
@@ -6,6 +7,7 @@
   tags: [git, devtools]
 
 - title: "Design Patterns"
+  published: false
   description: "Introductory talk about classic design patterns with practical examples."
   repo: itenium-be/Talk-DesignPatterns
   slides_url: https://itenium-be.github.io/Talk-DesignPatterns/
@@ -13,8 +15,17 @@
   tags: [architecture, patterns]
 
 - title: "Garbage Collection: .NET vs Java"
+  published: false
   description: "Deep dive into how garbage collection works in .NET and Java runtimes."
   repo: itenium-be/Talk-GC
   slides_url: https://itenium-be.github.io/Talk-GC/
   date: 2023-06-01
   tags: [dotnet, java, performance]
+
+- title: "AI Security"
+  published: true
+  description: "AI security threats, prompt injection, MCP vulnerabilities, and mitigations."
+  repo: itenium-be/2026-04-01-AI-Security
+  date: 2026-04-01
+  location: itenium
+  tags: [ai, security]

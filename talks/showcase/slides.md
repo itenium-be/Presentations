@@ -178,6 +178,27 @@ const devs = team.filter(u => u.role === 'dev')
 ````
 
 ---
+layout: default
+size: sm
+---
+
+# Font Size Variants
+
+<div class="full-width text-xxl italic text-orange-400 mb-4">
+  Full-width quote spanning the entire slide.
+</div>
+
+<v-clicks depth="2">
+
+- Use `size` frontmatter: xxl, xl, lg, md (default), sm, xs
+- Sub-items are automatically smaller
+  - Like this one
+  - And this one
+- Combine with `full-width` class for edge-to-edge elements
+
+</v-clicks>
+
+---
 layout: comparison
 ---
 

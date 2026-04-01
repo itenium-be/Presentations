@@ -2,7 +2,7 @@
   <div class="slidev-layout default">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
     <img :src="dotsGreen" class="dots dots-green" aria-hidden="true" />
-    <div ref="contentRef" class="content" :style="{ fontSize: contentFontSize }">
+    <div class="content" :class="'size-' + ($frontmatter?.size ?? 'md')">
       <slot />
     </div>
     <SlideFooter />
@@ -10,24 +10,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-
 const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
-
-const contentRef = ref(null)
-const contentFontSize = ref('1.1rem')
-
-onMounted(async () => {
-  await nextTick()
-  const el = contentRef.value
-  if (!el) return
-  const items = el.querySelectorAll('li').length
-  if (items <= 3) contentFontSize.value = '2.5rem'
-  else if (items <= 5) contentFontSize.value = '2.2rem'
-  else if (items <= 8) contentFontSize.value = '2rem'
-  else contentFontSize.value = '1.8rem'
-})
 </script>
 
 <style scoped>
@@ -85,9 +69,18 @@ onMounted(async () => {
 }
 .content :deep(ul ul) {
   list-style-type: circle;
+  font-size: 0.85em;
 }
 .content :deep(li) {
   margin-bottom: 0.25rem;
 }
+
+/* Font size variants via frontmatter `size` */
+.content.size-xxl { font-size: 2.5rem; }
+.content.size-xl  { font-size: 2.2rem; }
+.content.size-lg  { font-size: 2rem; }
+.content.size-md  { font-size: 1.8rem; }
+.content.size-sm  { font-size: 1.5rem; }
+.content.size-xs  { font-size: 1.2rem; }
 
 </style>

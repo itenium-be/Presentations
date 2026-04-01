@@ -77,6 +77,12 @@
   text-align: center;
 }
 
+/* Presenter notes — bold text legibility on dark background */
+.slidev-note strong,
+.slidev-note b {
+  color: var(--color-primary);
+}
+
 /* Code blocks */
 :root {
   --slidev-code-font-family: 'Fira Code', 'IBM Plex Mono', monospace;

@@ -1,6 +1,9 @@
 <template>
   <div class="slidev-layout quote-alt">
     <img :src="dotsUrl" class="dots" aria-hidden="true" />
+    <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
+      <slot name="image" />
+    </div>
     <div class="quote-content">
       <svg class="quote-icon" viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M0 40V24.8C0 20.27 0.83 16.13 2.5 12.4C4.17 8.53 6.83 4.93 10.5 1.6L17.5 6.4C15.17 8.93 13.33 11.53 12 14.2C10.67 16.87 9.83 19.8 9.5 23H20V40H0ZM30 40V24.8C30 20.27 30.83 16.13 32.5 12.4C34.17 8.53 36.83 4.93 40.5 1.6L47.5 6.4C45.17 8.93 43.33 11.53 42 14.2C40.67 16.87 39.83 19.8 39.5 23H50V40H30Z" fill="white"/>
@@ -8,7 +11,7 @@
       <div class="quote-text">
         <slot />
       </div>
-      <div class="quote-attribution">
+      <div class="quote-attribution" v-if="$slots.author">
         <slot name="author" />
       </div>
       <div class="quote-line"></div>
@@ -86,5 +89,29 @@ const dotsUrl = new URL('../assets/dots-green.png', import.meta.url).href
   height: 2px;
   background: #2D2A28;
   margin-top: 1rem;
+}
+
+.circle-image {
+  position: absolute;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  border: 0.5rem solid #E78200;
+  overflow: hidden;
+  z-index: 2;
+}
+.circle-image.pos-top-right {
+  top: 20px;
+  right: 10px;
+}
+.circle-image.pos-middle-right {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+.circle-image :deep(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

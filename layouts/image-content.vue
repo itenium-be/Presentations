@@ -4,11 +4,11 @@
     <div class="ic-title">
       <slot name="default" />
     </div>
-    <div class="ic-columns">
+    <div class="ic-columns" :class="{ 'image-only': !$slots.content }">
       <div class="ic-left" v-if="$slots.image">
         <slot name="image" />
       </div>
-      <div class="ic-right" :class="'size-' + ($frontmatter?.size ?? 'md')">
+      <div class="ic-right" v-if="$slots.content" :class="'size-' + ($frontmatter?.size ?? 'md')">
         <slot name="content" />
       </div>
     </div>
@@ -67,6 +67,12 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   justify-content: flex-end;
   align-items: center;
   height: 100%;
+}
+.image-only {
+  grid-template-columns: 1fr;
+}
+.image-only .ic-left {
+  justify-content: center;
 }
 .ic-left :deep(img) {
   max-width: 100%;

@@ -1,7 +1,7 @@
 <template>
   <div class="slidev-layout default-image">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
-    <div class="circle-image" v-if="$slots.image">
+    <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
     </div>
     <div class="content" :class="'size-' + ($frontmatter?.size ?? 'md')">
@@ -39,14 +39,21 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 
 .circle-image {
   position: absolute;
-  top: 20px;
-  right: 10px;
   width: 14rem;
   height: 14rem;
   border-radius: 50%;
   border: 0.5rem solid #E78200;
   overflow: hidden;
   z-index: 2;
+}
+.circle-image.pos-top-right {
+  top: 20px;
+  right: 10px;
+}
+.circle-image.pos-middle-right {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
 }
 .circle-image :deep(img) {
   width: 100%;

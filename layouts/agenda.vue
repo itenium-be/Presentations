@@ -3,7 +3,7 @@
     <div class="agenda-image">
       <img :src="agendaBg" alt="" />
     </div>
-    <div class="agenda-content">
+    <div class="agenda-content" :class="'size-' + ($frontmatter?.size ?? 'md')">
       <h1>Agenda</h1>
       <div class="agenda-items">
         <template v-for="(item, i) in ($frontmatter?.items ?? [])" :key="i">
@@ -80,4 +80,21 @@ const agendaBg = new URL('../assets/agenda-bg.jpg', import.meta.url).href
   font-size: 2rem;
   font-family: var(--font-heading);
 }
+
+/* Size variants via frontmatter `size` */
+.agenda-content.size-lg .agenda-items { gap: 1.2rem 1.5rem; }
+.agenda-content.size-lg .agenda-number { width: 3rem; height: 3rem; font-size: 1.4rem; }
+.agenda-content.size-lg .agenda-label { font-size: 2rem; }
+
+.agenda-content.size-md .agenda-items { gap: 1rem 1.2rem; }
+.agenda-content.size-md .agenda-number { width: 2.6rem; height: 2.6rem; font-size: 1.2rem; }
+.agenda-content.size-md .agenda-label { font-size: 1.7rem; }
+
+.agenda-content.size-sm .agenda-items { gap: 0.8rem 1rem; }
+.agenda-content.size-sm .agenda-number { width: 2.2rem; height: 2.2rem; font-size: 1rem; }
+.agenda-content.size-sm .agenda-label { font-size: 1.4rem; }
+
+.agenda-content.size-xs .agenda-items { gap: 0.6rem 0.8rem; }
+.agenda-content.size-xs .agenda-number { width: 2rem; height: 2rem; font-size: 0.9rem; }
+.agenda-content.size-xs .agenda-label { font-size: 1.2rem; }
 </style>

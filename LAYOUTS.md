@@ -1,5 +1,20 @@
 # Layouts
 
+## Frontmatter
+
+Session metadata in the first slide's frontmatter:
+
+```yaml
+---
+theme: ./theme
+title: My Talk
+transition: fade
+session-time: 60min
+track: Architecture
+type: Theoretical
+---
+```
+
 ## `cover`
 
 Title slide. Orange background, logo top-left, image on the right via named slot.
@@ -42,14 +57,18 @@ Optional subtitle text
 ## `agenda`
 
 Numbered agenda items with photo on the left. Items passed via frontmatter.
+Supports `size` frontmatter (`lg`, `md` (default), `sm`, `xs`) to fit more items.
 
 ```markdown
 ---
 layout: agenda
+size: sm
 items:
   - First Topic
   - Second Topic
   - Third Topic
+  - Fourth Topic
+  - Fifth Topic
 ---
 ```
 

@@ -86,7 +86,26 @@ but should NOT be used in slides.md -- they contain the old PowerPoint theme chr
 
 ## Step 5: Write slides.md
 
-Map to Slidev layouts:
+### Frontmatter
+
+Add session metadata to the YAML frontmatter of `slides.md`:
+
+```yaml
+---
+theme: ./theme
+title: 2022-08-25-UnitTesting
+transition: fade
+session-time: 70min
+track: Architecture
+type: Theoretical
+---
+```
+
+- `session-time`: duration of the presentation
+- `track`: which track it belongs to (e.g. Architecture, Frontend, Backend)
+- `type`: Theoretical, Hands-on, Workshop, etc.
+
+### Layout mapping
 
 | PowerPoint slide | Slidev layout |
 |-----------------|---------------|

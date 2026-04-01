@@ -2,6 +2,9 @@
 theme: ../../
 title: Talk Title
 transition: fade
+session-time: 60min
+track: Architecture
+type: Theoretical
 ---
 
 # Talk Title

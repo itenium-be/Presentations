@@ -60,7 +60,9 @@ onMounted(async () => {
 .content {
   position: relative;
   z-index: 1;
-  padding: 2rem 2.5rem 3rem 6rem;
+  --content-pad-left: 6rem;
+  --content-pad-right: 2.5rem;
+  padding: 2rem var(--content-pad-right) 3rem var(--content-pad-left);
   height: 100%;
   box-sizing: border-box;
 }

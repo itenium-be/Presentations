@@ -114,6 +114,24 @@ layout: quote
 # Quote text here
 ```
 
+## Utility Classes
+
+### `full-width`
+
+Breaks out of the default layout's content padding to span the full slide width. Text is centered.
+
+```markdown
+---
+layout: default
+---
+
+# My Slide
+
+<div class="full-width text-xxl italic text-orange-400">
+  A quote that spans the entire width of the slide.
+</div>
+```
+
 ## Features
 
 ### Click-to-reveal

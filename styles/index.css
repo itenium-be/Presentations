@@ -70,6 +70,13 @@
   padding-left: 0.75rem;
 }
 
+/* Break out of .content padding to span the full slide width */
+.full-width {
+  margin-left: calc(-1 * var(--content-pad-left));
+  margin-right: calc(-1 * var(--content-pad-right));
+  text-align: center;
+}
+
 /* Code blocks */
 :root {
   --slidev-code-font-family: 'Fira Code', 'IBM Plex Mono', monospace;

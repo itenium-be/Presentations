@@ -49,11 +49,14 @@ const dotsUrl = new URL('../assets/cover-dots.png', import.meta.url).href
   right: 2rem;
   bottom: 2rem;
   width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cover-image :deep(img) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   border-radius: 1rem;
 }
 

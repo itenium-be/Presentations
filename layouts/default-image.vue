@@ -44,13 +44,9 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   width: 14rem;
   height: 14rem;
   border-radius: 50%;
+  border: 0.5rem solid #E78200;
   overflow: hidden;
   z-index: 2;
-  box-shadow:
-    0 0 0 0.4rem #E78200,
-    0 0 0 0.55rem rgba(255, 255, 255, 0.6),
-    0 8px 24px rgba(232, 130, 0, 0.3),
-    0 2px 8px rgba(0, 0, 0, 0.15);
 }
 .circle-image :deep(img) {
   width: 100%;

@@ -3,23 +3,23 @@ Powerpoints to migrate
 
 ## To Migrate
 
-| Repo                     | Content |
-|--------------------------|---------|
-| UnitTesting              | **MUST**: Old but been revised several times (ok)
-| MicroServices            | **MUST** 70 slides (ok)
-| ntier-onion-hex          | **MUST** 30 slides (ok)
-| EventSourcing-CQRS       | **MUST** 33 slides (ok)
-| Architecture-KickOff     | **MUST** 18 slides (needs work probably)
-| CSharp-Features          | **MUST**: C# Evolution (needs work, newer c# versions...)
-| Talk-GC                  | **MUST** 30 slides (should be updated, new Java & .NET GCs...)
-| CodeComplete             | **SHOULD** 60 + 67 slides (ok)
-| Mythical-Man-Month       | **SHOULD** (ok)
-| Talk-UI-UX               | **COULD**: Don't make me think (ok)
-| Talk-DesignPatterns      | **COULD** 45 slides (needs work probably)
-| Regex-Tutorial           | **WISH**: 25 slides (maybe update blog post instead)
-| Frontend-UnitTesting     | **WISH**: Jasmine/Jest, basic syntax, hands-on (update frontend blog post instead)
-| Talk-React               | **WISH**: Pretty old (still mentions Flow)
-| T4TGit                   | **WISH**: 35 slides. (to be combined with git-get-out-of-a-mess & git-DeepDive)
+| Repo                     | MOSCOW   | # slides | Description                                        | Status |
+|--------------------------|----------|----------|----------------------------------------------------|--------|
+| UnitTesting              | MUST     |          | Old but been revised several times                 |        |
+| MicroServices            | MUST     | 70       | OK                                                 |        |
+| ntier-onion-hex          | MUST     | 30       | OK                                                 |        |
+| EventSourcing-CQRS       | MUST     | 33       | OK                                                 |        |
+| Architecture-KickOff     | MUST     | 18       | Needs work probably                                |        |
+| CSharp-Features          | MUST     |          | C# Evolution; needs work, newer c# versions        |        |
+| Talk-GC                  | MUST     | 30       | Should be updated, new Java & .NET GCs             |        |
+| CodeComplete             | SHOULD   | 60 + 67  | OK                                                 |        |
+| Mythical-Man-Month       | SHOULD   |          | OK                                                 |        |
+| Talk-UI-UX               | COULD    |          | OK. Don't make me think                            |        |
+| Talk-DesignPatterns      | COULD    | 45       | Needs work probably                                |        |
+| Regex-Tutorial           | WISH     | 25       | Maybe update blog post instead                     |        |
+| Frontend-UnitTesting     | WISH     |          | Jasmine/Jest, basic syntax; update blog instead    |        |
+| Talk-React               | WISH     |          | Pretty old (still mentions Flow)                   |        |
+| T4TGit                   | WISH     | 35       | Combine with git-get-out-of-a-mess & git-DeepDive  |        |
 
 
 ## Frontend

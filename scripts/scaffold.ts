@@ -88,7 +88,7 @@ console.log('Created presentation/package.json')
 
 // 5. Update .gitignore
 const gitignorePath = join(cwd, '.gitignore')
-const gitignoreEntries = '\n# Slidev\npresentation/node_modules/\npresentation/dist/\npresentation/.slidev/\n'
+const gitignoreEntries = '\n# Slidev\npresentation/node_modules/\npresentation/dist/\npresentation/.slidev/\npresentation/migration/\n'
 if (existsSync(gitignorePath)) {
   const existing = readFileSync(gitignorePath, 'utf-8')
   if (!existing.includes('presentation/node_modules')) {

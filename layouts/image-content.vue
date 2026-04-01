@@ -5,7 +5,10 @@
       <slot name="default" />
     </div>
     <div class="ic-columns" :class="{ 'image-only': !$slots.content }">
-      <div class="ic-left" v-if="$slots.image">
+      <div class="ic-left" v-if="$frontmatter?.image">
+        <img :src="$frontmatter.image" alt="" />
+      </div>
+      <div class="ic-left" v-else-if="$slots.image">
         <slot name="image" />
       </div>
       <div class="ic-right" v-if="$slots.content" :class="'size-' + ($frontmatter?.size ?? 'md')">
@@ -57,8 +60,10 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .ic-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
   flex: 1;
-  align-items: center;
+  min-height: 0;
+  align-items: stretch;
   gap: 2rem;
 }
 
@@ -66,13 +71,23 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 100%;
+  overflow: hidden;
 }
 .image-only {
   grid-template-columns: 1fr;
 }
 .image-only .ic-left {
   justify-content: center;
+}
+.ic-left > img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.ic-left :deep(p) {
+  margin: 0;
+  line-height: 0;
 }
 .ic-left :deep(img) {
   max-width: 100%;

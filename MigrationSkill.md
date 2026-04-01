@@ -114,11 +114,11 @@ type: Theoretical
 | Section divider (photo bg + title) | `section` |
 | Bullet content | `default` with `<v-clicks>` |
 | Bullet content + circular corner image | `default-image` with `::image::` slot |
-| Image left + content right | `image-content` with `::image::` + `::content::` slots |
+| Image left + content right | `image-content` with `image` frontmatter + `::content::` slot |
 | Two-column with pros/cons | `comparison` with `.cols`/`.col` (preserve emojis!) |
 | Content left + image right | `content-image` with `::image::` slot |
 | 1-2 bold statements, no bullets | `quote-alt` (no author needed) |
-| Title + large centered meme/image | `image-content` (no `::content::`, image auto-centers) |
+| Title + large centered meme/image | `image-content` with `image` frontmatter (no `::content::`, auto-centers) |
 | Large quote/meme | `quote` |
 | Break slide | `break` with `<Timer>` |
 | Social links | `socials` |
@@ -148,7 +148,10 @@ These patterns from the PPTX HTML can be detected automatically:
 
 5. **Image-only slides** (`image-content` without `::content::`): Slides where the
    only text is a title and the rest is a large image/meme. The `image-content` layout
-   auto-centers when no `::content::` slot is provided.
+   auto-centers when no `::content::` slot is provided. Prefer `image` frontmatter
+   over `::image::` slot for large images — the frontmatter renders a direct `<img>`
+   tag that the layout CSS can properly constrain. Slot-based images get wrapped in
+   `<p>` tags by Slidev's markdown renderer which breaks `max-height` containment.
 
 6. **Size frontmatter**: Add `size: sm` or `size: xs` when content is dense:
    - `agenda`: 6+ items → `size: sm`, 9+ → `size: xs`

@@ -75,6 +75,40 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   margin-bottom: 0.25rem;
 }
 
+/* Tables */
+.content :deep(table) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-size: 0.85em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.content :deep(thead) {
+  background: var(--color-primary);
+  color: var(--color-text);
+}
+.content :deep(th) {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.6em 1em;
+}
+.content :deep(td) {
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #e5e5e5;
+}
+.content :deep(tbody tr:last-child td) {
+  border-bottom: none;
+}
+.content :deep(tbody tr:nth-child(even)) {
+  background: var(--color-bg-light);
+}
+.content :deep(tbody tr:hover) {
+  background: #fde0d0;
+}
+
 /* Font size variants via frontmatter `size` */
 .content.size-xxl { font-size: 2.5rem; }
 .content.size-xl  { font-size: 2.2rem; }

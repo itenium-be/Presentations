@@ -199,6 +199,34 @@ size: sm
 </v-clicks>
 
 ---
+layout: default
+size: sm
+---
+
+# Table Variants
+
+Default table:
+
+| Name    | Role  | Status |
+|---------|-------|--------|
+| Alice   | Dev   | Active |
+| Bob     | Coach | Active |
+
+<div class="dense">
+
+Dense table (wrap in `<div class="dense">`):
+
+| Technique        | Example                                 |
+|------------------|-----------------------------------------|
+| **0px font**     | Text invisible to humans, visible to AI |
+| **Color match**  | White text on white background          |
+| **Base64**       | `SW5qZWN0aW9u` → "Injection"           |
+| **Homoglyphs**   | `Ιgnore` (Greek Ι) vs `Ignore`         |
+| **Zero-width**   | Bypass filters with invisible chars     |
+
+</div>
+
+---
 layout: comparison
 ---
 

@@ -109,6 +109,17 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   background: #fde0d0;
 }
 
+/* Dense table variant: wrap table in <div class="dense"> */
+.content :deep(.dense table) {
+  font-size: 0.75em;
+}
+.content :deep(.dense th) {
+  padding: 0.3em 0.6em;
+}
+.content :deep(.dense td) {
+  padding: 0.2em 0.6em;
+}
+
 /* Font size variants via frontmatter `size` */
 .content.size-xxl { font-size: 2.5rem; }
 .content.size-xl  { font-size: 2.2rem; }

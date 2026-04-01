@@ -8,6 +8,11 @@ Step-by-step guide for converting `.pptx` presentations to Slidev `slides.md`.
 sudo apt install libreoffice-impress poppler-utils
 ```
 
+## Execution order
+
+Steps 1 and 6 (PDF conversion + speaker notes extraction) can run **in parallel** since
+they use different source data. Step 2 depends on Step 1. Steps 3-5 are sequential.
+
 ## Step 1: PPTX to PDF
 
 ```bash
@@ -39,6 +44,45 @@ Flags:
 - `MyPresentation-{page}_{seq}.jpg` -- extracted sub-images (logos, memes, diagrams, photos)
 
 ## Step 3: Parse the HTML
+
+**Important**: The HTML file is typically too large to read directly (~30K+ tokens for
+a 60-slide deck). Always use the Python parser script below rather than reading the
+HTML manually.
+
+Use this script to extract all slide text with positions and CSS classes:
+
+```python
+import re
+from html import unescape
+
+html_path = "presentation/migration/MyPresentation.html"
+with open(html_path) as f:
+    html = f.read()
+
+pages = re.split(r'<!-- Page (\d+) -->', html)
+
+for i in range(1, len(pages), 2):
+    page_num = pages[i]
+    content = pages[i+1]
+    texts = re.findall(
+        r'<p style="position:absolute;top:(\d+)px;left:(\d+)px;[^"]*"[^>]*class="([^"]*)"[^>]*>(.*?)</p>',
+        content
+    )
+    print(f"\n{'='*60}")
+    print(f"SLIDE {page_num}")
+    print(f"{'='*60}")
+    if not texts:
+        print("[NO TEXT - IMAGE ONLY SLIDE]")
+        continue
+    for top, left, css_class, text_html in sorted(texts, key=lambda x: (int(x[0]), int(x[1]))):
+        text = re.sub(r'<[^>]+>', '', text_html)
+        text = unescape(text).replace('\xa0', ' ').strip()
+        if text:
+            print(f"  [{top:>4},{left:>4}] ({css_class:>6}) {text}")
+```
+
+Then only visually inspect (`Read` the `.png`) slides that are `[NO TEXT - IMAGE ONLY SLIDE]`
+or where the text content is ambiguous.
 
 The HTML structure per slide:
 
@@ -74,6 +118,25 @@ The HTML structure per slide:
 The sub-images (`MyPresentation-{page}_{seq}.jpg`) are the useful ones:
 - Memes, diagrams, book covers, photos
 - Avoid the small repeated ones (~14KB, ~1.8KB) -- these are typically theme logos/icons
+
+### Image classification strategy
+
+List all sub-images sorted by file size. Images with **identical file sizes** are almost
+certainly the same theme element repeated across slides (logos, decorative corners).
+Filter these out first:
+
+```bash
+ls -la presentation/migration/*.jpg | awk '{print $5}' | sort | uniq -c | sort -rn | head -20
+```
+
+Sizes appearing 5+ times are theme elements. Only visually inspect images that are:
+- Larger than ~30KB
+- Have a unique or rare file size (appears 1-3 times)
+
+### Cover art
+
+One extracted image will be the venue/building photo used in the theme's `cover` and
+`break` layouts. This is typically from slide 1 or 2. Copy it as `cover-art.jpg`.
 
 Copy meaningful images to `presentation/images/` with descriptive names:
 

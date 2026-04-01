@@ -85,6 +85,23 @@ claude
 
 ![](./images/teamwork.jpg)
 
+---
+layout: image-content
+size: md
+---
+
+# Image-Content Layout
+
+::image::
+
+![](./images/teamwork.jpg)
+
+::content::
+
+- Image on left, content on right
+- Title centered above both
+- Columns vertically centered
+- Supports `size` frontmatter
 
 ---
 layout: default

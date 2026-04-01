@@ -121,6 +121,29 @@ layout: content-image
 ![](./images/photo.jpg)
 ```
 
+## `image-content`
+
+Image on the left, content on the right. Title centered above both columns, columns vertically centered.
+Supports `size` frontmatter (`lg`, `md` (default), `sm`, `xs`).
+
+```markdown
+---
+layout: image-content
+size: md
+---
+
+# Title
+
+::image::
+
+![](./images/photo.jpg)
+
+::content::
+
+- Content here
+- More content
+```
+
 ## `quote`
 
 Orange background with dot decorations. For standout quotes or transition slides.

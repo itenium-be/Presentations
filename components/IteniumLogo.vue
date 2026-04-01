@@ -6,6 +6,6 @@
 import { computed } from 'vue'
 
 const src = computed(() => {
-  return new URL(`../assets/itenium-logo.png`, import.meta.url).href
+  return new URL(`../assets/logo-full-white.svg`, import.meta.url).href
 })
 </script>

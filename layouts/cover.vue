@@ -74,7 +74,7 @@ const dotsUrl = new URL('../assets/cover-dots.png', import.meta.url).href
   top: 3rem;
   left: 3rem;
   z-index: 2;
-  height: 44px !important;
+  height: 40px;
 }
 
 .cover-spacer {

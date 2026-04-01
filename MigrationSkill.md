@@ -110,15 +110,49 @@ type: Theoretical
 | PowerPoint slide | Slidev layout |
 |-----------------|---------------|
 | Title slide | `cover` |
-| Table of contents | `agenda` (items in frontmatter) |
+| Table of contents | `agenda` (items in frontmatter, use `size: sm` for 6+ items) |
 | Section divider (photo bg + title) | `section` |
 | Bullet content | `default` with `<v-clicks>` |
-| Two-column | `comparison` with `.cols`/`.col` |
-| Content + image | `content-image` with `::image::` slot |
+| Bullet content + circular corner image | `default-image` with `::image::` slot |
+| Image left + content right | `image-content` with `::image::` + `::content::` slots |
+| Two-column with pros/cons | `comparison` with `.cols`/`.col` (preserve emojis!) |
+| Content left + image right | `content-image` with `::image::` slot |
+| 1-2 bold statements, no bullets | `quote-alt` (no author needed) |
+| Title + large centered meme/image | `image-content` (no `::content::`, image auto-centers) |
 | Large quote/meme | `quote` |
 | Break slide | `break` with `<Timer>` |
 | Social links | `socials` |
 | Thank you | `end` |
+
+### Auto-detection rules
+
+These patterns from the PPTX HTML can be detected automatically:
+
+1. **Circular corner images** (`default-image`): Slides with the "orange lines top-left"
+   template have a circular decorative image. Detect by checking the background image
+   for the orange-lines pattern OR by finding 3+ extracted sub-images per slide where
+   the largest (>100KB) is the circle photo. Use `default-image` layout with `::image::`.
+   - Default position is `top-right`. If the image center-Y is >40% of slide height,
+     use `image-position: middle-right`.
+
+2. **Emojis**: The PPTX XML `<a:t>` tags preserve emoji characters (🧐, ⚠️, etc.).
+   These are lost in the PDF→HTML pipeline because pdftohtml renders them as images.
+   Extract emoji text directly from `ppt/slides/slideN.xml` instead.
+
+3. **Quote slides** (`quote-alt`): Slides with only 1-2 `<p>` tags of large font
+   (>100px) and no bullet markers (`•`) are statement/quote slides. Use `quote-alt`.
+
+4. **Comparison slides** (`comparison`): Slides with two distinct columns of content
+   (detected by two groups of `<p>` tags with very different x-offsets). Preserve
+   emoji prefixes (🧐/⚠️) as-is in the markdown.
+
+5. **Image-only slides** (`image-content` without `::content::`): Slides where the
+   only text is a title and the rest is a large image/meme. The `image-content` layout
+   auto-centers when no `::content::` slot is provided.
+
+6. **Size frontmatter**: Add `size: sm` or `size: xs` when content is dense:
+   - `agenda`: 6+ items → `size: sm`, 9+ → `size: xs`
+   - `default`/`default-image`: 6+ bullet points → `size: sm`
 
 ## Gotchas
 
@@ -130,8 +164,12 @@ type: Theoretical
 - **Font colors as semantic hints**: Colored text (green `#6a9955`, blue `#569cd6`)
   typically indicates code syntax highlighting in the original.
 - **`&#160;`**: Non-breaking spaces are used liberally -- strip them when converting.
+- **Emojis are lost in PDF export**: Extract them from the PPTX slide XML directly
+  (see auto-detection rule #2). Do not rely on the HTML output for emoji content.
 - **Speaker notes**: PowerPoint speaker notes are NOT preserved in the PDF export.
   Extract them directly from the PPTX (see Step 6).
+- **Size prefix**: The `size` frontmatter value should be `sm`, `xs`, etc. — NOT
+  `size-sm`. The layout template adds the `size-` prefix automatically.
 
 ## Step 6: Extract speaker notes from PPTX
 

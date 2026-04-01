@@ -35,10 +35,13 @@ layout: default
 
 # Slide Title
 
+<v-clicks depth="2">
+
 - First point
 - Second point
 - Third point
 
+</v-clicks>
 
 ---
 layout: break

@@ -265,11 +265,11 @@ type: Theoretical
 | Table of contents | `agenda` (items in frontmatter, pick `size` by item count — see sizing guide) |
 | Section divider (photo bg + title) | `section` |
 | Bullet content, NO image in PPTX | `default` with `<v-clicks>` |
-| Bullet content + image in PPTX | `default-image` with `::image::` slot (circled top-right) |
-| Image left + content right | `image-content` with `::image::` + `::content::` slots |
+| Bullet content + image in PPTX | `default-aside` with `::image::` slot (circled top-right) |
+| Image left + content right | `two-col-image-text` with `::image::` + `::content::` slots |
 | Two-column with pros/cons | `comparison` with `.cols`/`.col` (preserve emojis!) |
-| Content left + informational image right | `content-image` with `::image::` slot. Add `image-fit: fill` for diagrams that should fill the panel |
-| 1-2 bold statements, no bullets | `quote-alt` (no author needed). Supports `::image::` for circled corner image |
+| Content left + informational image right | `two-col-text-image` with `::image::` slot. Add `image-fit: fill` for diagrams that should fill the panel |
+| 1-2 bold statements, no bullets | `statement` (no author needed). Supports `::image::` for circled corner image |
 | Full-screen meme/image (no bullet content) | `quote-image` with `::image::` slot (green bg, image centered) |
 | Large quote/meme | `quote` |
 | Break slide | `break` with `<Timer>` |
@@ -283,17 +283,17 @@ Use this to pick the right layout for each slide:
 1. Does the slide have **only an image** (no bullets, maybe just a title)?
    → `quote-image` (centered image, green bg)
 2. Does the slide have **1-2 short statements** (no bullets)?
-   → `quote-alt` (+ `::image::` if PPTX had an image)
+   → `statement` (+ `::image::` if PPTX had an image)
 3. Does the slide have **bullet content + a decorative image** in the PPTX?
-   → `default-image` (circled image top-right, bullet content left)
+   → `default-aside` (circled image top-right, bullet content left)
 4. Does the slide have **bullet content + an informational diagram/chart**?
-   → `content-image` (text left, image right) or `image-content` (image left, text right)
+   → `two-col-text-image` (text left, image right) or `two-col-image-text` (image left, text right)
 5. Does the slide have **bullet content, no image** in the PPTX?
    → `default`
 
 **Critical rule**: If the PPTX slide had an image, the Slidev slide MUST have that
 image. Use the image-to-slide mapping table to verify. Never use `default` layout
-for a slide that had an image in the PPTX — use `default-image` instead.
+for a slide that had an image in the PPTX — use `default-aside` instead.
 
 **Powerpoint Source slide**: The last content slide should have a QR code linking to
 the repo. Get the URL from `git remote -v` and update accordingly:
@@ -317,10 +317,10 @@ layout: default
 
 These patterns from the PPTX HTML can be detected automatically:
 
-1. **Circular corner images** (`default-image`): Slides with the "orange lines top-left"
+1. **Circular corner images** (`default-aside`): Slides with the "orange lines top-left"
    template have a circular decorative image. Detect by checking the background image
    for the orange-lines pattern OR by finding 3+ extracted sub-images per slide where
-   the largest (>100KB) is the circle photo. Use `default-image` layout with `::image::`.
+   the largest (>100KB) is the circle photo. Use `default-aside` layout with `::image::`.
    - Default position is `top-right`. If the image center-Y is >40% of slide height,
      use `image-position: middle-right`.
 
@@ -328,15 +328,15 @@ These patterns from the PPTX HTML can be detected automatically:
    These are lost in the PDF→HTML pipeline because pdftohtml renders them as images.
    Extract emoji text directly from `ppt/slides/slideN.xml` instead.
 
-3. **Quote slides** (`quote-alt`): Slides with only 1-2 `<p>` tags of large font
-   (>100px) and no bullet markers (`•`) are statement/quote slides. Use `quote-alt`.
+3. **Quote slides** (`statement`): Slides with only 1-2 `<p>` tags of large font
+   (>100px) and no bullet markers (`•`) are statement/quote slides. Use `statement`.
 
 4. **Comparison slides** (`comparison`): Slides with two distinct columns of content
    (detected by two groups of `<p>` tags with very different x-offsets). Preserve
    emoji prefixes (🧐/⚠️) as-is in the markdown.
 
-5. **Image-only slides** (`image-content` without `::content::`): Slides where the
-   only text is a title and the rest is a large image/meme. The `image-content` layout
+5. **Image-only slides** (`two-col-image-text` without `::content::`): Slides where the
+   only text is a title and the rest is a large image/meme. The `two-col-image-text` layout
    auto-centers when no `::content::` slot is provided. Prefer `image` frontmatter
    over `::image::` slot for large images — the frontmatter renders a direct `<img>`
    tag that the layout CSS can properly constrain. Slot-based images get wrapped in
@@ -344,7 +344,7 @@ These patterns from the PPTX HTML can be detected automatically:
 
 6. **Size frontmatter**: Add `size: sm` or `size: xs` when content is dense:
    - `agenda`: ≤5 items → `lg`, 6 items → `md` (default), 7-8 items → `sm`, 9+ items → `xs`
-   - `default`/`default-image`: 6+ bullet points → `size: sm`
+   - `default`/`default-aside`: 6+ bullet points → `size: sm`
 
 ## Slide Index
 
@@ -395,6 +395,15 @@ for idx, slide in enumerate(slides, 1):
 
 **Always run this at the start of a finetuning session** so that slide numbers
 from the user match exactly what Slidev displays in the browser.
+
+## Layout renames
+
+| Old name | New name |
+|----------|----------|
+| `default-image` | `default-aside` |
+| `image-content` | `two-col-image-text` |
+| `content-image` | `two-col-text-image` |
+| `quote-alt` | `statement` |
 
 ## Gotchas
 

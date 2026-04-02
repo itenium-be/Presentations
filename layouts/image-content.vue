@@ -106,6 +106,9 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .ic-right {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ic-right :deep(ul) {

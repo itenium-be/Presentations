@@ -173,7 +173,7 @@ type: Theoretical
 | PowerPoint slide | Slidev layout |
 |-----------------|---------------|
 | Title slide | `cover` |
-| Table of contents | `agenda` (items in frontmatter, use `size: sm` for 6+ items) |
+| Table of contents | `agenda` (items in frontmatter, pick `size` by item count — see sizing guide) |
 | Section divider (photo bg + title) | `section` |
 | Bullet content | `default` with `<v-clicks>` |
 | Bullet content + circular corner image | `default-image` with `::image::` slot |
@@ -217,7 +217,7 @@ These patterns from the PPTX HTML can be detected automatically:
    `<p>` tags by Slidev's markdown renderer which breaks `max-height` containment.
 
 6. **Size frontmatter**: Add `size: sm` or `size: xs` when content is dense:
-   - `agenda`: 6+ items → `size: sm`, 9+ → `size: xs`
+   - `agenda`: ≤5 items → `lg`, 6 items → `md` (default), 7-8 items → `sm`, 9+ items → `xs`
    - `default`/`default-image`: 6+ bullet points → `size: sm`
 
 ## Gotchas

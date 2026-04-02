@@ -4,7 +4,7 @@
     <div class="ci-left">
       <slot name="default" />
     </div>
-    <div class="ci-right" v-if="$slots.image">
+    <div class="ci-right" :class="'fit-' + ($frontmatter?.['image-fit'] ?? 'contain')" v-if="$slots.image">
       <slot name="image" />
     </div>
     <SlideFooter />
@@ -58,15 +58,53 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   margin-top: -0.3rem;
   margin-bottom: 0.75rem;
 }
+.ci-left {
+  font-size: 1.8rem;
+}
+.ci-left :deep(ul) {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+.ci-left :deep(ul ul) {
+  list-style-type: circle;
+  font-size: 0.85em;
+}
+.ci-left :deep(li) {
+  margin-bottom: 0.25rem;
+}
 
 .ci-right {
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 1.5rem;
 }
-.ci-right :deep(> img) {
+.ci-right :deep(img) {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.ci-right.fit-cover {
+  padding: 0;
+}
+.ci-right.fit-cover :deep(img) {
   width: 100%;
   height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: cover;
+}
+.ci-right.fit-fill {
+  padding: 0;
+}
+.ci-right.fit-fill :deep(img) {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
 }
 
 </style>

@@ -54,15 +54,14 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 .ic-title :deep(h1) {
   font-size: 2.4rem;
   color: var(--color-text-dark);
-  margin-bottom: 0;
+  margin: 0;
 }
 .ic-title :deep(h2) {
   font-size: 1.5rem;
   color: var(--color-text-dark);
   font-weight: normal;
   font-style: italic;
-  margin-top: 0.1rem;
-  margin-bottom: 1rem;
+  margin: 0.1rem 0 1rem;
 }
 
 .ic-columns {

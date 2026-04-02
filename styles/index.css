@@ -48,6 +48,13 @@
 .slidev-layout h2 {
   font-family: 'IBM Plex Mono', monospace;
 }
+.slidev-layout h1 + h2 {
+  margin-top: -0.5rem !important;
+}
+.slidev-layout h1,
+.slidev-layout h2 {
+  padding: 0;
+}
 
 /* Dark layouts (cover, section) */
 .slidev-layout.dark {

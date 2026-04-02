@@ -147,6 +147,95 @@ cp presentation/migration/MyPresentation-3_7.jpg presentation/images/meme-descri
 The full-page background renders (`MyPresentation00N.png`) are useful as reference
 but should NOT be used in slides.md -- they contain the old PowerPoint theme chrome.
 
+### Image-to-slide mapping
+
+**Every PPTX slide with a non-theme image must have a corresponding image in slides.md.**
+After extracting images, build a mapping table:
+
+```python
+import os, re
+
+migration_dir = "presentation/migration"
+html_path = f"{migration_dir}/MyPresentation.html"
+
+with open(html_path) as f:
+    html = f.read()
+
+# Get page boundaries
+pages = [(m.group(1), m.start()) for m in re.finditer(r'<!-- Page (\d+) -->', html)]
+
+# Theme element sizes (bytes) -- these repeat across slides, skip them
+theme_sizes = set()
+size_counts = {}
+for f in os.listdir(migration_dir):
+    if f.endswith('.jpg'):
+        sz = os.path.getsize(f"{migration_dir}/{f}")
+        size_counts[sz] = size_counts.get(sz, 0) + 1
+for sz, count in size_counts.items():
+    if count >= 5:
+        theme_sizes.add(sz)
+
+# Map images to pages
+for f in sorted(os.listdir(migration_dir)):
+    if not f.endswith('.jpg'):
+        continue
+    m = re.match(r'.*-(\d+)_(\d+)\.jpg', f)
+    if not m:
+        continue
+    page = int(m.group(1))
+    sz = os.path.getsize(f"{migration_dir}/{f}")
+    if sz in theme_sizes:
+        continue
+    print(f"Page {page:3d}: {f} ({sz:,} bytes)")
+```
+
+Use this table to verify that every image is copied and referenced in slides.md.
+After writing slides.md, re-run the slide index script (see below) and cross-check that
+each slide with a PPTX image has the correct `::image::` or `image` frontmatter.
+
+## Step 4b: Extract hidden slides from PPTX
+
+Hidden slides are NOT exported to PDF. Extract them directly from the PPTX XML:
+
+```python
+import xml.etree.ElementTree as ET
+import os
+
+ns = {'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
+      'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+
+# First extract the PPTX
+os.system('mkdir -p /tmp/pptx-slides && unzip -o MyPresentation.pptx "ppt/slides/*.xml" -d /tmp/pptx-slides -x "*/rels/*"')
+
+slide_files = sorted(
+    [f for f in os.listdir('/tmp/pptx-slides/ppt/slides') if f.startswith('slide') and f.endswith('.xml')],
+    key=lambda f: int(f.replace('slide','').replace('.xml',''))
+)
+
+for sf in slide_files:
+    tree = ET.parse(f'/tmp/pptx-slides/ppt/slides/{sf}')
+    root = tree.getroot()
+    if root.get('show') == '0':
+        texts = [t.text.strip() for t in tree.findall('.//a:t', ns) if t.text and t.text.strip()]
+        title = ' '.join(texts[:8]) if texts else '(no text)'
+        num = sf.replace('slide','').replace('.xml','')
+        print(f'Hidden slide {num}: {title}')
+```
+
+Hidden slides should be added to slides.md with `disabled: true` in frontmatter.
+Place them at their original position in the slide order:
+
+```markdown
+---
+layout: default
+disabled: true
+---
+
+# Hidden Slide Title
+
+Content here
+```
+
 ## Step 5: Write slides.md
 
 ### Frontmatter
@@ -175,17 +264,54 @@ type: Theoretical
 | Title slide | `cover` |
 | Table of contents | `agenda` (items in frontmatter, pick `size` by item count — see sizing guide) |
 | Section divider (photo bg + title) | `section` |
-| Bullet content | `default` with `<v-clicks>` |
-| Bullet content + circular corner image | `default-image` with `::image::` slot |
-| Image left + content right | `image-content` with `image` frontmatter + `::content::` slot |
+| Bullet content, NO image in PPTX | `default` with `<v-clicks>` |
+| Bullet content + image in PPTX | `default-image` with `::image::` slot (circled top-right) |
+| Image left + content right | `image-content` with `::image::` + `::content::` slots |
 | Two-column with pros/cons | `comparison` with `.cols`/`.col` (preserve emojis!) |
-| Content left + image right | `content-image` with `::image::` slot |
-| 1-2 bold statements, no bullets | `quote-alt` (no author needed) |
-| Title + large centered meme/image | `image-content` with `image` frontmatter (no `::content::`, auto-centers) |
+| Content left + informational image right | `content-image` with `::image::` slot. Add `image-fit: fill` for diagrams that should fill the panel |
+| 1-2 bold statements, no bullets | `quote-alt` (no author needed). Supports `::image::` for circled corner image |
+| Full-screen meme/image (no bullet content) | `quote-image` with `::image::` slot (green bg, image centered) |
 | Large quote/meme | `quote` |
 | Break slide | `break` with `<Timer>` |
 | Social links | `socials` |
 | Thank you | `end` |
+
+### Layout decision tree
+
+Use this to pick the right layout for each slide:
+
+1. Does the slide have **only an image** (no bullets, maybe just a title)?
+   → `quote-image` (centered image, green bg)
+2. Does the slide have **1-2 short statements** (no bullets)?
+   → `quote-alt` (+ `::image::` if PPTX had an image)
+3. Does the slide have **bullet content + a decorative image** in the PPTX?
+   → `default-image` (circled image top-right, bullet content left)
+4. Does the slide have **bullet content + an informational diagram/chart**?
+   → `content-image` (text left, image right) or `image-content` (image left, text right)
+5. Does the slide have **bullet content, no image** in the PPTX?
+   → `default`
+
+**Critical rule**: If the PPTX slide had an image, the Slidev slide MUST have that
+image. Use the image-to-slide mapping table to verify. Never use `default` layout
+for a slide that had an image in the PPTX — use `default-image` instead.
+
+**Powerpoint Source slide**: The last content slide should have a QR code linking to
+the repo. Get the URL from `git remote -v` and update accordingly:
+
+```markdown
+---
+layout: default
+---
+
+# Powerpoint Source
+
+<div class="flex flex-col items-center justify-center h-full -mt-16">
+  <div class="w-64 h-64">
+    <QRCode url="https://github.com/itenium-be/REPO_NAME" color="#343434" />
+  </div>
+  <a href="https://github.com/itenium-be/REPO_NAME" class="mt-4 text-lg">github.com/itenium-be/REPO_NAME</a>
+</div>
+```
 
 ### Auto-detection rules
 
@@ -219,6 +345,56 @@ These patterns from the PPTX HTML can be detected automatically:
 6. **Size frontmatter**: Add `size: sm` or `size: xs` when content is dense:
    - `agenda`: ≤5 items → `lg`, 6 items → `md` (default), 7-8 items → `sm`, 9+ items → `xs`
    - `default`/`default-image`: 6+ bullet points → `size: sm`
+
+## Slide Index
+
+Generate a slide index to map Slidev slide numbers to titles. Use this when the user
+references slides by number. Run from the presentation directory:
+
+```python
+import re
+
+with open('slides.md') as f:
+    content = f.read()
+
+# Split on slide boundaries: --- possibly followed by frontmatter ---
+parts = re.split(r'\n---\n', content)
+# First part is global frontmatter, skip it
+slides = []
+i = 1
+while i < len(parts):
+    part = parts[i].strip()
+    lines = part.split('\n')
+    has_layout = any(re.match(r'^[a-z].*:', l) for l in lines[:10])
+    if has_layout and i + 1 < len(parts):
+        slides.append(part + '\n---\n' + parts[i+1])
+        i += 2
+    else:
+        slides.append(part)
+        i += 1
+
+for idx, slide in enumerate(slides, 1):
+    lines = slide.strip().split('\n')
+    title = ''
+    subtitle = ''
+    layout = ''
+    for line in lines:
+        if line.startswith('layout:'):
+            layout = line.split(':',1)[1].strip()
+        if line.startswith('# ') and not title:
+            title = line.strip()[2:]
+        elif line.startswith('## ') and not subtitle:
+            subtitle = line.strip()[3:]
+    display = title if title else '(untitled)'
+    if subtitle:
+        display += ' — ' + subtitle
+    if layout:
+        display = f'[{layout}] {display}'
+    print(f'{idx:3d}. {display}')
+```
+
+**Always run this at the start of a finetuning session** so that slide numbers
+from the user match exactly what Slidev displays in the browser.
 
 ## Gotchas
 

@@ -52,16 +52,16 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 }
 .content :deep(h1) {
   font-size: 2.4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   color: var(--color-text-dark);
 }
 .content :deep(h2) {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--color-text-dark);
   font-weight: normal;
   font-style: italic;
-  margin-top: -1rem;
-  margin-bottom: 1.5rem;
+  margin-top: 0.1rem;
+  margin-bottom: 1rem;
 }
 .content :deep(ul) {
   list-style-type: disc;

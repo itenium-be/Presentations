@@ -43,9 +43,11 @@
 }
 
 .slidev-layout h1,
-.slidev-layout h2,
 .slidev-layout h3 {
   font-family: var(--font-heading);
+}
+.slidev-layout h2 {
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 /* Dark layouts (cover, section) */

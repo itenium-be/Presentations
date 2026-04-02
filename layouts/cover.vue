@@ -94,9 +94,10 @@ const dotsUrl = new URL('../assets/cover-dots.png', import.meta.url).href
 }
 
 .cover-body :deep(h2) {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
   font-weight: normal;
+  font-style: italic;
 }
 </style>

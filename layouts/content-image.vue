@@ -46,17 +46,17 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 }
 
 .ci-left :deep(h1) {
-  font-size: 1.8rem;
+  font-size: 2.4rem;
   color: var(--color-text-dark);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
 }
 .ci-left :deep(h2) {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--color-text-dark);
   font-weight: normal;
   font-style: italic;
-  margin-top: -0.3rem;
-  margin-bottom: 0.75rem;
+  margin-top: 0.1rem;
+  margin-bottom: 1rem;
 }
 .ci-left {
   font-size: 1.8rem;

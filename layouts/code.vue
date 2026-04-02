@@ -26,9 +26,18 @@
 }
 
 .content :deep(h1) {
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   margin: 0 0 0.25rem 0;
   color: var(--color-text-dark);
+  flex-shrink: 0;
+}
+.content :deep(h2) {
+  font-size: 1.5rem;
+  color: var(--color-text-dark);
+  font-weight: normal;
+  font-style: italic;
+  margin-top: 0.1rem;
+  margin-bottom: 0.25rem;
   flex-shrink: 0;
 }
 

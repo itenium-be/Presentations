@@ -268,7 +268,7 @@ type: Theoretical
 | Bullet content + image in PPTX | `default-aside` with `::image::` slot (circled top-right) |
 | Image left + content right | `two-col-image-text` with `::image::` + `::content::` slots |
 | Two-column with pros/cons | `comparison` with `.cols`/`.col` (preserve emojis!) |
-| Content left + informational image right | `two-col-text-image` with `::image::` slot. Add `image-fit: fill` for diagrams that should fill the panel |
+| Content left + informational image right | `two-col-image-text` (retired `two-col-text-image`; always use image-left layout now) |
 | 1-2 bold statements, no bullets | `statement` (no author needed). Supports `::image::` for circled corner image |
 | Full-screen meme/image (no bullet content) | `quote-image` with `::image::` slot (green bg, image centered) |
 | Large quote/meme | `quote` |
@@ -287,7 +287,7 @@ Use this to pick the right layout for each slide:
 3. Does the slide have **bullet content + a decorative image** in the PPTX?
    → `default-aside` (circled image top-right, bullet content left)
 4. Does the slide have **bullet content + an informational diagram/chart**?
-   → `two-col-text-image` (text left, image right) or `two-col-image-text` (image left, text right)
+   → `two-col-image-text` (image left, text right)
 5. Does the slide have **bullet content, no image** in the PPTX?
    → `default`
 
@@ -402,7 +402,7 @@ from the user match exactly what Slidev displays in the browser.
 |----------|----------|
 | `default-image` | `default-aside` |
 | `image-content` | `two-col-image-text` |
-| `content-image` | `two-col-text-image` |
+| `content-image` | `two-col-text-image` → **deleted** (use `two-col-image-text` instead) |
 | `quote-alt` | `statement` |
 
 ## Gotchas

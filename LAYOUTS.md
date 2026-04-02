@@ -103,24 +103,6 @@ layout: comparison
 </div>
 ```
 
-## `two-col-text-image`
-
-Content on the left, image on the right via named slot.
-
-```markdown
----
-layout: two-col-text-image
----
-
-# Title
-
-- Content here
-
-::image::
-
-![](./images/photo.jpg)
-```
-
 ## `two-col-image-text`
 
 Image on the left, content on the right. Title centered above both columns, columns vertically centered.

@@ -12,6 +12,7 @@
         </template>
       </div>
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
     <SlideFooter />
   </div>
 </template>

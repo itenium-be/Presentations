@@ -16,6 +16,7 @@
       </div>
       <div class="quote-line"></div>
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

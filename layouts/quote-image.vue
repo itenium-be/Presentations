@@ -12,6 +12,7 @@
         <slot name="author" />
       </div>
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

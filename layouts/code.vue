@@ -3,6 +3,7 @@
     <div class="content">
       <slot />
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

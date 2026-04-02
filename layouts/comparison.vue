@@ -5,6 +5,7 @@
     <div class="comparison-content">
       <slot />
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
     <SlideFooter />
   </div>
 </template>

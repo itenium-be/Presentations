@@ -5,6 +5,7 @@
     <div class="content" :class="'size-' + ($frontmatter?.size ?? 'md')">
       <slot />
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
     <SlideFooter />
   </div>
 </template>

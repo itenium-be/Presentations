@@ -14,6 +14,7 @@
       </div>
     </div>
     <IteniumLogo class="break-logo" />
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

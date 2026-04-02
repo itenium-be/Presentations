@@ -13,6 +13,7 @@
     <div class="cover-image" v-if="$slots.image">
       <slot name="image" />
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

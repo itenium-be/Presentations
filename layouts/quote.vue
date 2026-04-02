@@ -7,6 +7,7 @@
       <slot />
     </div>
     <img :src="faviconUrl" class="quote-logo" alt="" />
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

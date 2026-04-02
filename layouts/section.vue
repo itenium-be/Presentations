@@ -12,6 +12,7 @@
       </div>
       <IteniumLogo variant="full" theme="dark" class="section-logo" />
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
   </div>
 </template>
 

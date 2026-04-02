@@ -15,6 +15,7 @@
         <slot name="content" />
       </div>
     </div>
+    <TitleDecoration :frontmatter="$frontmatter" />
     <SlideFooter />
   </div>
 </template>

@@ -156,6 +156,51 @@ layout: default
 </div>
 ```
 
+## Title Decorations
+
+Add code-inspired decorations to h1/h2 via frontmatter:
+
+```yaml
+h1:
+  type: dot
+  color: primary
+  position: end
+h2:
+  type: brackets
+  color: muted
+  position: 2-3
+```
+
+| Type | Symbols | Position | Colors |
+|------|---------|----------|--------|
+| `dot` | `.` | end (default) | primary, muted |
+| `slashes` | `.//` | end (default) | primary, muted |
+| `hash` | `#` | start (default) | primary, muted |
+| `semicolon` | `;` | start (default), end | muted only |
+| `brackets` | `[ ]` | all (default), word range | primary, muted |
+| `braces` | `{ }` | all (default), word range | primary, muted |
+
+**Position values:**
+- `start` / `end` — prepend or append the symbol
+- `all` — wrap entire title (brackets/braces only)
+- `2` or `2-3` — wrap word(s) at position (brackets/braces only, 1-indexed)
+
+**Color values:** `primary` (orange) or `muted` (gray)
+
+```markdown
+---
+layout: default
+h1:
+  type: braces
+  color: primary
+  position: 2
+---
+
+# What is UnitTesting
+```
+
+Renders as: What is **{**UnitTesting**}**
+
 ## Features
 
 ### Click-to-reveal

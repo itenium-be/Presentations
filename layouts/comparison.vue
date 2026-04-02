@@ -53,6 +53,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   font-size: 2.4rem;
   color: var(--color-text-dark);
   margin-bottom: 0;
+  padding-left: 70px;
 }
 .comparison-content :deep(h2) {
   font-size: 1.5rem;
@@ -61,13 +62,15 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   font-style: italic;
   margin-top: 0.1rem;
   margin-bottom: 1rem;
+  padding-left: 70px;
 }
 
 .comparison-content :deep(.cols) {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  height: calc(100% - 4rem);
+  height: calc(100% - 7rem);
+  margin-bottom: 2rem;
 }
 
 .comparison-content :deep(.col) {

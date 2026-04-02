@@ -7,11 +7,21 @@
   display: inline !important;
   word-spacing: 0 !important;
   white-space: nowrap !important;
-  margin-left: -0.1em !important;
+  margin-left: 0 !important;
 }
 .title-deco-start {
   margin-left: 0 !important;
   margin-right: 0.15em !important;
+}
+.title-deco-open {
+  margin-left: 0 !important;
+  margin-right: 0.1em !important;
+}
+.title-deco-close {
+  margin-left: 0.1em !important;
+}
+.title-deco-end {
+  margin-left: 0.1em !important;
 }
 </style>
 
@@ -47,7 +57,7 @@ function createSpan(text, color) {
   span.style.fontStyle = 'normal'
   span.style.margin = '0'
   span.style.padding = '0'
-  span.style.letterSpacing = '-0.2em'
+  span.style.letterSpacing = '0'
   span.classList.add('title-deco')
   return span
 }
@@ -74,8 +84,14 @@ function applyDecoration(el, config) {
 
   if (isPaired) {
     if (position === 'all') {
-      el.prepend(createSpan(t.symbols[0], color))
-      el.append(createSpan(t.symbols[1], color))
+      const open = createSpan(t.symbols[0], color)
+      const close = createSpan(t.symbols[1], color)
+      if (config.type === 'brackets') {
+        open.classList.add('title-deco-open')
+        close.classList.add('title-deco-close')
+      }
+      el.prepend(open)
+      el.append(close)
     } else {
       // Word range: "2" or "2-3"
       const words = el.textContent.split(/\s+/)
@@ -92,9 +108,13 @@ function applyDecoration(el, config) {
       const after = words.slice(end).join(' ')
 
       if (before) el.append(document.createTextNode(before + ' '))
-      el.append(createSpan(t.symbols[0], color))
+      const wOpen = createSpan(t.symbols[0], color)
+      wOpen.classList.add('title-deco-open')
+      el.append(wOpen)
       el.append(document.createTextNode(target))
-      el.append(createSpan(t.symbols[1], color))
+      const wClose = createSpan(t.symbols[1], color)
+      wClose.classList.add('title-deco-close')
+      el.append(wClose)
       if (after) el.append(document.createTextNode(' ' + after))
     }
   } else {
@@ -103,7 +123,9 @@ function applyDecoration(el, config) {
       span.classList.add('title-deco-start')
       el.prepend(span)
     } else {
-      el.append(createSpan(t.symbols[0], color))
+      const span = createSpan(t.symbols[0], color)
+      if (config.type !== 'dot') span.classList.add('title-deco-end')
+      el.append(span)
     }
   }
 }

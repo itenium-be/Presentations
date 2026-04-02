@@ -1,5 +1,5 @@
 <template>
-  <div class="slidev-layout default-image">
+  <div class="slidev-layout default-aside">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
     <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
@@ -16,7 +16,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 </script>
 
 <style scoped>
-.default-image {
+.default-aside {
   position: relative;
   overflow: hidden;
   background: white;

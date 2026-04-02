@@ -1,5 +1,5 @@
 <template>
-  <div class="slidev-layout quote-alt">
+  <div class="slidev-layout statement">
     <img :src="dotsUrl" class="dots" aria-hidden="true" />
     <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
@@ -24,7 +24,7 @@ const dotsUrl = new URL('../assets/dots-green.png', import.meta.url).href
 </script>
 
 <style scoped>
-.quote-alt {
+.statement {
   position: relative;
   overflow: hidden;
   height: 100%;

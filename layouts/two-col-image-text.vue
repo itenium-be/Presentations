@@ -1,5 +1,5 @@
 <template>
-  <div class="slidev-layout image-content">
+  <div class="slidev-layout two-col-image-text">
     <img :src="dotsOrange" class="dots dots-orange" aria-hidden="true" />
     <div class="ic-title">
       <slot name="default" />
@@ -24,7 +24,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 </script>
 
 <style scoped>
-.image-content {
+.two-col-image-text {
   position: relative;
   overflow: hidden;
   height: 100%;

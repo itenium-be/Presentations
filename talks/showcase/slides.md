@@ -67,7 +67,7 @@ layout: default
 
 
 ---
-layout: content-image
+layout: two-col-text-image
 ---
 
 # BMAD
@@ -86,7 +86,7 @@ claude
 ![](./images/teamwork.jpg)
 
 ---
-layout: image-content
+layout: two-col-image-text
 size: md
 ---
 
@@ -272,7 +272,7 @@ layout: comparison
 </div>
 
 ---
-layout: quote-alt
+layout: statement
 ---
 
 The best way to predict the future is to invent it.

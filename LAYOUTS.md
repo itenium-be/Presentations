@@ -103,13 +103,13 @@ layout: comparison
 </div>
 ```
 
-## `content-image`
+## `two-col-text-image`
 
 Content on the left, image on the right via named slot.
 
 ```markdown
 ---
-layout: content-image
+layout: two-col-text-image
 ---
 
 # Title
@@ -121,14 +121,14 @@ layout: content-image
 ![](./images/photo.jpg)
 ```
 
-## `image-content`
+## `two-col-image-text`
 
 Image on the left, content on the right. Title centered above both columns, columns vertically centered.
 Supports `size` frontmatter (`lg`, `md` (default), `sm`, `xs`).
 
 ```markdown
 ---
-layout: image-content
+layout: two-col-image-text
 size: md
 ---
 

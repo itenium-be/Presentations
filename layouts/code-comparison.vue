@@ -86,6 +86,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
   gap: 1.5rem;
   flex: 1;
   min-height: 0;
+  margin-bottom: 1rem;
 }
 
 .col {

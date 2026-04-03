@@ -1,7 +1,7 @@
 <template>
   <div class="slidev-layout code-layout">
     <img :src="dotsGreen" class="dots dots-green" aria-hidden="true" />
-    <div class="content">
+    <div class="content" :style="$frontmatter?.['code-size'] ? { '--code-size': $frontmatter['code-size'] } : {}">
       <slot />
     </div>
     <TitleDecoration :frontmatter="$frontmatter" />
@@ -63,14 +63,15 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 
 .content :deep(.slidev-code-wrapper),
 .content :deep(div[class*="language-"]) {
-  flex: 1;
-  min-height: 0;
   overflow: auto;
 }
 
-.content :deep(.slidev-code) {
-  font-size: 0.58em !important;
-  line-height: 1.35;
+.content :deep(.slidev-code),
+.content :deep(.slidev-code) .line,
+.content :deep(.shiki) code,
+.content :deep(pre code) {
+  font-size: var(--code-size, 1em) !important;
+  line-height: 1.6 !important;
 }
 
 .content :deep(.shiki) {

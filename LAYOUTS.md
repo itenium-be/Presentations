@@ -138,6 +138,32 @@ layout: quote
 # Quote text here
 ```
 
+## `code`
+
+Code-focused slide. Minimal padding, code block fills available space. Green dots bottom-left.
+Supports `code-size` frontmatter to control code font size (default: `0.58em`).
+
+```markdown
+---
+layout: code
+code-size: 2.4em
+---
+
+# Title
+
+## Optional subtitle
+
+\`\`\`ts
+function isPrime(n: number): boolean {
+  if (n <= 1) return false
+  for (let i = 2; i * i <= n; i++) {
+    if (n % i === 0) return false
+  }
+  return true
+}
+\`\`\`
+```
+
 ## Utility Classes
 
 ### `full-width`

@@ -304,5 +304,31 @@ layout: break
 ![](./images/cover-art.jpg)
 
 ---
+layout: code
+code-size: 1.4em
+---
+
+# Code Layout
+
+## With custom font size
+
+```ts {1|2|3-5|6|all}
+function isPrime(n: number): boolean {
+  if (n <= 1) return false
+  for (let i = 2; i * i <= n; i++) {
+    if (n % i === 0) return false
+  }
+  return true
+}
+```
+
+<div class="mt-4 text-center text-3xl grid">
+  <div v-click.hide="1" class="text-orange-400 col-start-1 row-start-1"><strong>Signature</strong> — takes a number, returns boolean</div>
+  <div v-click="[1,2]" class="text-emerald-400 col-start-1 row-start-1"><strong>Guard clause</strong> — early return for n ≤ 1</div>
+  <div v-click="[2,3]" class="text-cyan-400 col-start-1 row-start-1"><strong>Trial division</strong> — check divisors up to √n</div>
+  <div v-click="[3,4]" class="text-pink-400 col-start-1 row-start-1"><strong>Default</strong> — no divisors found, it's prime</div>
+</div>
+
+---
 src: ./pages/after-break.md
 ---

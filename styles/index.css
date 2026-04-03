@@ -91,6 +91,11 @@
   color: var(--color-primary);
 }
 
+/* Inline code (no language) */
+.slidev-layout :not(pre) > code {
+  color: #9ca3af;
+}
+
 /* Code blocks */
 :root {
   --slidev-code-font-family: 'Fira Code', 'IBM Plex Mono', monospace;

@@ -1,11 +1,17 @@
 <template>
   <div class="slidev-layout code-layout">
+    <img :src="dotsGreen" class="dots dots-green" aria-hidden="true" />
     <div class="content">
       <slot />
     </div>
     <TitleDecoration :frontmatter="$frontmatter" />
+    <SlideFooter />
   </div>
 </template>
+
+<script setup>
+const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
+</script>
 
 <style scoped>
 .code-layout {
@@ -14,6 +20,19 @@
   background: white;
   color: var(--color-text-dark);
   height: 100%;
+}
+
+.dots {
+  position: absolute;
+  pointer-events: none;
+  height: 55%;
+  width: auto;
+  opacity: 0.6;
+}
+.dots-green {
+  bottom: -15%;
+  left: -3%;
+  transform: rotate(150deg);
 }
 
 .content {

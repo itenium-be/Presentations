@@ -56,7 +56,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 .comparison-content {
   position: relative;
   z-index: 1;
-  padding: 1.5rem 2.5rem 2rem;
+  padding: .5rem .5rem 2rem;
   height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -83,7 +83,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 .cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 0.5rem;
   flex: 1;
   min-height: 0;
   margin-bottom: 1rem;
@@ -92,7 +92,7 @@ const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
 .col {
   background: white;
   border-radius: 12px;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;

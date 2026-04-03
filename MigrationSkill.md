@@ -405,6 +405,56 @@ from the user match exactly what Slidev displays in the browser.
 | `content-image` | `two-col-text-image` → **deleted** (use `two-col-image-text` instead) |
 | `quote-alt` | `statement` |
 
+## Title Decorations
+
+Add code-inspired decorations (`h1`/`h2` frontmatter) to roughly **40%** of content slides.
+Pick a random mix of types, colors, and positions per slide. Vary them — don't repeat
+the same decoration on consecutive slides.
+
+**Which layouts get decorations:**
+
+| Layout | Decorate? | Notes |
+|--------|-----------|-------|
+| `default` | ~50% | Good candidate, especially slides with bullet content |
+| `default-aside` | ~60% | Most common decorated layout |
+| `comparison` | ~50% | Decorate h1; h2 optional |
+| `two-col-image-text` | ~40% | Only when slide has text content (not image-only) |
+| `section` | never | Section dividers stay clean |
+| `statement` | never | No h1/h2 to decorate |
+| `quote` | never | Special styling, don't decorate |
+| `quote-image` | never | Special styling, don't decorate |
+| `agenda` | never | Structured layout, don't decorate |
+| `cover` | optional | At most the h1 |
+| `end` / `socials` / `break` | never | No content titles |
+
+**h2 decorations:** Only add to ~30% of slides that already have an h1 decoration.
+Never add h2 decoration without h1 decoration on the same slide.
+
+**Available types and rules:**
+
+| Type | Position | Colors |
+|------|----------|--------|
+| `dot` | end only | primary, muted, white |
+| `slashes` | end only | primary, muted, white |
+| `brackets` | all, or word range (e.g. `2` or `2-3`) | primary, muted, white |
+| `braces` | all, or word range | primary, muted, white |
+| `hash` | start only | primary, muted, white |
+| `semicolon` | start or end | muted only |
+
+**Colors:** `primary` = `#f1b06c` (orange), `muted` = `#6ebca5` (teal), `white` = `#ffffff`
+
+**Example frontmatter:**
+```yaml
+h1:
+  type: braces
+  color: primary
+  position: 2
+h2:
+  type: dot
+  color: muted
+  position: end
+```
+
 ## Gotchas
 
 - **Line breaks in HTML**: pdftohtml splits long lines into multiple `<p>` tags.
@@ -472,3 +522,58 @@ Add the extracted notes as HTML comments at the end of each slide in `slides.md`
 
 <!-- Speaker notes go here. Only visible in presenter mode. -->
 ```
+
+## Step 7: Generate PPTX reference file
+
+After completing the migration, generate `presentation/PPTX_REFERENCE.md` — a per-slide
+snapshot of the original PPTX content. This serves as the source of truth for verifying
+the migration and debugging missing content without re-extracting the PPTX.
+
+Combine data from Steps 3 (HTML text), 4 (images), and 6 (speaker notes) into a single
+file. For each PPTX slide, extract:
+
+- **Text**: all text content from the slide XML
+- **Images**: PPTX media filenames → imported filenames (or `NOT IMPORTED` if missing)
+- **Notes**: speaker notes from `notesSlideN.xml`
+- **Slidev slide**: corresponding slide number in `slides.md`
+
+### Format
+
+```markdown
+## PPTX Slide 1 → Slidev Slide 1
+**Layout template:** Title slide
+
+**Text:**
+- UnitTesting
+- TDD
+
+**Images:**
+| PPTX media | Imported as | Type |
+|------------|-------------|------|
+| image1.jpeg | cover-art.jpg | cover photo |
+| image2.png | (template decoration) | skip |
+
+**Notes:**
+Quote from "Working Effectively with Legacy Code": ...
+```
+
+### Generation script
+
+Run from the project root (where the `.pptx` lives). Requires the PPTX and
+the completed `slides.md`. Combine the extraction scripts from Steps 3, 4, and 6:
+
+1. Extract slide text from each `ppt/slides/slideN.xml`
+2. Map images via `ppt/slides/_rels/slideN.xml.rels` — filter out template
+   decorations (SVGs, small PNGs <10KB) to focus on content images
+3. For each content image, check if a matching file exists in `presentation/images/`
+   (compare by visual inspection or file hash) and record the mapping
+4. Extract speaker notes from `ppt/notesSlides/notesSlideN.xml`
+5. Match PPTX slide numbers to Slidev slide numbers using the Slide Index script
+
+### When to use it
+
+- **After migration**: verify no images or text were lost
+- **During finetuning**: when a user says "this slide is missing something", check
+  the reference file before re-extracting the PPTX
+- **Debugging**: compare the reference entry against the current `slides.md` slide
+  to spot discrepancies

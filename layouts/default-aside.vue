@@ -110,6 +110,11 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   height: 100%;
 }
 
+/* Tables next to image: allow them to shrink */
+.content.has-image :deep(table) {
+  width: auto;
+}
+
 /* Tables */
 .content :deep(table) {
   width: 100%;

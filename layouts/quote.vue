@@ -3,6 +3,9 @@
     <img :src="dotsOrange" class="dots dots-left" aria-hidden="true" />
     <img :src="dotsOrange" class="dots dots-right" aria-hidden="true" />
     <div class="quote-line" />
+    <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
+      <slot name="image" />
+    </div>
     <div class="quote-content">
       <slot />
     </div>
@@ -76,6 +79,30 @@ const faviconUrl = new URL('../assets/favicon-white.png', import.meta.url).href
 .quote-content :deep(p) {
   color: rgba(255, 255, 255, 0.85);
   font-size: 1.2rem;
+}
+
+.circle-image {
+  position: absolute;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  border: 0.5rem solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  z-index: 2;
+}
+.circle-image.pos-top-right {
+  top: 20px;
+  right: 10px;
+}
+.circle-image.pos-middle-right {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+.circle-image :deep(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .quote-logo {

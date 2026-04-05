@@ -4,7 +4,7 @@
     <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
     </div>
-    <div class="content" :class="['size-' + ($frontmatter?.size ?? 'md'), { 'has-image': $slots.image }]">
+    <div class="content" :class="['text-size-' + ($frontmatter?.textSize ?? 'md'), { 'has-image': $slots.image }]">
       <div v-if="$slots.image" class="image-spacer" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')"></div>
       <slot />
     </div>
@@ -161,10 +161,10 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 }
 
 /* Font size variants via frontmatter `size` */
-.content.size-xxl { font-size: 2.5rem; }
-.content.size-xl  { font-size: 2.2rem; }
-.content.size-lg  { font-size: 2rem; }
-.content.size-md  { font-size: 1.8rem; }
-.content.size-sm  { font-size: 1.5rem; }
-.content.size-xs  { font-size: 1.2rem; }
+.content.text-size-xxl { font-size: 2.5rem; }
+.content.text-size-xl  { font-size: 2.2rem; }
+.content.text-size-lg  { font-size: 2rem; }
+.content.text-size-md  { font-size: 1.8rem; }
+.content.text-size-sm  { font-size: 1.5rem; }
+.content.text-size-xs  { font-size: 1.2rem; }
 </style>

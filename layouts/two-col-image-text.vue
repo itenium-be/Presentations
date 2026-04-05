@@ -11,7 +11,7 @@
       <div class="ic-left" v-else-if="$slots.image">
         <slot name="image" />
       </div>
-      <div class="ic-right" v-if="$slots.content" :class="'size-' + ($frontmatter?.size ?? 'md')">
+      <div class="ic-right" v-if="$slots.content" :class="'text-size-' + ($frontmatter?.textSize ?? 'md')">
         <slot name="content" />
       </div>
     </div>
@@ -124,11 +124,11 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 }
 
 /* Font size variants via frontmatter `size` */
-.ic-right.size-xxl { font-size: 2.5rem; }
-.ic-right.size-xl  { font-size: 2.2rem; }
-.ic-right.size-lg  { font-size: 2rem; }
-.ic-right.size-md  { font-size: 1.8rem; }
-.ic-right.size-sm  { font-size: 1.5rem; }
-.ic-right.size-xs  { font-size: 1.2rem; }
+.ic-right.text-size-xxl { font-size: 2.5rem; }
+.ic-right.text-size-xl  { font-size: 2.2rem; }
+.ic-right.text-size-lg  { font-size: 2rem; }
+.ic-right.text-size-md  { font-size: 1.8rem; }
+.ic-right.text-size-sm  { font-size: 1.5rem; }
+.ic-right.text-size-xs  { font-size: 1.2rem; }
 
 </style>

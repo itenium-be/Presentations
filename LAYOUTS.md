@@ -57,12 +57,12 @@ Optional subtitle text
 ## `agenda`
 
 Numbered agenda items with photo on the left. Items passed via frontmatter.
-Supports `size` frontmatter (`lg`, `md` (default), `sm`, `xs`) to fit more items.
+Supports `textSize` frontmatter (`lg`, `md` (default), `sm`, `xs`) to fit more items.
 
 ```markdown
 ---
 layout: agenda
-size: sm
+textSize: sm
 items:
   - First Topic
   - Second Topic
@@ -106,12 +106,12 @@ layout: comparison
 ## `two-col-image-text`
 
 Image on the left, content on the right. Title centered above both columns, columns vertically centered.
-Supports `size` frontmatter (`lg`, `md` (default), `sm`, `xs`).
+Supports `textSize` frontmatter (`lg`, `md` (default), `sm`, `xs`).
 
 ```markdown
 ---
 layout: two-col-image-text
-size: md
+textSize: md
 ---
 
 # Title
@@ -146,7 +146,7 @@ Supports `code-size` frontmatter to control code font size (default: `0.58em`).
 ```markdown
 ---
 layout: code
-code-size: 2.4em
+code-textSize: 2.4em
 ---
 
 # Title
@@ -163,6 +163,33 @@ function isPrime(n: number): boolean {
 }
 \`\`\`
 ```
+
+## Components
+
+### `VClickTable`
+
+Table with v-click on rows. Supports HTML in cells via `v-html`.
+
+```vue
+<VClickTable
+  :headers="['Defense', 'Approach', 'Solves it?']"
+  :rows="[
+    ['<b>Constitutional AI</b>', 'Self-critique against principles', 'No'],
+    ['<b>Instruction Hierarchy</b>', 'Privilege tiers', 'No'],
+    ['<b>Prompt Shields</b>', 'Pattern scanning', 'No'],
+  ]"
+  :firstVisible="1"
+  size="sm"
+/>
+```
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `headers` | `string[]` | required | Column headers |
+| `rows` | `string[][]` | required | Row data (supports HTML) |
+| `firstVisible` | `number` | `1` | Rows visible immediately |
+| `textSize` | `lg` \| `md` \| `sm` | `md` | `sm` applies dense styling |
+| `separatorBefore` | `number[]` | `[]` | Row indices (0-based) with orange border-top |
 
 ## Utility Classes
 

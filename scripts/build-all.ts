@@ -63,12 +63,14 @@ for (const talk of published) {
     }
 
     // Copy theme into presentation dir (symlinks break Vite's fs.allow)
+    // Cannot cpSync root → themeDir directly because .talks-cache is inside root
     const themeDir = join(presDir, 'theme')
     if (existsSync(themeDir)) rmSync(themeDir, { recursive: true, force: true })
-    cpSync(root, themeDir, {
-      recursive: true,
-      filter: (src) => !src.includes('node_modules') && !src.includes('.talks-cache') && !src.includes('.git'),
-    })
+    mkdirSync(themeDir, { recursive: true })
+    const themeDirs = ['assets', 'components', 'layouts', 'setup', 'styles']
+    const themeFiles = ['package.json']
+    for (const d of themeDirs) cpSync(join(root, d), join(themeDir, d), { recursive: true })
+    for (const f of themeFiles) cpSync(join(root, f), join(themeDir, f))
 
     // Clean previous build output
     const distDir2 = join(presDir, 'dist')

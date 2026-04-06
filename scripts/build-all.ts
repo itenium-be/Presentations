@@ -4,10 +4,10 @@
  * 1. Clone published talk repos (cached in .talks-cache/)
  * 2. Build each talk's slidev presentation
  * 3. Build the Astro index site
- * 4. Copy slidev outputs into dist-site/{slug}/
+ * 4. Copy slidev outputs into dist/presentations/{slug}/
  */
 
-import { readFileSync, existsSync, mkdirSync, rmSync, symlinkSync, cpSync } from 'fs'
+import { readFileSync, existsSync, lstatSync, readlinkSync, mkdirSync, rmSync, symlinkSync, cpSync } from 'fs'
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
@@ -23,7 +23,7 @@ interface Talk {
 
 const root = resolve(import.meta.dir, '..')
 const cacheDir = join(root, '.talks-cache')
-const distDir = join(root, 'dist-site')
+const distDir = join(root, 'dist/presentations')
 
 const talks = yaml.load(readFileSync(join(root, 'talks.yaml'), 'utf-8')) as Talk[]
 const published = talks.filter(t => t.published)
@@ -61,10 +61,17 @@ for (const talk of published) {
       continue
     }
 
-    // Replace theme submodule with symlink to this repo
+    // Point theme at this repo via symlink
     const themeDir = join(presDir, 'theme')
-    if (existsSync(themeDir)) rmSync(themeDir, { recursive: true })
-    symlinkSync(root, themeDir)
+    let needsSymlink = true
+    try {
+      const target = readlinkSync(themeDir)
+      if (target === root) needsSymlink = false
+    } catch {}
+    if (needsSymlink) {
+      try { rmSync(themeDir, { recursive: true, force: true }) } catch {}
+      try { symlinkSync(root, themeDir) } catch {}
+    }
 
     // Clean previous build output
     const distDir2 = join(presDir, 'dist')
@@ -82,27 +89,35 @@ for (const talk of published) {
 // 2. Build Astro index site
 console.log('\n=== Building Astro site ===')
 run('bun install', join(root, 'site'))
-run('bun run build', join(root, 'site'))
+try {
+  run('bun run build', join(root, 'site'))
+} catch {
+  // Astro build may exit non-zero due to .astro/ cleanup on WSL
+  if (!existsSync(join(distDir, 'index.html'))) throw new Error('Astro build failed — no index.html produced')
+  console.warn('  WARN: Astro process exited non-zero but index.html exists, continuing...')
+}
 
-// 3. Copy slidev builds into dist-site
+// 3. Copy slidev builds into dist/presentations
+const missing: string[] = []
 for (const talk of published) {
   const slug = talk.repo.split('/').pop()!
   const slidevDist = join(cacheDir, slug, 'presentation', 'dist')
 
   if (!existsSync(slidevDist)) {
-    console.warn(`  WARN: No dist for ${slug} — skipping copy`)
+    missing.push(slug)
+    console.error(`  MISSING: No dist for ${slug}`)
     continue
   }
 
   const targetDir = join(distDir, slug)
   if (existsSync(targetDir)) rmSync(targetDir, { recursive: true })
   cpSync(slidevDist, targetDir, { recursive: true })
-  console.log(`Copied ${slug} → dist-site/${slug}/`)
+  console.log(`Copied ${slug} → dist/presentations/${slug}/`)
 }
 
-if (errors.length) {
-  console.error(`\nFailed talks: ${errors.join(', ')}`)
+if (missing.length) {
+  console.error(`\nFailed: no build output for ${missing.join(', ')}`)
   process.exit(1)
 }
 
-console.log('\nDone! Full site is in dist-site/')
+console.log('\nDone! Full site is in dist/')

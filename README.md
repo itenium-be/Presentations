@@ -20,6 +20,30 @@ bunx slidev talks/starter/slides.md
 
 Presenter mode: `http://localhost:3030/presenter`
 
+## Website
+
+Build the full site (Astro index + all published slidev presentations):
+
+```bash
+bun run build-all
+```
+
+This clones published talk repos into `.talks-cache/`, builds each presentation, builds the Astro index, and outputs everything to `dist/`.
+
+To serve locally:
+
+```bash
+bunx serve dist
+```
+
+To work on just the Astro index page:
+
+```bash
+cd site
+bun install
+bun run dev
+```
+
 ## Layouts & Features
 
 See [LAYOUTS.md](LAYOUTS.md) for all available layouts, features, and usage examples.

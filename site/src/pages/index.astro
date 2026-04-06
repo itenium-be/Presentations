@@ -6,18 +6,21 @@ import TalkCard from '../components/TalkCard.astro'
 
 interface Talk {
   title: string
+  published: boolean
   description: string
   repo: string
-  slides_url?: string
   date: string
-  tags: string[]
+  lastUpdate?: string
+  category: string
 }
 
 const talksPath = resolve(process.cwd(), '../talks.yaml')
-const talks = yaml.load(readFileSync(talksPath, 'utf-8')) as Talk[]
-const sorted = talks.sort((a, b) => b.date.localeCompare(a.date))
+const allTalks = yaml.load(readFileSync(talksPath, 'utf-8')) as Talk[]
+const sorted = allTalks
+  .filter(t => t.published)
+  .sort((a, b) => String(b.date).localeCompare(String(a.date)))
 
-const allTags = [...new Set(talks.flatMap(t => t.tags))].sort()
+const allCategories = [...new Set(sorted.map(t => t.category))].sort()
 ---
 
 <!doctype html>
@@ -141,16 +144,16 @@ const allTags = [...new Set(talks.flatMap(t => t.tags))].sort()
 
     <main>
       <div class="filter-bar">
-        <span class="filter-label">Filter by tag:</span>
+        <span class="filter-label">Filter:</span>
         <button class="filter-btn active" data-tag="all">All ({sorted.length})</button>
-        {allTags.map(tag => (
-          <button class="filter-btn" data-tag={tag}>{tag}</button>
+        {allCategories.map(cat => (
+          <button class="filter-btn" data-tag={cat}>{cat}</button>
         ))}
       </div>
 
       <div class="talks-grid" id="talks-grid">
         {sorted.map(talk => (
-          <div class="talk-item" data-tags={talk.tags.join(',')}>
+          <div class="talk-item" data-tags={talk.category}>
             <TalkCard talk={talk} />
           </div>
         ))}

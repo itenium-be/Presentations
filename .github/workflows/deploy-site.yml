@@ -1,11 +1,9 @@
-name: Deploy Presentations Index
+name: Deploy Presentations Site
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'site/**'
-      - 'talks.yaml'
+    branches: [master]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -24,13 +22,11 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: bun install
-        working-directory: site
 
-      - name: Build site
-        run: bun run build
-        working-directory: site
+      - name: Build all (site + slides)
+        run: bun run build-all
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -14,10 +14,14 @@
   "scripts": {
     "dev": "slidev talks/showcase/slides.md",
     "build": "slidev build talks/showcase/slides.md",
-    "scaffold": "bun run scripts/scaffold.ts"
+    "scaffold": "bun run scripts/scaffold.ts",
+    "build-all": "bun run scripts/build-all.ts"
   },
   "peerDependencies": {
     "@slidev/types": ">=0.1.0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@slidev/cli": "^51.0.0",

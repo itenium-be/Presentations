@@ -2,46 +2,50 @@
 interface Props {
   talk: {
     title: string
+    published: boolean
     description: string
     repo: string
-    slides_url?: string
     date: string
-    tags: string[]
+    lastUpdate?: string
+    category: string
   }
 }
 
 const { talk } = Astro.props
+const slug = talk.repo.split('/').pop()
+const slidesUrl = `/presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
-const dateStr = new Date(talk.date).toLocaleDateString('en-BE', {
+const dateStr = new Date(String(talk.date)).toLocaleDateString('en-BE', {
   year: 'numeric',
   month: 'short',
 })
 ---
 
-<article class="talk-card">
-  <div class="card-body">
-    <h2 class="card-title">{talk.title}</h2>
-    <p class="card-desc">{talk.description}</p>
-    <div class="card-tags">
-      {talk.tags.map(tag => <span class="tag">{tag}</span>)}
+<a href={slidesUrl} class="talk-card-link">
+  <article class="talk-card">
+    <div class="card-body">
+      <h2 class="card-title">{talk.title}</h2>
+      <p class="card-desc">{talk.description}</p>
+      <span class="tag">{talk.category}</span>
     </div>
-  </div>
-  <div class="card-footer">
-    <span class="card-date">{dateStr}</span>
-    <div class="card-links">
-      {talk.slides_url && (
-        <a href={talk.slides_url} class="btn btn-primary" target="_blank">
-          View Slides ↗
+    <div class="card-footer">
+      <span class="card-date">{dateStr}</span>
+      <div class="card-links">
+        <span class="btn btn-primary">View Slides</span>
+        <a href={repoUrl} class="btn btn-secondary" target="_blank" onclick="event.stopPropagation()">
+          GitHub ↗
         </a>
-      )}
-      <a href={repoUrl} class="btn btn-secondary" target="_blank">
-        GitHub ↗
-      </a>
+      </div>
     </div>
-  </div>
-</article>
+  </article>
+</a>
 
 <style>
+.talk-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
 .talk-card {
   border: 1px solid #e0e0e0;
   border-radius: 8px;

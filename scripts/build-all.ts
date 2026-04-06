@@ -7,7 +7,7 @@
  * 4. Copy slidev outputs into dist/presentations/{slug}/
  */
 
-import { readFileSync, existsSync, mkdirSync, rmSync, cpSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync } from 'fs'
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
@@ -111,12 +111,29 @@ for (const talk of published) {
   const targetDir = join(distDir, slug)
   if (existsSync(targetDir)) rmSync(targetDir, { recursive: true })
   cpSync(slidevDist, targetDir, { recursive: true })
-  console.log(`Copied ${slug} → dist/presentations/${slug}/`)
+
+  // Inject SPA redirect restore script into each talk's index.html
+  const indexPath = join(targetDir, 'index.html')
+  const html = readFileSync(indexPath, 'utf-8')
+  const spaScript = `<script>(function(){var r=sessionStorage.redirect;delete sessionStorage.redirect;if(r&&r!==location.href){history.replaceState(null,null,r)}})()</script>`
+  writeFileSync(indexPath, html.replace('<head>', '<head>' + spaScript))
+
+  console.log(`Copied ${slug} → dist/Presentations/${slug}/`)
 }
 
 if (missing.length) {
   console.error(`\nFailed: no build output for ${missing.join(', ')}`)
   process.exit(1)
 }
+
+// 4. Write root 404.html for SPA routing on GitHub Pages
+const notFoundHtml = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><script>
+// Preserve SPA path through GitHub Pages 404 redirect
+sessionStorage.redirect = location.href;
+var m = location.pathname.match(/^\\/Presentations\\/[^/]+\\//);
+if (m) location.replace(m[0]);
+</script></head><body></body></html>`
+writeFileSync(join(distDir, '404.html'), notFoundHtml)
 
 console.log('\nDone! Full site is in dist/')

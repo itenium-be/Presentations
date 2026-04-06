@@ -29,6 +29,7 @@ const talks = yaml.load(readFileSync(join(root, 'talks.yaml'), 'utf-8')) as Talk
 const published = talks.filter(t => t.published)
 
 if (!existsSync(cacheDir)) mkdirSync(cacheDir)
+if (existsSync(join(root, 'dist'))) rmSync(join(root, 'dist'), { recursive: true })
 
 const errors: string[] = []
 

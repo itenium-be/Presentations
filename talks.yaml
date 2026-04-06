@@ -2,30 +2,35 @@
   published: false
   description: "Practical strategies for recovering from Git disasters — rebasing, reflog, bisect, and more."
   repo: itenium-be/git-how-to-get-out-of-a-mess
-  slides_url: https://itenium-be.github.io/git-how-to-get-out-of-a-mess/
   date: 2024-01-01
-  tags: [git, devtools]
+  category: git
 
 - title: "Design Patterns"
   published: false
   description: "Introductory talk about classic design patterns with practical examples."
   repo: itenium-be/Talk-DesignPatterns
-  slides_url: https://itenium-be.github.io/Talk-DesignPatterns/
   date: 2023-01-01
-  tags: [architecture, patterns]
+  category: architecture
 
 - title: "Garbage Collection: .NET vs Java"
   published: false
   description: "Deep dive into how garbage collection works in .NET and Java runtimes."
   repo: itenium-be/Talk-GC
-  slides_url: https://itenium-be.github.io/Talk-GC/
   date: 2023-06-01
-  tags: [dotnet, java, performance]
+  category: architecture
+
+- title: "Unit Testing"
+  published: true
+  description: "Everything about UnitTesting"
+  repo: itenium-be/UnitTesting
+  date: 2022-08-25
+  lastUpdate: 2026-04-05
+  category: testing
 
 - title: "AI Security"
   published: true
-  description: "AI security threats, prompt injection, MCP vulnerabilities, and mitigations."
+  description: "The S in MCP stands for Security"
   repo: itenium-be/2026-04-01-AI-Security
   date: 2026-04-01
-  location: itenium
-  tags: [ai, security]
+  lastUpdate: 2026-04-05
+  category: ai

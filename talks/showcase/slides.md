@@ -87,7 +87,7 @@ claude
 
 ---
 layout: two-col-image-text
-size: md
+textSize: md
 ---
 
 # Image-Content Layout
@@ -196,7 +196,7 @@ const devs = team.filter(u => u.role === 'dev')
 
 ---
 layout: default
-size: sm
+textSize: sm
 ---
 
 # Font Size Variants
@@ -217,7 +217,7 @@ size: sm
 
 ---
 layout: default
-size: sm
+textSize: sm
 ---
 
 # Table Variants
@@ -242,6 +242,26 @@ Dense table (wrap in `<div class="dense">`):
 | **Zero-width**   | Bypass filters with invisible chars     |
 
 </div>
+
+---
+layout: default
+---
+
+# VClickTable Component
+
+Click to reveal rows progressively:
+
+<VClickTable
+  :headers="['Technique', 'Example', 'Risk']"
+  :rows="[
+    ['<b>0px font</b>', 'Text invisible to humans', 'High'],
+    ['<b>Color matching</b>', 'White on white', 'High'],
+    ['<b>Base64</b>', '<code>SW5qZWN0aW9u</code> → Injection', 'Medium'],
+    ['<b>Homoglyphs</b>', 'Greek Ι vs Latin I', 'Medium'],
+  ]"
+  :firstVisible="1"
+  size="sm"
+/>
 
 ---
 layout: comparison

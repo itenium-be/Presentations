@@ -4,7 +4,8 @@
     <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
     </div>
-    <div class="content" :class="'size-' + ($frontmatter?.size ?? 'md')">
+    <div class="content" :class="['text-size-' + ($frontmatter?.textSize ?? 'md'), { 'has-image': $slots.image }]">
+      <div v-if="$slots.image" class="image-spacer" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')"></div>
       <slot />
     </div>
     <TitleDecoration :frontmatter="$frontmatter" />
@@ -66,7 +67,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   position: relative;
   z-index: 1;
   --content-pad-left: 6rem;
-  --content-pad-right: 16rem;
+  --content-pad-right: 1rem;
   padding: 2rem var(--content-pad-right) 3rem var(--content-pad-left);
   height: 100%;
   box-sizing: border-box;
@@ -94,6 +95,24 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 }
 .content :deep(li) {
   margin-bottom: 0.25rem;
+}
+
+/* Float spacer for circle image - text wraps around it */
+.image-spacer {
+  float: right;
+  width: 15rem;
+  shape-outside: inset(0);
+}
+.image-spacer.pos-top-right {
+  height: 16rem;
+}
+.image-spacer.pos-middle-right {
+  height: 100%;
+}
+
+/* Tables next to image: allow them to shrink */
+.content.has-image :deep(table) {
+  width: auto;
 }
 
 /* Tables */
@@ -142,10 +161,10 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 }
 
 /* Font size variants via frontmatter `size` */
-.content.size-xxl { font-size: 2.5rem; }
-.content.size-xl  { font-size: 2.2rem; }
-.content.size-lg  { font-size: 2rem; }
-.content.size-md  { font-size: 1.8rem; }
-.content.size-sm  { font-size: 1.5rem; }
-.content.size-xs  { font-size: 1.2rem; }
+.content.text-size-xxl { font-size: 2.5rem; }
+.content.text-size-xl  { font-size: 2.2rem; }
+.content.text-size-lg  { font-size: 2rem; }
+.content.text-size-md  { font-size: 1.8rem; }
+.content.text-size-sm  { font-size: 1.5rem; }
+.content.text-size-xs  { font-size: 1.2rem; }
 </style>

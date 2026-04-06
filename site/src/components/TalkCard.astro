@@ -13,7 +13,7 @@ interface Props {
 
 const { talk } = Astro.props
 const slug = talk.repo.split('/').pop()
-const slidesUrl = `/presentations/${slug}/`
+const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
 const dateStr = new Date(String(talk.date)).toLocaleDateString('en-BE', {
   year: 'numeric',

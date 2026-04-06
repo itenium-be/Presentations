@@ -34,6 +34,7 @@ To serve locally:
 
 ```bash
 bunx serve dist
+# Open http://localhost:3000/Presentations/
 ```
 
 To work on just the Astro index page:

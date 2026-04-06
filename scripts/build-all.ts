@@ -7,7 +7,7 @@
  * 4. Copy slidev outputs into dist/presentations/{slug}/
  */
 
-import { readFileSync, existsSync, lstatSync, readlinkSync, mkdirSync, rmSync, symlinkSync, cpSync } from 'fs'
+import { readFileSync, existsSync, mkdirSync, rmSync, cpSync } from 'fs'
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
@@ -23,7 +23,7 @@ interface Talk {
 
 const root = resolve(import.meta.dir, '..')
 const cacheDir = join(root, '.talks-cache')
-const distDir = join(root, 'dist/presentations')
+const distDir = join(root, 'dist/Presentations')
 
 const talks = yaml.load(readFileSync(join(root, 'talks.yaml'), 'utf-8')) as Talk[]
 const published = talks.filter(t => t.published)
@@ -61,17 +61,13 @@ for (const talk of published) {
       continue
     }
 
-    // Point theme at this repo via symlink
+    // Copy theme into presentation dir (symlinks break Vite's fs.allow)
     const themeDir = join(presDir, 'theme')
-    let needsSymlink = true
-    try {
-      const target = readlinkSync(themeDir)
-      if (target === root) needsSymlink = false
-    } catch {}
-    if (needsSymlink) {
-      try { rmSync(themeDir, { recursive: true, force: true }) } catch {}
-      try { symlinkSync(root, themeDir) } catch {}
-    }
+    if (existsSync(themeDir)) rmSync(themeDir, { recursive: true, force: true })
+    cpSync(root, themeDir, {
+      recursive: true,
+      filter: (src) => !src.includes('node_modules') && !src.includes('.talks-cache') && !src.includes('.git'),
+    })
 
     // Clean previous build output
     const distDir2 = join(presDir, 'dist')
@@ -79,7 +75,7 @@ for (const talk of published) {
 
     // Install & build
     run('bun install', presDir)
-    run(`bunx slidev build --base /presentations/${slug}/`, presDir)
+    run(`bunx slidev build --base /Presentations/${slug}/`, presDir)
   } catch (err) {
     console.error(`  FAILED: ${slug} — ${(err as Error).message}`)
     errors.push(slug)

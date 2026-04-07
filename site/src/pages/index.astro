@@ -1,7 +1,8 @@
 ---
-import { readFileSync } from 'fs'
+import { readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 import yaml from 'js-yaml'
+import matter from 'gray-matter'
 import TalkCard from '../components/TalkCard.astro'
 
 interface Talk {
@@ -16,9 +17,29 @@ interface Talk {
 
 const talksPath = resolve(process.cwd(), '../talks.yaml')
 const allTalks = yaml.load(readFileSync(talksPath, 'utf-8')) as Talk[]
+
 const sorted = allTalks
   .filter(t => t.published)
-  .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+  .sort((a, b) => {
+    const aDate = String(a.lastUpdate || a.date)
+    const bDate = String(b.lastUpdate || b.date)
+    return bDate.localeCompare(aDate)
+  })
+
+const enriched = sorted.map(talk => {
+  const slug = talk.repo.split('/').pop()!
+  const slidesPath = resolve(process.cwd(), `../.talks-cache/${slug}/presentation/slides.md`)
+  let fm: Record<string, string> = {}
+  let coverExt = 'png'
+  try {
+    fm = matter(readFileSync(slidesPath, 'utf-8')).data as Record<string, string>
+  } catch {}
+  for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
+    const imgPath = resolve(process.cwd(), `../.talks-cache/${slug}/presentation/images/cover-art.${ext}`)
+    if (existsSync(imgPath)) { coverExt = ext; break }
+  }
+  return { ...talk, frontmatter: fm, coverExt }
+})
 
 const allCategories = [...new Set(sorted.map(t => t.category))].sort()
 ---
@@ -29,61 +50,84 @@ const allCategories = [...new Set(sorted.map(t => t.category))].sort()
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>itenium — Technical Talks</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <style>
-      @font-face {
-        font-family: 'Michroma';
-        src: url('/Presentations/Michroma.ttf') format('truetype');
-      }
+      @font-face { font-family: 'Rubik'; font-weight: 400; src: url('/Presentations/fonts/rubik-400.woff2') format('woff2'); }
+      @font-face { font-family: 'Rubik'; font-weight: 500; src: url('/Presentations/fonts/rubik-500.woff2') format('woff2'); }
+      @font-face { font-family: 'Rubik'; font-weight: 700; src: url('/Presentations/fonts/rubik-700.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 400; src: url('/Presentations/fonts/inter-400.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 600; src: url('/Presentations/fonts/inter-600.woff2') format('woff2'); }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('/Presentations/fonts/ibm-plex-mono-400.woff2') format('woff2'); }
 
       *, *::before, *::after { box-sizing: border-box; }
 
       body {
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
         background: #f5f5f5;
         color: #343434;
         margin: 0;
         padding: 0;
       }
 
-      header {
-        background: #343434;
-        color: white;
-        padding: 2rem 2rem 1.5rem;
-      }
-      .header-inner {
-        max-width: 1200px;
-        margin: 0 auto;
+      /* Hero */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #E78200 0%, #e84700 100%);
+        padding: 3rem 2rem 2.5rem;
+        min-height: 220px;
         display: flex;
-        align-items: center;
-        gap: 1.5rem;
+        align-items: flex-end;
       }
-      .header-logo {
-        height: 45px;
+      .hero-dots {
+        position: absolute;
+        top: -10%;
+        right: -5%;
+        height: 140%;
+        opacity: 0.18;
+        transform: rotate(-30deg);
+        pointer-events: none;
+        user-select: none;
+      }
+      .hero-inner {
+        position: relative;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .hero-logo {
+        height: 36px;
         width: auto;
+        margin-bottom: 1.25rem;
+        opacity: 0.9;
       }
-      .header-text h1 {
-        font-family: 'Michroma', sans-serif;
-        font-size: 1.6rem;
-        margin: 0 0 0.2rem;
-      }
-      .header-text p {
+      .hero h1 {
+        font-family: 'Rubik', sans-serif;
+        font-weight: 700;
+        font-size: 2.4rem;
+        color: white;
         margin: 0;
-        opacity: 0.7;
-        font-size: 0.9rem;
+        line-height: 1.15;
+      }
+      .hero-subtitle {
+        font-family: 'Inter', sans-serif;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin: 0.5rem 0 0;
       }
 
+      /* Main */
       main {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 2rem auto;
         padding: 0 1.5rem;
       }
 
+      /* Filter */
       .filter-bar {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.75rem;
         align-items: center;
       }
       .filter-label {
@@ -92,6 +136,7 @@ const allCategories = [...new Set(sorted.map(t => t.category))].sort()
         margin-right: 0.25rem;
       }
       .filter-btn {
+        font-family: 'Inter', sans-serif;
         padding: 0.3rem 0.75rem;
         border-radius: 20px;
         border: 1px solid #ccc;
@@ -107,52 +152,73 @@ const allCategories = [...new Set(sorted.map(t => t.category))].sort()
         border-color: #e84700;
       }
 
-      .talks-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 1.5rem;
+      /* Cards list */
+      .talks-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
       }
 
+      /* Footer */
       footer {
-        text-align: center;
-        padding: 2rem;
-        color: #7e7e7e;
-        font-size: 0.8rem;
-        margin-top: 3rem;
+        max-width: 1100px;
+        margin: 3rem auto 0;
+        padding: 1.5rem;
         border-top: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
       }
-      footer a {
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .footer-logo {
+        height: 20px;
+        width: auto;
+      }
+      .footer-text {
+        font-size: 0.8rem;
+        color: #7e7e7e;
+      }
+      .footer-links {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+      }
+      .footer-links a {
         color: #e84700;
         text-decoration: none;
+      }
+      .footer-links a:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
-    <header>
-      <div class="header-inner">
-        <img
-          src="/Presentations/logo-full-white.svg"
-          alt="itenium"
-          class="header-logo"
-        />
-        <div class="header-text">
-          <h1>Technical Talks</h1>
-          <p>Presentations by the itenium team</p>
-        </div>
+    <header class="hero">
+      <img src="/Presentations/dots-orange.png" class="hero-dots" aria-hidden="true" />
+      <div class="hero-inner">
+        <img src="/Presentations/logo-full-white.svg" alt="itenium" class="hero-logo" />
+        <h1>Technical Talks</h1>
+        <p class="hero-subtitle">Presentations & knowledge sharing by itenium</p>
       </div>
     </header>
 
     <main>
       <div class="filter-bar">
         <span class="filter-label">Filter:</span>
-        <button class="filter-btn active" data-tag="all">All ({sorted.length})</button>
+        <button class="filter-btn active" data-tag="all">All ({enriched.length})</button>
         {allCategories.map(cat => (
           <button class="filter-btn" data-tag={cat}>{cat}</button>
         ))}
       </div>
 
-      <div class="talks-grid" id="talks-grid">
-        {sorted.map(talk => (
+      <div class="talks-list" id="talks-grid">
+        {enriched.map(talk => (
           <div class="talk-item" data-tags={talk.category}>
             <TalkCard talk={talk} />
           </div>
@@ -161,11 +227,14 @@ const allCategories = [...new Set(sorted.map(t => t.category))].sort()
     </main>
 
     <footer>
-      <p>
+      <div class="footer-brand">
+        <img src="/Presentations/logo-itenium.svg" alt="itenium" class="footer-logo" />
+        <span class="footer-text">Part of itenium academy</span>
+      </div>
+      <div class="footer-links">
         <a href="https://itenium.be" target="_blank">itenium.be</a>
-        &nbsp;·&nbsp;
-        <a href="https://github.com/itenium-be/presentations" target="_blank">Theme source</a>
-      </p>
+        <a href="https://github.com/itenium-be/Presentations" target="_blank">Theme source</a>
+      </div>
     </footer>
 
     <script>

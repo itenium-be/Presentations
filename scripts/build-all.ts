@@ -85,7 +85,17 @@ for (const talk of published) {
   }
 }
 
-// 2. Build Astro index site
+// 2. Copy theme fonts + assets into site/public for the Astro build
+console.log('\n=== Copying theme assets to site/public ===')
+const sitePublic = join(root, 'site', 'public')
+mkdirSync(join(sitePublic, 'fonts'), { recursive: true })
+for (const f of ['rubik-400', 'rubik-500', 'rubik-700', 'inter-400', 'inter-600', 'ibm-plex-mono-400']) {
+  cpSync(join(root, 'assets', 'fonts', `${f}.woff2`), join(sitePublic, 'fonts', `${f}.woff2`))
+}
+cpSync(join(root, 'assets', 'dots-orange.png'), join(sitePublic, 'dots-orange.png'))
+cpSync(join(root, 'assets', 'logo-itenium.svg'), join(sitePublic, 'logo-itenium.svg'))
+
+// 3. Build Astro index site
 console.log('\n=== Building Astro site ===')
 run('bun install', join(root, 'site'))
 try {
@@ -96,7 +106,7 @@ try {
   console.warn('  WARN: Astro process exited non-zero but index.html exists, continuing...')
 }
 
-// 3. Copy slidev builds into dist/presentations
+// 4. Copy slidev builds into dist/Presentations
 const missing: string[] = []
 for (const talk of published) {
   const slug = talk.repo.split('/').pop()!
@@ -112,6 +122,13 @@ for (const talk of published) {
   if (existsSync(targetDir)) rmSync(targetDir, { recursive: true })
   cpSync(slidevDist, targetDir, { recursive: true })
 
+  // Copy cover image to a predictable path
+  const imgDir = join(cacheDir, slug, 'presentation', 'images')
+  for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
+    const src = join(imgDir, `cover-art.${ext}`)
+    if (existsSync(src)) { cpSync(src, join(targetDir, `cover-art.${ext}`)); break }
+  }
+
   // Inject SPA redirect restore script into each talk's index.html
   const indexPath = join(targetDir, 'index.html')
   const html = readFileSync(indexPath, 'utf-8')
@@ -126,7 +143,7 @@ if (missing.length) {
   process.exit(1)
 }
 
-// 4. Write root 404.html for SPA routing on GitHub Pages
+// 5. Write root 404.html for SPA routing on GitHub Pages
 const notFoundHtml = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><script>
 // Preserve SPA path through GitHub Pages 404 redirect

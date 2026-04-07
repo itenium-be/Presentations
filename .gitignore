@@ -8,3 +8,8 @@ site/.astro/
 .DS_Store
 .claude/settings.local.json
 .claude/worktrees
+
+# Generated at build time by build-all.ts
+site/public/fonts/
+site/public/dots-orange.png
+site/public/logo-itenium.svg

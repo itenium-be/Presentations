@@ -8,6 +8,8 @@ interface Props {
     date: string
     lastUpdate?: string
     category: string
+    coverExt: string
+    frontmatter: Record<string, string>
   }
 }
 
@@ -15,118 +17,210 @@ const { talk } = Astro.props
 const slug = talk.repo.split('/').pop()
 const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
-const dateStr = new Date(String(talk.date)).toLocaleDateString('en-BE', {
+const coverUrl = `/Presentations/${slug}/cover-art.${talk.coverExt}`
+
+const displayDate = talk.lastUpdate || talk.date
+const dateStr = new Date(String(displayDate)).toLocaleDateString('en-BE', {
   year: 'numeric',
   month: 'short',
 })
+
+const subTitle = talk.frontmatter?.subTitle
+const sessionTime = talk.frontmatter?.['session-time']
+const track = talk.frontmatter?.track
+const talkType = talk.frontmatter?.type
 ---
 
-<a href={slidesUrl} class="talk-card-link">
-  <article class="talk-card">
-    <div class="card-body">
-      <h2 class="card-title">{talk.title}</h2>
-      <p class="card-desc">{talk.description}</p>
-      <span class="tag">{talk.category}</span>
+<a href={slidesUrl} class="card-link">
+  <article class="card">
+    <div class="card-cover">
+      <img src={coverUrl} alt="" loading="lazy" onerror="this.style.display='none'" />
     </div>
-    <div class="card-footer">
-      <span class="card-date">{dateStr}</span>
-      <div class="card-links">
-        <span class="btn btn-primary">View Slides</span>
-        <a href={repoUrl} class="btn btn-secondary" target="_blank" onclick="event.stopPropagation()">
-          GitHub ↗
-        </a>
+    <div class="card-content">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">{talk.title}</h2>
+          {subTitle && <p class="card-subtitle">{subTitle}</p>}
+        </div>
+        <span class="card-badge">{talk.category}</span>
+      </div>
+      <p class="card-desc">{talk.description}</p>
+      {(sessionTime || track || talkType) && (
+        <div class="card-meta">
+          {sessionTime && <span class="meta-item">{sessionTime}</span>}
+          {track && <span class="meta-item">{track}</span>}
+          {talkType && <span class="meta-item">{talkType}</span>}
+        </div>
+      )}
+      <div class="card-footer">
+        <span class="card-date">{dateStr}</span>
+        <div class="card-actions">
+          <span class="btn-slides">View Slides</span>
+          <a href={repoUrl} class="btn-github" target="_blank" onclick="event.stopPropagation()" aria-label="GitHub repository">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </article>
 </a>
 
 <style>
-.talk-card-link {
+.card-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
-.talk-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
+.card {
   display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.2s, transform 0.2s;
+  flex-direction: row;
   background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
-.talk-card:hover {
-  box-shadow: 0 4px 20px rgba(232, 71, 0, 0.15);
+.card:hover {
+  box-shadow: 0 6px 24px rgba(232, 71, 0, 0.12);
   transform: translateY(-2px);
 }
-.card-body {
-  padding: 1.5rem;
+
+.card-cover {
+  width: 240px;
+  min-height: 200px;
+  flex-shrink: 0;
+  background: #2D2A28;
+}
+.card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
   flex: 1;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  min-width: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }
 .card-title {
-  font-family: 'Michroma', sans-serif;
-  font-size: 1.1rem;
-  color: #343434;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
   margin: 0;
+  color: #343434;
   line-height: 1.3;
 }
+.card-subtitle {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: #7e7e7e;
+  margin: 0.2rem 0 0;
+}
+
+.card-badge {
+  background: #E78200;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: fit-content;
+}
+
 .card-desc {
-  color: #555;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0;
+  color: #555;
+  line-height: 1.55;
+  margin: 0.75rem 0;
   flex: 1;
 }
-.card-tags {
+
+.card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
-.tag {
+.meta-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.73rem;
+  color: #7e7e7e;
   background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  color: #555;
-  font-size: 0.75rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  border: 1px solid #eee;
 }
+
 .card-footer {
-  padding: 1rem 1.5rem;
-  background: #fafafa;
-  border-top: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 0.75rem;
+  margin-top: auto;
 }
 .card-date {
+  font-family: 'Inter', sans-serif;
   color: #7e7e7e;
   font-size: 0.8rem;
 }
-.card-links {
+.card-actions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
-.btn {
+
+.btn-slides {
+  background: #e84700;
+  color: white;
   padding: 0.4rem 0.9rem;
   border-radius: 5px;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
-  text-decoration: none;
   font-weight: 500;
   transition: opacity 0.15s;
 }
-.btn:hover {
-  opacity: 0.85;
-}
-.btn-primary {
-  background: #e84700;
-  color: white;
-}
-.btn-secondary {
+.btn-slides:hover { opacity: 0.85; }
+
+.btn-github {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: #343434;
   color: white;
+  transition: opacity 0.15s;
+}
+.btn-github:hover { opacity: 0.8; }
+.btn-github svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+  .card { flex-direction: column; }
+  .card-cover {
+    width: 100%;
+    min-height: 140px;
+    max-height: 200px;
+  }
 }
 </style>

@@ -22,6 +22,9 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Install Playwright system dependencies
+        run: bunx playwright install-deps chromium
+
       - name: Install root dependencies
         run: bun install
 

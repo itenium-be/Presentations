@@ -74,7 +74,15 @@ for (const talk of published) {
 
     // Install & build
     run('bun install', presDir)
+    run('bun add -D playwright-chromium', presDir)
     run(`bunx slidev build --base /Presentations/${slug}/`, presDir)
+
+    // Export PPTX (non-fatal — requires system deps for Chromium)
+    try {
+      run(`bunx slidev export --format pptx --output ${slug}.pptx`, presDir)
+    } catch {
+      console.warn(`  WARN: PPTX export failed for ${slug} (missing system deps for Playwright?)`)
+    }
   } catch (err) {
     console.error(`  FAILED: ${slug} — ${(err as Error).message}`)
     errors.push(slug)
@@ -123,6 +131,15 @@ for (const talk of published) {
   for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
     const src = join(imgDir, `cover-art.${ext}`)
     if (existsSync(src)) { cpSync(src, join(targetDir, `cover-art.${ext}`)); break }
+  }
+
+  // Copy PPTX if exported
+  const pptxSrc = join(cacheDir, slug, 'presentation', `${slug}.pptx`)
+  if (existsSync(pptxSrc)) {
+    cpSync(pptxSrc, join(targetDir, `${slug}.pptx`))
+    console.log(`  Copied ${slug}.pptx`)
+  } else {
+    console.warn(`  WARN: No PPTX for ${slug}`)
   }
 
   // Inject SPA redirect restore script into each talk's index.html

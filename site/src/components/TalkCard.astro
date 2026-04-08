@@ -18,6 +18,7 @@ const slug = talk.repo.split('/').pop()
 const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
 const coverUrl = `/Presentations/${slug}/cover-art.${talk.coverExt}`
+const pptxUrl = `/Presentations/${slug}/${slug}.pptx`
 
 const displayDate = talk.lastUpdate || talk.date
 const dateStr = new Date(String(displayDate)).toLocaleDateString('en-BE', {
@@ -35,6 +36,9 @@ const talkType = talk.frontmatter?.type
   <article class="card">
     <div class="card-cover">
       <img src={coverUrl} alt="" loading="lazy" onerror="this.style.display='none'" />
+      <a href={pptxUrl} class="btn-download" download onclick="event.stopPropagation()" aria-label="Download PPTX" title="Download PPTX">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </a>
     </div>
     <div class="card-content">
       <div class="card-top">
@@ -57,7 +61,7 @@ const talkType = talk.frontmatter?.type
         <span class="card-date">{dateStr}</span>
         <div class="card-actions">
           <span class="btn-slides">View Slides</span>
-          <a href={repoUrl} class="btn-github" target="_blank" onclick="event.stopPropagation()" aria-label="GitHub repository">
+          <a href={repoUrl} class="btn-icon" target="_blank" onclick="event.stopPropagation()" aria-label="GitHub repository" title="GitHub">
             <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           </a>
         </div>
@@ -183,13 +187,28 @@ const talkType = talk.frontmatter?.type
   padding-top: 0.75rem;
   margin-top: auto;
 }
+.btn-download {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: white;
+  transition: background 0.15s;
+  z-index: 1;
+}
+.btn-download:hover {
+  background: rgba(0,0,0,0.8);
+}
 .card-date {
   font-family: 'Inter', sans-serif;
   color: #7e7e7e;
   font-size: 0.8rem;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
 }
 .card-actions {
   display: flex;
@@ -209,7 +228,7 @@ const talkType = talk.frontmatter?.type
 }
 .btn-slides:hover { opacity: 0.85; }
 
-.btn-github {
+.btn-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -220,8 +239,8 @@ const talkType = talk.frontmatter?.type
   color: white;
   transition: opacity 0.15s;
 }
-.btn-github:hover { opacity: 0.8; }
-.btn-github svg {
+.btn-icon:hover { opacity: 0.8; }
+.btn-icon svg {
   width: 18px;
   height: 18px;
 }
@@ -291,8 +310,9 @@ const talkType = talk.frontmatter?.type
     padding: 0.2rem 0.55rem;
     border-radius: 3px;
   }
+  .btn-download { display: none; }
   .btn-slides { display: none; }
-  .btn-github {
+  .btn-icon {
     background: rgba(0,0,0,0.55);
     border: 1px solid rgba(255,255,255,0.15);
     width: 28px;

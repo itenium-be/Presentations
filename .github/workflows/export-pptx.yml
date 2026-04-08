@@ -27,6 +27,11 @@ jobs:
       - name: Install Playwright system deps
         run: bunx playwright install-deps chromium
 
+      - name: Warm up Vite dependency cache
+        run: |
+          cd presentation
+          timeout 15 bunx slidev --port 18945 || true
+
       - name: Export PPTX
         run: |
           cd presentation

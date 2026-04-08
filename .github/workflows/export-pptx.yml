@@ -31,7 +31,7 @@ jobs:
         run: |
           cd presentation
           REPO_NAME="${{ github.event.repository.name }}"
-          bunx slidev export --format pptx --output "${REPO_NAME}.pptx" --wait 3000 --with-clicks false
+          bunx slidev export --format pptx --output "${REPO_NAME}.pptx" --per-slide --with-clicks false --timeout 120000
 
       - name: Create/Update release
         env:
@@ -44,4 +44,4 @@ jobs:
           # Create or update the release
           gh release view "$TAG" > /dev/null 2>&1 && \
             gh release upload "$TAG" "$PPTX" --clobber || \
-            gh release create "$TAG" "$PPTX" --title "Latest Export" --notes "Auto-generated PPTX export"
+            gh release create "$TAG" "$PPTX" --title "${REPO_NAME}.pptx" --notes "Auto-generated PPTX export of the presentation slides."

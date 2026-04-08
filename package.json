@@ -17,6 +17,12 @@
     "scaffold": "bun run scripts/scaffold.ts",
     "build-all": "bun run scripts/build-all.ts"
   },
+  "slidev": {
+    "defaults": {
+      "favicon": "https://itenium-be.github.io/Presentations/favicon.png",
+      "titleTemplate": "%s @ itenium"
+    }
+  },
   "peerDependencies": {
     "@slidev/types": ">=0.1.0"
   },

@@ -65,7 +65,7 @@ bun run presentation/theme/scripts/scaffold.ts
 This creates:
 ```
 my-talk/
-  ElevatorTalk.md   # abstract, audience, takeaways (displayed on site)
+  ElevatorPitch.md   # abstract, audience, takeaways (displayed on site)
   presentation/
     theme/           # git submodule (this repo)
     slides.md        # theme: ./theme
@@ -92,9 +92,9 @@ first: 2026-01-01            # first presentation date
 
 Optional: `lastUpdate` (shown instead of `first` date on the site).
 
-### ElevatorTalk.md
+### ElevatorPitch.md
 
-Each talk repo should have an `ElevatorTalk.md` in the repo root with this structure:
+Each talk repo should have an `ElevatorPitch.md` in the repo root with this structure:
 
 ```markdown
 # Talk Title
@@ -126,7 +126,7 @@ The `talks.yaml` in this repo only tracks which talks are published:
   published: true
 ```
 
-All other metadata (title, description, category, dates) comes from the talk's frontmatter and `ElevatorTalk.md`.
+All other metadata (title, description, category, dates) comes from the talk's frontmatter and `ElevatorPitch.md`.
 
 ### Update the theme
 

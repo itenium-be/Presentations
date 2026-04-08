@@ -100,8 +100,8 @@ if (existsSync(gitignorePath)) {
   console.log('Created .gitignore')
 }
 
-// 6. Create ElevatorTalk.md
-const elevatorPath = join(cwd, 'ElevatorTalk.md')
+// 6. Create ElevatorPitch.md
+const elevatorPath = join(cwd, 'ElevatorPitch.md')
 if (!existsSync(elevatorPath)) {
   writeFileSync(elevatorPath, `# ${repoName}
 
@@ -122,7 +122,7 @@ Who should attend this talk?
 
 45-60 minutes
 `)
-  console.log('Created ElevatorTalk.md')
+  console.log('Created ElevatorPitch.md')
 }
 
 // 8. Update README.md

@@ -18,7 +18,7 @@ function countSlides(distAssetsPath: string): number {
 }
 
 function readElevatorTalk(cacheBase: string): string {
-  const elevatorPath = resolve(cacheBase, 'ElevatorTalk.md')
+  const elevatorPath = resolve(cacheBase, 'ElevatorPitch.md')
   if (!existsSync(elevatorPath)) return ''
   const raw = readFileSync(elevatorPath, 'utf-8')
   const abstractMatch = raw.match(/## Abstract\s*\n([\s\S]*?)(?=\n## |\n$)/)
@@ -49,7 +49,7 @@ const enriched = allTalks
     const distAssets = resolve(cacheBase, 'presentation/dist/assets')
     const slideCount = countSlides(distAssets)
 
-    // Description: ElevatorTalk.md abstract > frontmatter subTitle > fallback
+    // Description: ElevatorPitch.md abstract > frontmatter subTitle > fallback
     const description = readElevatorTalk(cacheBase) || fm.subTitle || ''
 
     return {

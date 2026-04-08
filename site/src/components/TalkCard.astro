@@ -45,12 +45,12 @@ const talkType = talk.frontmatter?.type
           </div>
           <span class="card-badge">{talk.category}</span>
         </div>
-        <div class="card-meta">
-          {sessionTime && <span class="meta-item">{sessionTime}</span>}
-          {talk.slideCount > 0 && <span class="meta-item">{talk.slideCount} slides</span>}
-          {track && <span class="meta-item">{track}</span>}
-          {talkType && <span class="meta-item">{talkType}</span>}
-        </div>
+      </div>
+      <div class="card-meta">
+        {sessionTime && <span class="meta-item">{sessionTime}</span>}
+        {talk.slideCount > 0 && <span class="meta-item">{talk.slideCount} slides</span>}
+        {track && <span class="meta-item">{track}</span>}
+        {talkType && <span class="meta-item">{talkType}</span>}
       </div>
       <p class="card-desc">{talk.description}</p>
       <div class="card-footer">
@@ -112,6 +112,7 @@ const talkType = talk.frontmatter?.type
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  margin-bottom: 0.4rem;
 }
 
 .card-header {
@@ -226,22 +227,76 @@ const talkType = talk.frontmatter?.type
 }
 
 @media (max-width: 768px) {
-  .card { flex-direction: column; }
+  .card {
+    flex-direction: column;
+    position: relative;
+  }
   .card-cover {
     width: 100%;
-    min-height: 120px;
-    max-height: 180px;
+    min-height: 0;
+    max-height: none;
+  }
+  .card-cover img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
   .card-content {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .card-content > * {
+    pointer-events: auto;
+  }
+  .card-top {
+    background: rgba(0,0,0,0.65);
     padding: 0.75rem 1rem;
+    margin-bottom: 0;
+  }
+  .card-title {
+    font-size: 1.05rem;
+    color: white;
+  }
+  .card-subtitle {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.8);
+  }
+  .card-badge {
+    background: rgba(231, 130, 0, 0.9);
+  }
+  .card-meta {
+    display: none;
   }
   .card-desc { display: none; }
-  .card-title { font-size: 1.05rem; }
-  .card-subtitle { font-size: 0.75rem; }
+  .card-footer {
+    background: none;
+    padding: 0.75rem 1rem;
+    border-top: none;
+    margin-top: auto;
+    display: flex;
+    gap: 0.5rem;
+  }
   .card-date {
-    background: rgba(0, 0, 0, 0.06);
-    padding: 0.15rem 0.5rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.73rem;
+    color: rgba(255,255,255,0.85);
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.2rem 0.55rem;
     border-radius: 3px;
+  }
+  .btn-slides { display: none; }
+  .btn-github {
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.15);
+    width: 28px;
+    height: 28px;
   }
 }
 </style>

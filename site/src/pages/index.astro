@@ -12,8 +12,12 @@ interface TalkYaml {
 
 function countSlides(distAssetsPath: string): number {
   try {
-    const files = readdirSync(distAssetsPath)
-    return files.filter(f => f.startsWith('md-') && f.endsWith('.js')).length
+    // Count slide import references in the main bundle (not unique files,
+    // since Slidev may reuse a chunk for multiple slides)
+    const indexFile = readdirSync(distAssetsPath).find(f => f.startsWith('index-') && f.endsWith('.js'))
+    if (!indexFile) return 0
+    const js = readFileSync(resolve(distAssetsPath, indexFile), 'utf-8')
+    return (js.match(/import\(".*?md-.*?\.js"\)/g) || []).length
   } catch { return 0 }
 }
 

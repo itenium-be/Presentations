@@ -9,6 +9,7 @@ interface Props {
     lastUpdate?: string
     category: string
     coverExt: string
+    slideCount: number
     frontmatter: Record<string, string>
   }
 }
@@ -37,21 +38,22 @@ const talkType = talk.frontmatter?.type
       <img src={coverUrl} alt="" loading="lazy" onerror="this.style.display='none'" />
     </div>
     <div class="card-content">
-      <div class="card-header">
-        <div>
-          <h2 class="card-title">{talk.title}</h2>
-          {subTitle && <p class="card-subtitle">{subTitle}</p>}
+      <div class="card-top">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">{talk.title}</h2>
+            {subTitle && <p class="card-subtitle">{subTitle}</p>}
+          </div>
+          <span class="card-badge">{talk.category}</span>
         </div>
-        <span class="card-badge">{talk.category}</span>
-      </div>
-      <p class="card-desc">{talk.description}</p>
-      {(sessionTime || track || talkType) && (
         <div class="card-meta">
           {sessionTime && <span class="meta-item">{sessionTime}</span>}
+          {talk.slideCount > 0 && <span class="meta-item">{talk.slideCount} slides</span>}
           {track && <span class="meta-item">{track}</span>}
           {talkType && <span class="meta-item">{talkType}</span>}
         </div>
-      )}
+      </div>
+      <p class="card-desc">{talk.description}</p>
       <div class="card-footer">
         <span class="card-date">{dateStr}</span>
         <div class="card-actions">
@@ -90,6 +92,7 @@ const talkType = talk.frontmatter?.type
   min-height: 200px;
   flex-shrink: 0;
   background: #2D2A28;
+  position: relative;
 }
 .card-cover img {
   width: 100%;
@@ -104,6 +107,12 @@ const talkType = talk.frontmatter?.type
   display: flex;
   flex-direction: column;
   min-width: 0;
+}
+
+.card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .card-header {
@@ -142,20 +151,10 @@ const talkType = talk.frontmatter?.type
   height: fit-content;
 }
 
-.card-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  color: #555;
-  line-height: 1.55;
-  margin: 0.75rem 0;
-  flex: 1;
-}
-
 .card-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
 }
 .meta-item {
   font-family: 'IBM Plex Mono', monospace;
@@ -165,6 +164,15 @@ const talkType = talk.frontmatter?.type
   padding: 0.2rem 0.55rem;
   border-radius: 3px;
   border: 1px solid #eee;
+}
+
+.card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.55;
+  margin: 0.75rem 0;
+  flex: 1;
 }
 
 .card-footer {
@@ -179,6 +187,9 @@ const talkType = talk.frontmatter?.type
   font-family: 'Inter', sans-serif;
   color: #7e7e7e;
   font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
 }
 .card-actions {
   display: flex;
@@ -221,6 +232,39 @@ const talkType = talk.frontmatter?.type
     width: 100%;
     min-height: 140px;
     max-height: 200px;
+  }
+  .card-desc { display: none; }
+  .card-title {
+    color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  }
+  .card-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  .card-top {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    z-index: 1;
+  }
+  .card-cover {
+    position: relative;
+  }
+  .card-badge {
+    background: rgba(231, 130, 0, 0.9);
+  }
+  .meta-item {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .card-date {
+    background: rgba(0, 0, 0, 0.15);
+    color: #999;
   }
 }
 </style>

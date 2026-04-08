@@ -68,7 +68,7 @@ for (const talk of published) {
     if (existsSync(themeDir)) rmSync(themeDir, { recursive: true, force: true })
     mkdirSync(themeDir, { recursive: true })
     const themeDirs = ['assets', 'components', 'layouts', 'setup', 'styles']
-    const themeFiles = ['package.json']
+    const themeFiles = ['package.json', 'custom-nav-controls.vue', 'global-top.vue']
     for (const d of themeDirs) cpSync(join(root, d), join(themeDir, d), { recursive: true })
     for (const f of themeFiles) cpSync(join(root, f), join(themeDir, f))
 

@@ -230,41 +230,17 @@ const talkType = talk.frontmatter?.type
   .card { flex-direction: column; }
   .card-cover {
     width: 100%;
-    min-height: 140px;
+    min-height: 160px;
     max-height: 200px;
   }
   .card-desc { display: none; }
-  .card-title {
-    color: white;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  }
-  .card-subtitle {
-    color: rgba(255, 255, 255, 0.85);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  }
-  .card-top {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-    z-index: 1;
-  }
-  .card-cover {
-    position: relative;
-  }
-  .card-badge {
-    background: rgba(231, 130, 0, 0.9);
-  }
-  .meta-item {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.85);
+  .card-content {
+    padding: 0.75rem 1rem;
   }
   .card-date {
-    background: rgba(0, 0, 0, 0.15);
-    color: #999;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
   }
 }
 </style>

@@ -19,7 +19,7 @@
   },
   "slidev": {
     "defaults": {
-      "favicon": "https://itenium-be.github.io/Presentations/favicon.png",
+      "favicon": "./theme/assets/favicon.png",
       "titleTemplate": "%s @ itenium",
       "colorSchema": "dark"
     }

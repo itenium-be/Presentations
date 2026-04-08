@@ -18,7 +18,7 @@ const slug = talk.repo.split('/').pop()
 const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
 const coverUrl = `/Presentations/${slug}/cover-art.${talk.coverExt}`
-const pptxUrl = `/Presentations/${slug}/${slug}.pptx`
+const pptxUrl = `https://github.com/${talk.repo}/releases/latest/download/${slug}.pptx`
 
 const displayDate = talk.lastUpdate || talk.date
 const dateStr = new Date(String(displayDate)).toLocaleDateString('en-BE', {

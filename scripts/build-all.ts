@@ -13,12 +13,8 @@ import { execSync } from 'child_process'
 import yaml from 'js-yaml'
 
 interface Talk {
-  title: string
-  published: boolean
-  description: string
   repo: string
-  date: string
-  category: string
+  published: boolean
 }
 
 const root = resolve(import.meta.dir, '..')
@@ -45,7 +41,7 @@ for (const talk of published) {
   const cloneDir = join(cacheDir, slug)
   const presDir = join(cloneDir, 'presentation')
 
-  console.log(`\n=== ${talk.title} (${slug}) ===`)
+  console.log(`\n=== ${slug} ===`)
 
   try {
     // Clone if not cached

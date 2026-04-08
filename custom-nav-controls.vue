@@ -19,8 +19,8 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: white;
-  opacity: 0.6;
+  color: #E78200;
+  opacity: 1;
   transition: opacity 0.15s;
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;

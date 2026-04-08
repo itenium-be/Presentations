@@ -100,7 +100,32 @@ if (existsSync(gitignorePath)) {
   console.log('Created .gitignore')
 }
 
-// 6. Update README.md
+// 6. Create ElevatorTalk.md
+const elevatorPath = join(cwd, 'ElevatorTalk.md')
+if (!existsSync(elevatorPath)) {
+  writeFileSync(elevatorPath, `# ${repoName}
+
+## Abstract
+
+A brief description of the talk (2-3 sentences). This is displayed on the presentations index site.
+
+## Target Audience
+
+Who should attend this talk?
+
+## Key Takeaways
+
+- Takeaway 1
+- Takeaway 2
+
+## Session Format
+
+45-60 minutes
+`)
+  console.log('Created ElevatorTalk.md')
+}
+
+// 8. Update README.md
 const readmePath = join(cwd, 'README.md')
 const presSection = `
 
@@ -129,7 +154,7 @@ if (existsSync(readmePath)) {
   console.log('Created README.md')
 }
 
-// 7. Install
+// 9. Install
 console.log('\nRunning bun install...')
 execSync('bun install', { cwd: presDir, stdio: 'inherit' })
 

@@ -1,36 +1,14 @@
-- title: "Git: How to Get Out of a Mess"
+- repo: itenium-be/git-how-to-get-out-of-a-mess
   published: false
-  description: "Practical strategies for recovering from Git disasters — rebasing, reflog, bisect, and more."
-  repo: itenium-be/git-how-to-get-out-of-a-mess
-  date: 2024-01-01
-  category: git
 
-- title: "Design Patterns"
+- repo: itenium-be/Talk-DesignPatterns
   published: false
-  description: "Introductory talk about classic design patterns with practical examples."
-  repo: itenium-be/Talk-DesignPatterns
-  date: 2023-01-01
-  category: architecture
 
-- title: "Garbage Collection: .NET vs Java"
+- repo: itenium-be/Talk-GC
   published: false
-  description: "Deep dive into how garbage collection works in .NET and Java runtimes."
-  repo: itenium-be/Talk-GC
-  date: 2023-06-01
-  category: architecture
 
-- title: "Unit Testing"
+- repo: itenium-be/UnitTesting
   published: true
-  description: "Everything about UnitTesting"
-  repo: itenium-be/UnitTesting
-  date: 2022-08-25
-  lastUpdate: 2026-04-05
-  category: testing
 
-- title: "AI & Security"
+- repo: itenium-be/AI-Security-Talk
   published: true
-  description: "The S in MCP stands for Security"
-  repo: itenium-be/AI-Security-Talk
-  date: 2026-04-01
-  lastUpdate: 2026-04-05
-  category: ai

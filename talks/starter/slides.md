@@ -1,10 +1,12 @@
 ---
 theme: ../../
 title: Talk Title
+subTitle: A brief subtitle
 transition: fade
 session-time: 60min
 track: Architecture
 type: Theoretical
+first: 2026-01-01
 ---
 
 # Talk Title

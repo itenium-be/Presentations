@@ -20,7 +20,8 @@
   "slidev": {
     "defaults": {
       "favicon": "https://itenium-be.github.io/Presentations/favicon.png",
-      "titleTemplate": "%s @ itenium"
+      "titleTemplate": "%s @ itenium",
+      "colorSchema": "dark"
     }
   },
   "peerDependencies": {

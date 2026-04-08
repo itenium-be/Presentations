@@ -65,11 +65,68 @@ bun run presentation/theme/scripts/scaffold.ts
 This creates:
 ```
 my-talk/
-  theme/          # git submodule (this repo)
-  slides.md       # theme: ./theme
-  images/
-  package.json
+  ElevatorTalk.md   # abstract, audience, takeaways (displayed on site)
+  presentation/
+    theme/           # git submodule (this repo)
+    slides.md        # theme: ./theme
+    images/
+    package.json
 ```
+
+### Required frontmatter
+
+Every `slides.md` must include these fields:
+
+```yaml
+---
+theme: ./theme
+title: Talk Title
+subTitle: A brief subtitle
+transition: fade
+session-time: 60min
+track: Architecture          # category shown on site (lowercase)
+type: Theoretical            # or Practical, Workshop, etc.
+first: 2026-01-01            # first presentation date
+---
+```
+
+Optional: `lastUpdate` (shown instead of `first` date on the site).
+
+### ElevatorTalk.md
+
+Each talk repo should have an `ElevatorTalk.md` in the repo root with this structure:
+
+```markdown
+# Talk Title
+
+## Abstract
+
+A brief description (2-3 sentences). Displayed as the card description on the index site.
+
+## Target Audience
+
+Who should attend this talk?
+
+## Key Takeaways
+
+- Takeaway 1
+- Takeaway 2
+
+## Session Format
+
+45-60 minutes
+```
+
+### talks.yaml
+
+The `talks.yaml` in this repo only tracks which talks are published:
+
+```yaml
+- repo: itenium-be/my-talk
+  published: true
+```
+
+All other metadata (title, description, category, dates) comes from the talk's frontmatter and `ElevatorTalk.md`.
 
 ### Update the theme
 

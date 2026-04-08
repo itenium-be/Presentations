@@ -5,14 +5,9 @@ import yaml from 'js-yaml'
 import matter from 'gray-matter'
 import TalkCard from '../components/TalkCard.astro'
 
-interface Talk {
-  title: string
-  published: boolean
-  description: string
+interface TalkYaml {
   repo: string
-  date: string
-  lastUpdate?: string
-  category: string
+  published: boolean
 }
 
 function countSlides(distAssetsPath: string): number {
@@ -22,35 +17,60 @@ function countSlides(distAssetsPath: string): number {
   } catch { return 0 }
 }
 
-const talksPath = resolve(process.cwd(), '../talks.yaml')
-const allTalks = yaml.load(readFileSync(talksPath, 'utf-8')) as Talk[]
+function readElevatorTalk(cacheBase: string): string {
+  const elevatorPath = resolve(cacheBase, 'ElevatorTalk.md')
+  if (!existsSync(elevatorPath)) return ''
+  const raw = readFileSync(elevatorPath, 'utf-8')
+  const abstractMatch = raw.match(/## Abstract\s*\n([\s\S]*?)(?=\n## |\n$)/)
+  return abstractMatch ? abstractMatch[1].trim() : ''
+}
 
-const sorted = allTalks
+const talksPath = resolve(process.cwd(), '../talks.yaml')
+const allTalks = yaml.load(readFileSync(talksPath, 'utf-8')) as TalkYaml[]
+
+const enriched = allTalks
   .filter(t => t.published)
+  .map(talk => {
+    const slug = talk.repo.split('/').pop()!
+    const cacheBase = resolve(process.cwd(), `../.talks-cache/${slug}`)
+    const slidesPath = resolve(cacheBase, 'presentation/slides.md')
+    let fm: Record<string, any> = {}
+    try {
+      fm = matter(readFileSync(slidesPath, 'utf-8')).data
+    } catch {}
+
+    // Cover image extension
+    let coverExt = 'png'
+    for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
+      if (existsSync(resolve(cacheBase, `presentation/images/cover-art.${ext}`))) { coverExt = ext; break }
+    }
+
+    // Slide count from built chunks
+    const distAssets = resolve(cacheBase, 'presentation/dist/assets')
+    const slideCount = countSlides(distAssets)
+
+    // Description: ElevatorTalk.md abstract > frontmatter subTitle > fallback
+    const description = readElevatorTalk(cacheBase) || fm.subTitle || ''
+
+    return {
+      repo: talk.repo,
+      title: fm.title || slug,
+      description,
+      category: fm.track?.toLowerCase() || '',
+      date: fm.first || '',
+      lastUpdate: fm.lastUpdate || '',
+      frontmatter: fm,
+      coverExt,
+      slideCount,
+    }
+  })
   .sort((a, b) => {
     const aDate = String(a.lastUpdate || a.date)
     const bDate = String(b.lastUpdate || b.date)
     return bDate.localeCompare(aDate)
   })
 
-const enriched = sorted.map(talk => {
-  const slug = talk.repo.split('/').pop()!
-  const slidesPath = resolve(process.cwd(), `../.talks-cache/${slug}/presentation/slides.md`)
-  let fm: Record<string, string> = {}
-  let coverExt = 'png'
-  try {
-    fm = matter(readFileSync(slidesPath, 'utf-8')).data as Record<string, string>
-  } catch {}
-  for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
-    const imgPath = resolve(process.cwd(), `../.talks-cache/${slug}/presentation/images/cover-art.${ext}`)
-    if (existsSync(imgPath)) { coverExt = ext; break }
-  }
-  const distAssets = resolve(process.cwd(), `../.talks-cache/${slug}/presentation/dist/assets`)
-  const slideCount = countSlides(distAssets)
-  return { ...talk, frontmatter: fm, coverExt, slideCount }
-})
-
-const allCategories = [...new Set(sorted.map(t => t.category))].sort()
+const allCategories = [...new Set(enriched.map(t => t.category).filter(Boolean))].sort()
 ---
 
 <!doctype html>

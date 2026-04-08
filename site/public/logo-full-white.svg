@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="itenium_logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 10000 10000" style="enable-background:new 0 0 10000 10000;" xml:space="preserve">
+	 y="0px" viewBox="400 3988 7701 1866" xml:space="preserve">
 <style type="text/css">
 	.st0{display:none;}
 	.st1{display:inline;}
@@ -11,8 +11,6 @@
 <g id="Background" class="st0">
 	<rect x="0" class="st1" width="9982.3" height="10000"/>
 </g>
-<path id="dot" class="st2" d="M9360.5,4945.9c0,106.4-86.2,192.6-192.6,192.6c-106.3,0-192.6-86.2-192.6-192.6
-	c0-106.3,86.2-192.6,192.6-192.6C9274.3,4753.3,9360.5,4839.5,9360.5,4945.9L9360.5,4945.9z"/>
 <g id="itenium">
 	<path class="st3" d="M7413.8,4860.5c0-26.8,3.7-51.1,11.2-72.9c7.5-21.8,20.7-40.5,39.9-55.9c19.1-15.5,45.3-27.5,78.6-36.2
 		c33.3-8.6,75.7-12.9,127.4-12.9c47.1,0,85,3.7,113.9,11.2c28.9,7.5,51.3,19.6,67.1,36.4c15.9,16.8,26.4,38.9,31.6,66.3
@@ -56,11 +54,11 @@
 	<rect x="2527.7" y="4388.8" class="st3" width="110.2" height="110.2"/>
 </g>
 <g id="Left_Parenthesis">
-	<path class="st2" d="M1037.9,4159.5l-99.4-70.9c-361,421.7-461.1,937.9-237.3,1224.6L838.4,5188
+	<path class="st3" d="M1037.9,4159.5l-99.4-70.9c-361,421.7-461.1,937.9-237.3,1224.6L838.4,5188
 		C650.9,4946.5,734.6,4513.8,1037.9,4159.5L1037.9,4159.5z"/>
 </g>
 <g id="Right_Parenthesis">
-	<path class="st2" d="M1097.5,5683.4l99.4,70.9c361-421.7,461.1-937.9,237.3-1224.6L1297,4654.9
+	<path class="st3" d="M1097.5,5683.4l99.4,70.9c361-421.7,461.1-937.9,237.3-1224.6L1297,4654.9
 		C1484.5,4896.4,1400.7,5329.1,1097.5,5683.4L1097.5,5683.4z"/>
 </g>
 </svg>

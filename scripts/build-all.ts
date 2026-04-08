@@ -58,6 +58,14 @@ for (const talk of published) {
       continue
     }
 
+    // Verify PPTX exists in the repo
+    const pptxPath = join(cloneDir, `${slug}.pptx`)
+    if (!existsSync(pptxPath)) {
+      console.error(`  ERROR: ${slug}.pptx not found in repo root. Export it locally and commit it.`)
+      errors.push(slug)
+      continue
+    }
+
     // Copy theme into presentation dir (symlinks break Vite's fs.allow)
     // Cannot cpSync root → themeDir directly because .talks-cache is inside root
     const themeDir = join(presDir, 'theme')

@@ -18,7 +18,7 @@ const slug = talk.repo.split('/').pop()
 const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
 const coverUrl = `/Presentations/${slug}/cover-art.${talk.coverExt}`
-const pptxUrl = `https://github.com/${talk.repo}/releases/latest/download/${slug}.pptx`
+const pptxUrl = `https://github.com/${talk.repo}/raw/master/${slug}.pptx`
 
 const displayDate = talk.lastUpdate || talk.date
 const dateStr = new Date(String(displayDate)).toLocaleDateString('en-BE', {
@@ -36,9 +36,9 @@ const talkType = talk.frontmatter?.type
 <article class="card">
     <div class="card-cover">
       <img src={coverUrl} alt="" loading="lazy" onerror="this.style.display='none'" />
-      <a href={pptxUrl} class="btn-download" download onclick="event.stopPropagation()" aria-label="Download PPTX" title="Download PPTX">
+      <button class="btn-download" onclick={`event.preventDefault();event.stopPropagation();document.getElementById('modal-${slug}').showModal()`} aria-label="Download PPTX" title="Download PPTX">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </a>
+      </button>
       <a href={slidesUrl} class="cover-overlay">View Slides</a>
     </div>
     <div class="card-content">
@@ -70,6 +70,17 @@ const talkType = talk.frontmatter?.type
   </article>
 </a>
 
+<dialog id={`modal-${slug}`} class="pptx-modal">
+  <div class="modal-content">
+    <h3>Download PowerPoint Copy</h3>
+    <p>This is a static export of the slides as images. Animations, transitions, and interactive elements are not included. For the full experience, <a href={slidesUrl}>view the slides online</a>.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick={`document.getElementById('modal-${slug}').close()`}>Cancel</button>
+      <a href={pptxUrl} class="modal-download" download>Download Copy</a>
+    </div>
+  </div>
+</dialog>
+
 <style>
 .card-link {
   text-decoration: none;
@@ -77,6 +88,67 @@ const talkType = talk.frontmatter?.type
   display: block;
   cursor: default;
 }
+
+.pptx-modal {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.pptx-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  padding: 1.5rem;
+  font-family: 'Inter', sans-serif;
+}
+.modal-content h3 {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: #343434;
+}
+.modal-content p {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0 0 1.25rem;
+}
+.modal-content p a {
+  color: #e84700;
+  text-decoration: none;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.modal-cancel {
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #555;
+}
+.modal-cancel:hover { background: #f5f5f5; }
+.modal-download {
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  background: #e84700;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-download:hover { background: #d03f00; }
+
 .card {
   display: flex;
   flex-direction: row;
@@ -218,9 +290,11 @@ const talkType = talk.frontmatter?.type
   justify-content: center;
   width: 32px;
   height: 32px;
+  border: none;
   border-radius: 50%;
   background: rgba(0,0,0,0.55);
   color: white;
+  cursor: pointer;
   transition: background 0.15s;
   z-index: 1;
 }

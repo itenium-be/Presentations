@@ -12,3 +12,6 @@
 
 - repo: itenium-be/AI-Security-Talk
   published: true
+
+- repo: itenium-be/MicroServices
+  published: true

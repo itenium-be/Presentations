@@ -2,21 +2,13 @@
   <div class="slidev-layout source">
     <h1 class="source-title">Powerpoint Source</h1>
     <div class="source-qr">
-      <QRCode :url="repoUrl" color="#343434" />
+      <QRCode :url="`https://github.com/${$frontmatter?.source ?? 'itenium-be'}`" color="#343434" />
     </div>
-    <a :href="repoUrl" class="source-link">github.com/{{ source }}</a>
+    <a :href="`https://github.com/${$frontmatter?.source ?? 'itenium-be'}`" class="source-link">
+      github.com/{{ $frontmatter?.source ?? 'itenium-be' }}
+    </a>
   </div>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import { useSlideContext } from '@slidev/client'
-import QRCode from '../components/QRCode.vue'
-
-const { $frontmatter } = useSlideContext()
-const source = computed(() => $frontmatter?.source ?? 'itenium-be')
-const repoUrl = computed(() => `https://github.com/${source.value}`)
-</script>
 
 <style scoped>
 .source {

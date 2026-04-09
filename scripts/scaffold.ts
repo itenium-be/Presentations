@@ -74,7 +74,7 @@ const packageJson = {
   scripts: {
     dev: 'slidev',
     build: `slidev build --base /${repoName}/`,
-    export: `slidev export --format pptx --output ../${repoName}.pptx`,
+    export: `slidev export --format pptx --output ../${repoName}.pptx --with-clicks=false`,
   },
   dependencies: {
     '@slidev/cli': '^51.0.0',

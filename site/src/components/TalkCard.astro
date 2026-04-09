@@ -78,6 +78,9 @@ const talkType = talk.frontmatter?.type
       <button class="modal-cancel" onclick={`document.getElementById('modal-${slug}').close()`}>Cancel</button>
       <a href={pptxUrl} class="modal-download" download>Download Copy</a>
     </div>
+    <div class="modal-status" hidden>
+      <p class="modal-status-msg">✓ Download started — check your downloads folder.</p>
+    </div>
   </div>
 </dialog>
 
@@ -148,6 +151,14 @@ const talkType = talk.frontmatter?.type
   cursor: pointer;
 }
 .modal-download:hover { background: #d03f00; }
+.modal-status-msg {
+  font-size: 0.9rem;
+  color: #2d7a2d;
+  margin: 0;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-weight: 500;
+}
 
 .card {
   display: flex;
@@ -405,3 +416,27 @@ const talkType = talk.frontmatter?.type
   }
 }
 </style>
+
+<script>
+  // After clicking "Download Copy", show a confirmation and auto-close the modal.
+  // The browser handles the actual download in parallel — we don't preventDefault.
+  document.querySelectorAll<HTMLAnchorElement>('.pptx-modal .modal-download').forEach((link) => {
+    link.addEventListener('click', () => {
+      const modal = link.closest('dialog') as HTMLDialogElement | null;
+      if (!modal) return;
+      const actions = modal.querySelector<HTMLElement>('.modal-actions');
+      const status = modal.querySelector<HTMLElement>('.modal-status');
+      if (!actions || !status) return;
+      actions.hidden = true;
+      status.hidden = false;
+      setTimeout(() => {
+        modal.close();
+        // Reset state shortly after close so reopening shows the original buttons.
+        setTimeout(() => {
+          actions.hidden = false;
+          status.hidden = true;
+        }, 300);
+      }, 1500);
+    });
+  });
+</script>

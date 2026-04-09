@@ -295,23 +295,19 @@ Use this to pick the right layout for each slide:
 image. Use the image-to-slide mapping table to verify. Never use `default` layout
 for a slide that had an image in the PPTX — use `default-aside` instead.
 
-**Powerpoint Source slide**: The last content slide should have a QR code linking to
-the repo. Get the URL from `git remote -v` and update accordingly:
+**Powerpoint Source slide**: The last slide should be the dedicated `source` layout
+linking to the repo. Get the org/repo from `git remote -v` and pass it via frontmatter:
 
 ```markdown
 ---
-layout: default
+layout: source
+source: itenium-be/REPO_NAME
 ---
-
-# Powerpoint Source
-
-<div class="flex flex-col items-center justify-center h-full -mt-16">
-  <div class="w-64 h-64">
-    <QRCode url="https://github.com/itenium-be/REPO_NAME" color="#343434" />
-  </div>
-  <a href="https://github.com/itenium-be/REPO_NAME" class="mt-4 text-lg">github.com/itenium-be/REPO_NAME</a>
-</div>
 ```
+
+The layout renders the title, QR code, and clickable github link from the single
+`source:` field. Don't reach for the old inline `<QRCode>` HTML — that pattern is
+deprecated.
 
 ### Auto-detection rules
 
@@ -688,8 +684,8 @@ the slide content.
 
 3. **Skip slides that have no PPTX equivalent** when matching:
    - `layout: section` (added during migration as chapter dividers)
-   - `layout: end`, `layout: socials`
-   - The PowerPoint Source / QR-code slide added at the end (`Powerpoint Source` + `QRCode`)
+   - `layout: end`, `layout: socials`, `layout: source` (the dedicated `source`
+     layout — final QR-code slide added at the end of every talk)
 
 4. **Match each remaining slidev slide to a PPTX slide** using a normalized word-set
    overlap of the slide text, with a position bias to break ties when titles repeat

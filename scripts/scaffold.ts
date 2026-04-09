@@ -56,6 +56,7 @@ let starterMd = readFileSync(join(starterDir, 'slides.md'), 'utf-8')
 starterMd = starterMd
   .replace('theme: ../../', 'theme: ./theme')
   .replace('title: Talk Title', `title: ${repoName}`)
+  .replace('source: itenium-be/Talk-Title-Placeholder', `source: itenium-be/${repoName}`)
 writeFileSync(join(presDir, 'slides.md'), starterMd)
 console.log('Created presentation/slides.md')
 

@@ -138,6 +138,21 @@ layout: quote
 # Quote text here
 ```
 
+## `source`
+
+Final slide of every talk. Renders "Powerpoint Source" title, a QR code, and a clickable
+`github.com/<source>` link. Pass the repo as `source: org/repo` in frontmatter — both
+the QR code URL and the visible link are derived from it.
+
+```markdown
+---
+layout: source
+source: itenium-be/MicroServices
+---
+```
+
+The scaffold script auto-fills `source: itenium-be/<repo-name>` in new presentations.
+
 ## `code`
 
 Code-focused slide. Minimal padding, code block fills available space. Green dots bottom-left.

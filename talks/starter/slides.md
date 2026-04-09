@@ -68,17 +68,9 @@ layout: socials
 ---
 
 ---
-layout: default
+layout: source
+source: itenium-be/Talk-Title-Placeholder
 ---
-
-# Powerpoint Source
-
-<div class="flex flex-col items-center justify-center h-full -mt-16">
-  <div class="w-64 h-64">
-    <QRCode url="https://github.com/itenium-be/Presentations" color="#343434" />
-  </div>
-  <a href="https://github.com/itenium-be/Presentations" class="mt-4 text-lg">github.com/itenium-be/Presentations</a>
-</div>
 
 
 ---

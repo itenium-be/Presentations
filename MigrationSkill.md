@@ -476,42 +476,78 @@ h2:
 
 A `.pptx` file is a ZIP containing XML. Speaker notes live in `ppt/notesSlides/notesSlideN.xml`.
 
+> **CRITICAL**: `notesSlideN.xml` is **NOT** linked to `slideN.xml` by filename.
+> The mapping lives in `ppt/slides/_rels/slideN.xml.rels`. Iterating notes by filename
+> gives wrong results — slide 7 might have its notes in `notesSlide12.xml`. Always
+> resolve via the `.rels` file. Extract the rels too:
+
 ```bash
-mkdir -p /tmp/pptx-notes
-unzip -o MyPresentation.pptx "ppt/notesSlides/notesSlide*.xml" -d /tmp/pptx-notes -x "*/rels/*"
+unzip -o MyPresentation.pptx -d /tmp/pptx-extract
+# (full extraction; we need slides/, slides/_rels/, notesSlides/, _rels/, presentation.xml)
 ```
 
-Extract the text content with Python:
+Resolve slide order from `presentation.xml` (the `sldIdLst` order is the presentation
+order, which may differ from filename order), then for each slide find its notes via
+the rels file:
 
 ```python
 import xml.etree.ElementTree as ET
+import os
 
 ns = {
     'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
     'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
 }
+RID = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
 
-for i in range(1, 41):  # adjust range to slide count
-    path = f'/tmp/pptx-notes/ppt/notesSlides/notesSlide{i}.xml'
-    try:
-        tree = ET.parse(path)
-    except FileNotFoundError:
-        continue
+base = '/tmp/pptx-extract/ppt'
 
-    for sp in tree.findall('.//p:sp', ns):
-        ph = sp.find('.//p:ph', ns)
-        if ph is not None and ph.get('idx') == '1':
-            lines = []
-            for p in sp.findall('.//a:p', ns):
-                parts = [t.text or '' for t in p.findall('.//a:t', ns)]
-                line = ''.join(parts).strip()
-                if line:
-                    lines.append(line)
-            if lines:
-                print(f'=== SLIDE {i} ===')
-                print('\n'.join(lines))
-                print()
+# 1) Get slide order from presentation.xml
+pres = ET.parse(f'{base}/presentation.xml').getroot()
+pres_rels = ET.parse(f'{base}/_rels/presentation.xml.rels').getroot()
+rid_to_target = {r.get('Id'): r.get('Target') for r in pres_rels}
+slide_order = []
+for sldId in pres.findall('.//p:sldIdLst/p:sldId', ns):
+    target = rid_to_target[sldId.get(RID)]
+    slide_order.append(os.path.basename(target))  # e.g. 'slide1.xml'
+
+# 2) For each slide, find notes via slideN.xml.rels
+def get_notes(slide_xml):
+    rels_path = f'{base}/slides/_rels/{slide_xml}.rels'
+    if not os.path.exists(rels_path):
+        return []
+    rels = ET.parse(rels_path).getroot()
+    for rel in rels:
+        if 'notesSlide' in rel.get('Type', ''):
+            notes_file = os.path.basename(rel.get('Target'))
+            ntree = ET.parse(f'{base}/notesSlides/{notes_file}')
+            for sp in ntree.findall('.//p:sp', ns):
+                ph = sp.find('.//p:ph', ns)
+                if ph is not None and ph.get('idx') == '1':
+                    lines = []
+                    for p in sp.findall('.//a:p', ns):
+                        parts = [t.text or '' for t in p.findall('.//a:t', ns)]
+                        line = ''.join(parts).strip()
+                        if line:
+                            lines.append(line)
+                    return lines
+    return []
+
+# 3) Also use the slide XML's `show="0"` attribute to detect HIDDEN slides
+def is_hidden(slide_xml):
+    return ET.parse(f'{base}/slides/{slide_xml}').getroot().get('show') == '0'
+
+for pos, sf in enumerate(slide_order, 1):
+    notes = get_notes(sf)
+    h = ' [HIDDEN]' if is_hidden(sf) else ''
+    if notes:
+        print(f'=== SLIDE {pos}{h} ({sf}) ===')
+        print('\n'.join(notes))
+        print()
 ```
+
+The `pos` (1-based index into `slide_order`) is the **presentation slide number** the
+user sees. Use this number, not the slide XML filename suffix.
 
 Add the extracted notes as HTML comments at the end of each slide in `slides.md`:
 
@@ -577,3 +613,75 @@ the completed `slides.md`. Combine the extraction scripts from Steps 3, 4, and 6
   the reference file before re-extracting the PPTX
 - **Debugging**: compare the reference entry against the current `slides.md` slide
   to spot discrepancies
+
+## Step 8: Reconciling notes & `disabled:` after slides.md drifts
+
+**The problem**: slidev slide numbers do NOT match PPTX slide numbers, because the
+migration adds section dividers, reorders hidden slides, adds a QR/PowerPoint Source
+slide, etc. Any approach that maps notes by **slide index** will silently produce an
+off-by-one (or off-by-N) cascade. The user notices weeks later when notes don't match
+the slide content.
+
+**The rule**: Match slidev slides to PPTX slides by **content overlap**, not by index.
+
+### Symptoms that you have this bug
+
+- Speaker notes "feel related but wrong" (e.g., the next slide's notes are showing)
+- `disabled: true` is on the wrong slide
+- A specific slide has the right notes but everything after it is shifted
+
+### How to reconcile
+
+1. **Re-extract PPTX data using the rels-based script in Step 6** (filename mapping is wrong).
+
+2. **Parse `slides.md` into slide blocks**, capturing each slide's frontmatter and body.
+   Splitter: `re.split(r'(?m)^---\s*$', content)`. A block is "frontmatter" if its first
+   non-empty line matches `^[a-zA-Z_][a-zA-Z0-9_-]*\s*:` (key: value).
+
+3. **Skip slides that have no PPTX equivalent** when matching:
+   - `layout: section` (added during migration as chapter dividers)
+   - `layout: end`, `layout: socials`
+   - The PowerPoint Source / QR-code slide added at the end (`Powerpoint Source` + `QRCode`)
+
+4. **Match each remaining slidev slide to a PPTX slide** using a normalized word-set
+   overlap of the slide text, with a position bias to break ties when titles repeat
+   (e.g. many slides titled "Interprocess Communication"):
+
+   ```python
+   def normalize(text):
+       text = text.lower().replace('…','').replace('\u2019',"'")
+       text = re.sub(r'[^a-z0-9]+', ' ', text)
+       return set(w for w in text.split() if len(w) > 2)
+
+   # For each slidev slide (in order), search ALL unused PPTX slides:
+   #   cscore = |bag ∩ pbag| / min(|bag|, |pbag|)
+   #   score  = cscore - 0.03 * abs(pptx_idx - expected_next_pos)
+   # Pick best, mark used, advance expected_next_pos.
+   #
+   # Special case: if BOTH bags are empty (image-only meme slide vs PPTX slide
+   # with no text), give cscore = 0.95 — position bias will pick the right one.
+   # If only one is empty, give cscore = 0.3 (let position bias decide).
+   ```
+
+   The `0.03 * dist` penalty is small enough that strong content matches still win
+   across reorderings (e.g. the Chapters slide moved to before the book slide), but
+   large enough to disambiguate the dozen near-identical "Async Messaging" slides.
+
+5. **Apply two fixes per matched pair**:
+   - **Speaker notes**: strip ALL existing `<!-- ... -->` from the slide body and
+     append the PPTX notes as a fresh comment block. (Don't try to preserve old
+     notes — if reconciliation is needed, the existing ones are wrong by definition.)
+   - **`disabled: true`**: ensure the slidev slide has it iff the matched PPTX slide
+     has `show="0"`.
+
+6. **Verify** with 3-4 ground-truth pairs the user gives you ("slide X with title Y
+   should have note Z"). If any fail, the matching is still off — do NOT write changes.
+
+### Why content matching beats index matching
+
+- The user reorders, hides, and inserts slides during finetuning.
+- Section dividers and the QR slide have no PPTX counterpart, so any index-based
+  mapping must hard-code their positions — and breaks the moment the user adds
+  another section.
+- Content overlap is self-correcting: if slide titles change, you'll see the score
+  drop and can flag it instead of silently writing wrong notes.

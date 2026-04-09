@@ -6,8 +6,14 @@ const { currentSlideNo } = useNav()
 const visible = ref(false)
 const dismissed = ref(false)
 
+function isShowcaseDeployment() {
+  if (typeof window === 'undefined') return false
+  return window.location.hostname === 'itenium-be.github.io'
+    && window.location.pathname.startsWith('/Presentations/')
+}
+
 onMounted(() => {
-  if (currentSlideNo.value === 1) {
+  if (currentSlideNo.value === 1 && isShowcaseDeployment()) {
     visible.value = true
     setTimeout(() => { visible.value = false }, 6000)
   }

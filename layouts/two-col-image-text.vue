@@ -94,8 +94,7 @@ const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
   display: block;
 }
 .ic-left :deep(p) {
-  margin: 0;
-  line-height: 0;
+  display: contents;
 }
 .ic-left :deep(img) {
   max-width: 100%;

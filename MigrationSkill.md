@@ -512,6 +512,41 @@ for sldId in pres.findall('.//p:sldIdLst/p:sldId', ns):
     slide_order.append(os.path.basename(target))  # e.g. 'slide1.xml'
 
 # 2) For each slide, find notes via slideN.xml.rels
+#    Preserve **bold**/*italic* formatting from <a:rPr b="1"/> / i="1".
+#    Each <a:p> is a paragraph (separate line); each <a:r> is a run with optional rPr.
+A = '{http://schemas.openxmlformats.org/drawingml/2006/main}'
+import re
+
+def _wrap(text, bold, italic):
+    if not text.strip():
+        return text
+    m = re.match(r'^(\s*)(.*?)(\s*)$', text, re.DOTALL)
+    lead, core, trail = m.group(1), m.group(2), m.group(3)
+    if bold and italic: core = f'***{core}***'
+    elif bold:          core = f'**{core}**'
+    elif italic:        core = f'*{core}*'
+    return lead + core + trail
+
+def _format_paragraph(p_elem):
+    runs = []
+    for r in p_elem.findall(f'{A}r'):
+        t = r.find(f'{A}t')
+        if t is None or t.text is None:
+            continue
+        rpr = r.find(f'{A}rPr')
+        bold = rpr is not None and rpr.get('b') == '1'
+        italic = rpr is not None and rpr.get('i') == '1'
+        runs.append((t.text, bold, italic))
+    # CRITICAL: merge adjacent runs with the same formatting before wrapping,
+    # otherwise PowerPoint's word-by-word runs become "**word1** **word2**".
+    merged = []
+    for text, b, i in runs:
+        if merged and merged[-1][1] == b and merged[-1][2] == i:
+            merged[-1] = (merged[-1][0] + text, b, i)
+        else:
+            merged.append((text, b, i))
+    return ''.join(_wrap(t, b, i) for t, b, i in merged).rstrip()
+
 def get_notes(slide_xml):
     rels_path = f'{base}/slides/_rels/{slide_xml}.rels'
     if not os.path.exists(rels_path):
@@ -524,13 +559,12 @@ def get_notes(slide_xml):
             for sp in ntree.findall('.//p:sp', ns):
                 ph = sp.find('.//p:ph', ns)
                 if ph is not None and ph.get('idx') == '1':
-                    lines = []
+                    paras = []
                     for p in sp.findall('.//a:p', ns):
-                        parts = [t.text or '' for t in p.findall('.//a:t', ns)]
-                        line = ''.join(parts).strip()
+                        line = _format_paragraph(p)
                         if line:
-                            lines.append(line)
-                    return lines
+                            paras.append(line)
+                    return paras
     return []
 
 # 3) Also use the slide XML's `show="0"` attribute to detect HIDDEN slides
@@ -548,6 +582,20 @@ for pos, sf in enumerate(slide_order, 1):
 
 The `pos` (1-based index into `slide_order`) is the **presentation slide number** the
 user sees. Use this number, not the slide XML filename suffix.
+
+### Notes formatting in slides.md
+
+Speaker notes render as **markdown** in Slidev's presenter mode, so preserve PPTX
+formatting as markdown:
+
+- Bold runs (`<a:rPr b="1"/>`) → `**text**`
+- Italic runs (`i="1"`) → `*text*`
+- Each `<a:p>` paragraph → its own line, joined with **blank lines** so markdown
+  treats them as separate paragraphs
+
+When writing the notes into the slide's `<!-- ... -->` comment, join the paragraph
+list with `'\n\n'.join(paras)` (not `'\n'`). Single newlines inside markdown collapse
+into one paragraph.
 
 Add the extracted notes as HTML comments at the end of each slide in `slides.md`:
 

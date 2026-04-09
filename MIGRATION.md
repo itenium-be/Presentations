@@ -6,7 +6,7 @@ Powerpoints to migrate
 | Repo                     | MOSCOW   | # slides | Description                                        | Status |
 |--------------------------|----------|----------|----------------------------------------------------|--------|
 | UnitTesting              | MUST     |          | Old but been revised several times                 | DONE   |
-| MicroServices            | MUST     | 70       | OK                                                 | DOING  |
+| MicroServices            | MUST     | 70       | OK                                                 | DONE   |
 | ntier-onion-hex          | MUST     | 30       | OK                                                 |        |
 | EventSourcing-CQRS       | MUST     | 33       | OK                                                 |        |
 | Architecture-KickOff     | MUST     | 18       | Needs work probably                                |        |

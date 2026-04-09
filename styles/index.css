@@ -85,7 +85,10 @@
   text-align: center;
 }
 
-/* Presenter notes — bold text legibility on dark background */
+/* Presenter notes — legibility on dark background */
+.slidev-note {
+  color: #f5f5f5;
+}
 .slidev-note strong,
 .slidev-note b {
   color: var(--color-primary);

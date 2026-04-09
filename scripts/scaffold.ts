@@ -74,10 +74,13 @@ const packageJson = {
   scripts: {
     dev: 'slidev',
     build: `slidev build --base /${repoName}/`,
-    export: 'slidev export --format pdf',
+    export: `slidev export --format pptx --output ../${repoName}.pptx`,
   },
   dependencies: {
     '@slidev/cli': '^51.0.0',
+  },
+  devDependencies: {
+    'playwright-chromium': '^1.49.1',
   },
 }
 

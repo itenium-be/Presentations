@@ -725,6 +725,37 @@ the slide content.
 6. **Verify** with 3-4 ground-truth pairs the user gives you ("slide X with title Y
    should have note Z"). If any fail, the matching is still off — do NOT write changes.
 
+### Whitespace preservation — DO NOT use split/join
+
+**The trap**: `re.split(r'(?m)^---\s*$', content)` followed by `'---'.join(parts)`
+strips the entire `---` line on split, so on rejoin the blank lines that surrounded
+it (both the blank line before the separator and any blank lines after frontmatter
+closing) collapse. This produces a 200-line whitespace-only diff on top of the
+actual fix and the user gets annoyed.
+
+**The fix**: Edit slides.md by **line ranges**, not by string split.
+
+```python
+lines = content.split('\n')
+sep_lines = [i for i, l in enumerate(lines) if l.strip() == '---']
+
+# Walk separators to identify slide bodies as (slidev_idx, start_line, end_line)
+# Then for each body, find the existing trailing <!-- ... --> comment by scanning
+# backwards for a line ending in '-->' and the matching '<!--' opener.
+# Replace the comment in place using lines[body_start:body_end] = new_body_lines.
+# Process slides in REVERSE order so earlier line numbers stay valid.
+```
+
+Key rules when editing in place:
+- Strip blank lines immediately before the old comment, but **preserve blank lines
+  after** (the trailing whitespace before the next `---` separator).
+- When inserting a new comment, prepend exactly one blank line as separator from
+  the slide body.
+- Never touch frontmatter blocks (`---` ... key: value ... `---`) — they should stay
+  exactly as-is.
+- After the rewrite, run `git diff --stat HEAD slides.md`. If it shows changes to
+  many slides where you only edited a few, your line-range logic is wrong.
+
 ### Why content matching beats index matching
 
 - The user reorders, hides, and inserts slides during finetuning.

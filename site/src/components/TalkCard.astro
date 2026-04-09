@@ -76,10 +76,10 @@ const talkType = talk.frontmatter?.type
     <p>This is a static export of the slides as images. Animations, transitions, and interactive elements are not included. For the full experience, <a href={slidesUrl}>view the slides online</a>.</p>
     <div class="modal-actions">
       <button class="modal-cancel" onclick={`document.getElementById('modal-${slug}').close()`}>Cancel</button>
-      <a href={pptxUrl} class="modal-download" download>Download Copy</a>
-    </div>
-    <div class="modal-status" hidden>
-      <p class="modal-status-msg">✓ Download started — check your downloads folder.</p>
+      <a href={pptxUrl} class="modal-download" download>
+        <svg class="spinner" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-linecap="round"/></svg>
+        <span class="btn-text">Download Copy</span>
+      </a>
     </div>
   </div>
 </dialog>
@@ -149,15 +149,27 @@ const talkType = talk.frontmatter?.type
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 .modal-download:hover { background: #d03f00; }
-.modal-status-msg {
-  font-size: 0.9rem;
-  color: #2d7a2d;
-  margin: 0;
-  padding: 0.5rem 0;
-  text-align: center;
-  font-weight: 500;
+.modal-download .spinner {
+  display: none;
+}
+.modal-download.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.modal-download.loading .spinner {
+  display: block;
+  animation: spin 0.8s linear infinite;
+}
+.modal-download.loading .btn-text {
+  display: none;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .card {
@@ -418,25 +430,16 @@ const talkType = talk.frontmatter?.type
 </style>
 
 <script>
-  // After clicking "Download Copy", show a confirmation and auto-close the modal.
-  // The browser handles the actual download in parallel — we don't preventDefault.
+  // After clicking "Download Copy", show spinner and auto-close after 2s.
   document.querySelectorAll<HTMLAnchorElement>('.pptx-modal .modal-download').forEach((link) => {
     link.addEventListener('click', () => {
       const modal = link.closest('dialog') as HTMLDialogElement | null;
       if (!modal) return;
-      const actions = modal.querySelector<HTMLElement>('.modal-actions');
-      const status = modal.querySelector<HTMLElement>('.modal-status');
-      if (!actions || !status) return;
-      actions.hidden = true;
-      status.hidden = false;
+      link.classList.add('loading');
       setTimeout(() => {
         modal.close();
-        // Reset state shortly after close so reopening shows the original buttons.
-        setTimeout(() => {
-          actions.hidden = false;
-          status.hidden = true;
-        }, 300);
-      }, 1500);
+        setTimeout(() => link.classList.remove('loading'), 300);
+      }, 2000);
     });
   });
 </script>

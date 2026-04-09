@@ -127,3 +127,13 @@ pre code {
   font-variant-ligatures: contextual !important;
   -webkit-font-feature-settings: 'calt' 1 !important;
 }
+
+/* Hide bullet points */
+.no-bullets ul,
+.no-bullets ol {
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+.no-bullets li {
+  margin-left: 0 !important;
+}

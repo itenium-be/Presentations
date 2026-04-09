@@ -257,6 +257,42 @@ type: Theoretical
 - `track`: which track it belongs to (e.g. Architecture, Frontend, Backend)
 - `type`: Theoretical, Hands-on, Workshop, etc.
 
+### ElevatorPitch.md
+
+Every talk repo needs an `ElevatorPitch.md` in the **git root** (NOT inside `presentation/`).
+The showcase index site at `itenium-be.github.io/Presentations/` reads it to render the
+talk's card description. A migration of an existing PPTX must create this file if it
+doesn't exist yet — `bun run scaffold` would have created it, but a migrated talk
+typically pre-dates the scaffold.
+
+Required structure:
+
+```markdown
+# Talk Title
+
+## Abstract
+
+A brief description (2-3 sentences). Displayed as the card description on the index site.
+
+## Target Audience
+
+Who should attend this talk?
+
+## Key Takeaways
+
+- Takeaway 1
+- Takeaway 2
+
+## Session Format
+
+45-60 minutes
+```
+
+When migrating, draft the Abstract from the cover slide + agenda items, the Target
+Audience from the talk's track/type, and the Key Takeaways from the section dividers.
+Ask the user to review before committing — these fields are user-facing on the showcase
+site and benefit from a human pass.
+
 ### Layout mapping
 
 | PowerPoint slide | Slidev layout |

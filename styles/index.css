@@ -93,6 +93,13 @@
 .slidev-note b {
   color: var(--color-primary);
 }
+.slidev-note code {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-primary);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
 
 /* Inline code (no language) */
 .slidev-layout :not(pre) > code {

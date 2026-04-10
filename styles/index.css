@@ -137,3 +137,13 @@ pre code {
 .no-bullets li {
   margin-left: 0 !important;
 }
+
+/* Slidev goto dialog (press g) leaks into view when "closed" because
+   the -top-20 offset only hides the input, not the tall autocomplete list.
+   Fix: hide when inactive, show only when Slidev adds the .top-5 class. */
+#slidev-goto-dialog {
+  visibility: hidden;
+}
+#slidev-goto-dialog.top-5 {
+  visibility: visible;
+}

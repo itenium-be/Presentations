@@ -4,7 +4,7 @@
     <div class="circle-image" :class="'pos-' + ($frontmatter?.['image-position'] ?? 'top-right')" v-if="$slots.image">
       <slot name="image" />
     </div>
-    <div class="quote-content">
+    <div class="quote-content" :class="'text-size-' + ($frontmatter?.textSize ?? 'md')">
       <svg class="quote-icon" viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M0 40V24.8C0 20.27 0.83 16.13 2.5 12.4C4.17 8.53 6.83 4.93 10.5 1.6L17.5 6.4C15.17 8.93 13.33 11.53 12 14.2C10.67 16.87 9.83 19.8 9.5 23H20V40H0ZM30 40V24.8C30 20.27 30.83 16.13 32.5 12.4C34.17 8.53 36.83 4.93 40.5 1.6L47.5 6.4C45.17 8.93 43.33 11.53 42 14.2C40.67 16.87 39.83 19.8 39.5 23H50V40H30Z" fill="white"/>
       </svg>
@@ -58,6 +58,18 @@ const dotsUrl = new URL('../assets/dots-green.png', import.meta.url).href
   margin-bottom: 2rem;
 }
 
+.quote-text :deep(h1) {
+  font-size: 2.8rem;
+  line-height: 1.3;
+  color: #2D2A28;
+  margin: 0 0 0.5rem 0;
+}
+.quote-text :deep(h2) {
+  font-size: 2rem;
+  line-height: 1.4;
+  color: #2D2A28;
+  margin: 0 0 1.5rem 0;
+}
 .quote-text :deep(p),
 .quote-text :deep(blockquote p) {
   font-size: 1.8rem;
@@ -65,6 +77,25 @@ const dotsUrl = new URL('../assets/dots-green.png', import.meta.url).href
   color: #2D2A28;
   margin: 0 0 2rem 0;
 }
+
+/* textSize variants */
+.text-size-xl .quote-text :deep(h1) { font-size: 3.5rem; }
+.text-size-xl .quote-text :deep(h2) { font-size: 2.5rem; }
+.text-size-xl .quote-text :deep(p) { font-size: 2.2rem; }
+
+.text-size-lg .quote-text :deep(h1) { font-size: 3.2rem; }
+.text-size-lg .quote-text :deep(h2) { font-size: 2.2rem; }
+.text-size-lg .quote-text :deep(p) { font-size: 2rem; }
+
+/* md is the default — no override needed */
+
+.text-size-sm .quote-text :deep(h1) { font-size: 2.2rem; }
+.text-size-sm .quote-text :deep(h2) { font-size: 1.6rem; }
+.text-size-sm .quote-text :deep(p) { font-size: 1.4rem; }
+
+.text-size-xs .quote-text :deep(h1) { font-size: 1.8rem; }
+.text-size-xs .quote-text :deep(h2) { font-size: 1.3rem; }
+.text-size-xs .quote-text :deep(p) { font-size: 1.1rem; }
 
 .quote-text :deep(blockquote) {
   margin: 0;

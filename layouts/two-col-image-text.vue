@@ -25,15 +25,18 @@ import { computed } from 'vue'
 
 const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
 
+// Eager-glob all presentation images so Vite includes them in the build.
+// Keys are like '/images/foo.jpg', values are the resolved (hashed) URLs.
+const imageModules = import.meta.glob('/images/**/*.{jpg,jpeg,png,gif,svg,webp}', { eager: true, query: '?url', import: 'default' })
+
 const props = defineProps({
   image: { type: String, default: '' },
 })
 
 const resolvedImage = computed(() => {
   if (!props.image) return ''
-  if (props.image.startsWith('./'))
-    return import.meta.env.BASE_URL + props.image.slice(2)
-  return props.image
+  const key = props.image.replace(/^\.\//, '/')
+  return imageModules[key] || props.image
 })
 </script>
 

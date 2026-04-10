@@ -21,7 +21,17 @@ if (!existsSync(cwd)) {
   process.exit(1)
 }
 
-const repoName = basename(cwd)
+const dirName = basename(cwd)
+
+// Derive repo slug from git remote (matches the site's download URL).
+// Falls back to directory name if no remote is configured.
+let repoName = dirName
+try {
+  const remote = execSync('git remote get-url origin', { cwd, encoding: 'utf-8' }).trim()
+  const match = remote.match(/\/([^/]+?)(?:\.git)?$/)
+  if (match) repoName = match[1]
+} catch {}
+
 const presDir = join(cwd, 'presentation')
 const themeDir = join(presDir, 'theme')
 

@@ -7,7 +7,7 @@ Powerpoints to migrate
 |--------------------------|----------|----------|----------------------------------------------------|--------|
 | UnitTesting              | MUST     |          | Old but been revised several times                 | DONE   |
 | MicroServices            | MUST     | 70       | OK                                                 | DONE   |
-| ntier-onion-hex          | MUST     | 30       | OK                                                 |        |
+| ntier-onion-hex          | MUST     | 30       | OK                                                 | DONE   |
 | EventSourcing-CQRS       | MUST     | 33       | OK                                                 |        |
 | Architecture-KickOff     | MUST     | 18       | Needs work probably                                |        |
 | CSharp-Features          | MUST     |          | C# Evolution; needs work, newer c# versions        |        |

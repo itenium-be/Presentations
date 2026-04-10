@@ -151,6 +151,24 @@ Sizes appearing 5+ times are theme elements. Only visually inspect images that a
 One extracted image will be the venue/building photo used in the theme's `cover` and
 `break` layouts. This is typically from slide 1 or 2. Copy it as `cover-art.jpg`.
 
+For talks that only have a generic placeholder cover image (e.g. the old building photo),
+generate a custom one with Midjourney. Follow this style guide:
+
+- **Palette:** Warm orange, amber, gold tones against dark backgrounds. Must complement
+  the theme's orange (`#E78200`) cover layout.
+- **Style:** Abstract, geometric, stylized digital illustration. Clean and modern. Not
+  photographic.
+- **Format:** Portrait ~2:3 ratio (~400×600px final). Save as `cover-art.jpg` (or `.png`).
+- **Suffix:** `--ar 2:3 --v 6.1 --no text words letters`
+
+Approved examples for reference:
+
+| Talk | Prompt |
+|------|--------|
+| MicroServices | A murmuration of small luminous geometric birds forming a larger shape in the sky, each bird autonomous yet part of the whole, warm orange and gold against a deep twilight sky, abstract digital painting, ethereal and dynamic |
+| UnitTesting/TDD | Abstract illustration of a shield protecting a crystalline code structure, green checkmarks floating around it, warm orange and amber palette with dark background, stylized geometric digital art, clean and modern |
+| NTier-Hex-Onion | A stylized cross-section of concentric architectural rings, the innermost core glowing gold, surrounded by hexagonal lattice layers, each layer a different muted earth tone, abstract geometric style, clean lines, dark background with warm orange accents, digital illustration, minimal, elegant |
+
 Copy meaningful images to `presentation/images/` with descriptive names:
 
 ```bash

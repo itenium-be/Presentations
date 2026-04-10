@@ -72,6 +72,9 @@ const dotsUrl = new URL('../assets/dots-green.png', import.meta.url).href
   width: 100%;
 }
 
+.qi-image :deep(p) {
+  display: contents;
+}
 .qi-image :deep(img) {
   max-height: 100%;
   max-width: 100%;

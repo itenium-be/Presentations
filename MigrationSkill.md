@@ -497,12 +497,15 @@ Never add h2 decoration without h1 decoration on the same slide.
 
 | Type | Position | Colors |
 |------|----------|--------|
-| `dot` | end only | primary, muted, white |
-| `slashes` | end only | primary, muted, white |
-| `brackets` | all, or word range (e.g. `2` or `2-3`) | primary, muted, white |
-| `braces` | all, or word range | primary, muted, white |
-| `hash` | start only | primary, muted, white |
+| `dot` | end only | primary, muted |
+| `slashes` | end only | primary, muted |
+| `brackets` | all, or word range (e.g. `2` or `2-3`) | primary, muted |
+| `braces` | all, or word range | primary, muted |
+| `hash` | start only | primary, muted |
 | `semicolon` | start or end | muted only |
+
+**`white` color** is only available on `layout: statement`. All other layouts use
+`primary` or `muted` only.
 
 **Colors:** `primary` = `#f1b06c` (orange), `muted` = `#6ebca5` (teal), `white` = `#ffffff`
 
@@ -660,6 +663,10 @@ When writing the notes into the slide's `<!-- ... -->` comment, join the paragra
 list with `'\n\n'.join(paras)` (not `'\n'`). Single newlines inside markdown collapse
 into one paragraph.
 
+Replace bullet point characters (`•`) with markdown list markers (`-`) in notes.
+
+`<!--` and `-->` must always be on their own line — never inline with note content.
+
 Add the extracted notes as HTML comments at the end of each slide in `slides.md`:
 
 ```markdown
@@ -667,7 +674,9 @@ Add the extracted notes as HTML comments at the end of each slide in `slides.md`
 
 - Content here
 
-<!-- Speaker notes go here. Only visible in presenter mode. -->
+<!--
+Speaker notes go here. Only visible in presenter mode.
+-->
 ```
 
 ## Step 7: Generate PPTX reference file

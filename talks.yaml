@@ -15,3 +15,6 @@
 
 - repo: itenium-be/MicroServices
   published: true
+
+- repo: itenium-be/ntier-onion-hex
+  published: true

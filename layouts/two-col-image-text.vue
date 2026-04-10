@@ -5,8 +5,8 @@
       <slot name="default" />
     </div>
     <div class="ic-columns" :class="{ 'image-only': !$slots.content }">
-      <div class="ic-left" v-if="$frontmatter?.image">
-        <img :src="$frontmatter.image" alt="" />
+      <div class="ic-left" v-if="resolvedImage">
+        <img :src="resolvedImage" alt="" />
       </div>
       <div class="ic-left" v-else-if="$slots.image">
         <slot name="image" />
@@ -21,7 +21,20 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const dotsOrange = new URL('../assets/dots-orange.png', import.meta.url).href
+
+const props = defineProps({
+  image: { type: String, default: '' },
+})
+
+const resolvedImage = computed(() => {
+  if (!props.image) return ''
+  if (props.image.startsWith('./'))
+    return import.meta.env.BASE_URL + props.image.slice(2)
+  return props.image
+})
 </script>
 
 <style scoped>

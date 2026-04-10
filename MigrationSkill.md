@@ -8,6 +8,19 @@ Step-by-step guide for converting `.pptx` presentations to Slidev `slides.md`.
 sudo apt install libreoffice-impress poppler-utils
 ```
 
+## Gitignore
+
+Ensure the repo's `.gitignore` includes the migration working directory and the
+LibreOffice lock file (created when the PPTX is open):
+
+```gitignore
+presentation/migration/
+.~lock.*.pptx#
+```
+
+The `presentation/migration/` entry covers both the extraction artefacts (PDF, HTML,
+PNGs, JPGs) **and** `PPTX_REFERENCE.md`, which is generated there in Step 7.
+
 ## Execution order
 
 Steps 1 and 6 (PDF conversion + speaker notes extraction) can run **in parallel** since
@@ -641,7 +654,7 @@ Add the extracted notes as HTML comments at the end of each slide in `slides.md`
 
 ## Step 7: Generate PPTX reference file
 
-After completing the migration, generate `presentation/PPTX_REFERENCE.md` — a per-slide
+After completing the migration, generate `presentation/migration/PPTX_REFERENCE.md` — a per-slide
 snapshot of the original PPTX content. This serves as the source of truth for verifying
 the migration and debugging missing content without re-extracting the PPTX.
 

@@ -21,9 +21,9 @@
         <img :src="faviconUrl" class="social-icon" />
         <span>itenium.be</span>
       </a>
-      <a class="social-item" href="https://youtube.com/@itenium" target="_blank">
+      <a class="social-item" href="https://www.youtube.com/@iteniumconsultancy" target="_blank">
         <img src="https://cdn.simpleicons.org/youtube/FF0000" class="social-icon" />
-        <span>@itenium</span>
+        <span>@iteniumconsultancy</span>
       </a>
       <a class="social-item" href="https://github.com/itenium-be" target="_blank">
         <img src="https://cdn.simpleicons.org/github/ffffff" class="social-icon" />

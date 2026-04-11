@@ -21,3 +21,6 @@
 
 - repo: itenium-be/EventSourcing-CQRS
   published: true
+
+- repo: itenium-be/Architecture-KickOff
+  published: true

@@ -9,7 +9,7 @@ Powerpoints to migrate
 | MicroServices            | MUST     | 70       | OK                                                 | DONE   |
 | ntier-onion-hex          | MUST     | 30       | OK                                                 | DONE   |
 | EventSourcing-CQRS       | MUST     | 33       | OK                                                 | DONE   |
-| Architecture-KickOff     | MUST     | 18       | Needs work probably                                |        |
+| Architecture-KickOff     | MUST     | 18       | Needs work probably                                | DONE   |
 | CSharp-Features          | MUST     |          | C# Evolution; needs work, newer c# versions        |        |
 | Talk-GC                  | MUST     | 30       | Should be updated, new Java & .NET GCs             |        |
 | CodeComplete             | SHOULD   | 60 + 67  | OK                                                 |        |

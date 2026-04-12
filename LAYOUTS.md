@@ -54,6 +54,19 @@ layout: section
 Optional subtitle text
 ```
 
+**Per-slide background image:** override the default `theme/assets/section-bg.jpg` by setting `background:` to a filename inside `presentation/images/`. Both bare filenames and `./images/...` paths work — the layout strips the directory and looks the file up via Vite's `import.meta.glob`. Falls back to the default if the file isn't found.
+
+```markdown
+---
+layout: section
+background: prompt-lint-demo.png
+---
+
+# 🪿 Let's Demo
+```
+
+The dark overlay (45% black) is still applied so title text stays readable. Edit `.section-overlay` in `theme/layouts/section.vue` if you need a different opacity.
+
 ## `agenda`
 
 Numbered agenda items with photo on the left. Items passed via frontmatter.

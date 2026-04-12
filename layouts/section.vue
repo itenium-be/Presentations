@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-layout section">
-    <img :src="sectionBg" class="section-bg" aria-hidden="true" />
+    <img :src="bgUrl" class="section-bg" aria-hidden="true" />
     <div class="section-overlay" />
     <div class="section-content">
       <div class="section-line" />
@@ -17,7 +17,28 @@
 </template>
 
 <script setup>
-const sectionBg = new URL('../assets/section-bg.jpg', import.meta.url).href
+import { computed } from 'vue'
+
+const props = defineProps({
+  frontmatter: { type: Object, default: () => ({}) },
+})
+
+const defaultBg = new URL('../assets/section-bg.jpg', import.meta.url).href
+
+// Pre-import every image in presentation/images so we can resolve a
+// per-slide `background:` frontmatter prop to a real Vite-served URL.
+const imageModules = import.meta.glob(
+  '../../images/*.{png,jpg,jpeg,webp,gif}',
+  { eager: true, import: 'default' }
+)
+
+const bgUrl = computed(() => {
+  const fmBg = props.frontmatter?.background
+  if (!fmBg) return defaultBg
+  const filename = String(fmBg).split('/').pop()
+  const match = Object.entries(imageModules).find(([key]) => key.endsWith('/' + filename))
+  return match ? match[1] : defaultBg
+})
 </script>
 
 <style scoped>

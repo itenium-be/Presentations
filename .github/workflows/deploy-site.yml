@@ -2,7 +2,7 @@ name: Deploy Presentations Site
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 jobs:

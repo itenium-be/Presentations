@@ -19,7 +19,7 @@ Powerpoints to migrate
 | Regex-Tutorial           | WISH     | 25       | Maybe update blog post instead                     |        |
 | Frontend-UnitTesting     | WISH     |          | Jasmine/Jest, basic syntax; update blog instead    |        |
 | Talk-React               | WISH     |          | Pretty old (still mentions Flow)                   |        |
-| T4TGit                   | WISH     | 35       | Combine with git-get-out-of-a-mess & git-DeepDive  |        |
+| Talk-Git                 | WISH     | 35       | Combine with git-get-out-of-a-mess & git-DeepDive  |        |
 
 
 ## Frontend

@@ -38,6 +38,29 @@ transition: fade
 
 Standard content slide. White background, orange/green dot decorations, footer with slide number and favicon. Font size auto-scales based on bullet count.
 
+## `default-aside`
+
+Standard content slide with a circular aside image (14rem, orange border, square-cropped via `object-fit: cover`). Body text wraps around the image via float. Supports `textSize` (`xxl`, `xl`, `lg`, `md` (default), `sm`, `xs`) and `image-position` (`top-right` (default), `middle-right`).
+
+```markdown
+---
+layout: default-aside
+image-position: middle-right
+textSize: sm
+---
+
+# Title
+
+- Bullet that wraps around the image
+- More content
+
+::image::
+
+![](./images/headshot.jpg)
+```
+
+Inherits the same themed tables as `default` (orange header, alternating rows, hover state). Add `class="dense"` on a wrapping div for tighter rows.
+
 ## `section`
 
 Section divider. Full-bleed photo background with dark overlay, white title near top with decorative line. Supports subtitle slot.
@@ -191,6 +214,52 @@ function isPrime(n: number): boolean {
 }
 \`\`\`
 ```
+
+## Images
+
+Images are bundled by Vite into the slidev build and shipped to the site card. Right-size them at export time — Vite does not resize for you.
+
+### Per-surface targets
+
+| Use                          | Aspect    | Source resolution | Fit         | File size   | Notes                                                          |
+|------------------------------|-----------|-------------------|-------------|-------------|----------------------------------------------------------------|
+| `cover` slot (slidev)        | **2:3**   | **1024×1536**     | `contain`   | **<300 KB** | Also shown on the site `TalkCard` (240×200, `cover` crop) — keep subject in the **vertical center third** so the card crop doesn't lose it |
+| `break` slot (slidev)        | 2:3       | 1024×1536         | `cover`     | <300 KB     | Same image as cover usually; minor crop on long edge           |
+| `default-aside` circle       | **1:1**   | **600×600**       | `cover`     | **<150 KB** | Cropped to square then masked to a circle; center the subject  |
+| `agenda` left photo          | portrait  | 800×1200          | `cover`     | <250 KB     |                                                                |
+| `section` background         | landscape | 1920×1080         | `cover`     | <400 KB     | A 45% black overlay sits on top — avoid busy detail            |
+| `two-col-image-text` image   | flexible  | ≥1200 on long edge | `contain`  | <250 KB     | Whitespace-tolerant; the layout letterboxes                    |
+
+### Format
+
+| Format    | Use for                                                          |
+|-----------|------------------------------------------------------------------|
+| **PNG**   | Illustrations, screenshots, anything with sharp edges or text    |
+| **WebP**  | Same as PNG/JPG with smaller files; supported by Vite + Astro    |
+| **JPG**   | Photos with no transparency. Quality `85` is the sweet spot      |
+| **SVG**   | Logos, diagrams, icons (already used by the theme)               |
+
+Avoid GIFs (large + low quality). Avoid HEIC (inconsistent browser support).
+
+### Compress before committing
+
+Large images bloat both the slidev bundle and the static site:
+
+```bash
+# PNG quantize — usually 70-85% smaller, no visible loss
+pngquant --quality=70-85 --strip --output cover.min.png cover.png
+
+# JPG re-encode at q=85
+magick photo.jpg -quality 85 -strip photo.jpg
+
+# Convert to WebP (smallest, modern browsers)
+magick cover.png -resize 1024x1536 -quality 85 cover.webp
+
+# Square-crop + resize an aside circle source
+magick portrait.jpg -resize 600x600^ -gravity center -extent 600x600 aside.jpg
+```
+
+If `cover.png` weighs more than ~500 KB, it should be re-exported.
 
 ## Components
 

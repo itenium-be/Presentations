@@ -174,6 +174,29 @@ layout: quote
 # Quote text here
 ```
 
+## `statement`
+
+Green background with a large quote-mark SVG, attribution line, and optional circle aside image. Use for memorable one-liners that need more weight than `quote`. Supports `textSize` (`xl`, `lg`, `md` (default), `sm`, `xs`) and `image-position` (`top-right` (default), `middle-right`).
+
+```markdown
+---
+layout: statement
+textSize: lg
+---
+
+# The bold claim that anchors the talk
+
+::author::
+
+**Name Surname** — Title, Org
+
+::image::
+
+![](./images/headshot.jpg)
+```
+
+The `::author::` and `::image::` slots are both optional.
+
 ## `source`
 
 Final slide of every talk. Renders "Powerpoint Source" title, a QR code, and a clickable
@@ -214,6 +237,37 @@ function isPrime(n: number): boolean {
 }
 \`\`\`
 ```
+
+## `code-comparison`
+
+Side-by-side Before/After code blocks on a gray background. Title at top, two rounded white panels with colored headings (red for Before, green for After). Supports `code-size` frontmatter (default `0.85em`) and `before-label` / `after-label` to override the column headings.
+
+````markdown
+---
+layout: code-comparison
+before-label: Without Skills
+after-label: With Skills
+code-size: 0.7em
+---
+
+# Title
+
+::before::
+
+```ts
+function fetchUser(id) {
+  // ...
+}
+```
+
+::after::
+
+```ts
+async function fetchUser(id: string): Promise<User> {
+  // ...
+}
+```
+````
 
 ## Images
 

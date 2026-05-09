@@ -100,6 +100,17 @@
   border-radius: 4px;
   font-size: 0.9em;
 }
+.slidev-note blockquote {
+  color: #b0b0b0;
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  padding-left: 0.75em;
+  margin: 0.4em 0;
+  font-style: italic;
+}
+.slidev-note blockquote p {
+  color: inherit;
+  margin: 0.25em 0;
+}
 
 /* Inline code (no language) */
 .slidev-layout :not(pre) > code {

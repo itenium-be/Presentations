@@ -6,11 +6,11 @@
     <h1 class="socials-title">Our Socials</h1>
     <div class="socials-grid">
       <a class="social-item" href="https://instagram.com/itenium" target="_blank">
-        <img src="https://cdn.simpleicons.org/instagram/E4405F" class="social-icon" />
+        <img :src="instagramIcon" class="social-icon" />
         <span>@itenium</span>
       </a>
       <a class="social-item" href="https://x.com/itenium_be" target="_blank">
-        <img src="https://cdn.simpleicons.org/x/ffffff" class="social-icon" />
+        <img :src="xIcon" class="social-icon" />
         <span>@itenium_be</span>
       </a>
       <a class="social-item" href="https://linkedin.com/company/itenium" target="_blank">
@@ -22,11 +22,11 @@
         <span>itenium.be</span>
       </a>
       <a class="social-item" href="https://www.youtube.com/@iteniumconsultancy" target="_blank">
-        <img src="https://cdn.simpleicons.org/youtube/FF0000" class="social-icon" />
+        <img :src="youtubeIcon" class="social-icon" />
         <span>@iteniumconsultancy</span>
       </a>
       <a class="social-item" href="https://github.com/itenium-be" target="_blank">
-        <img src="https://cdn.simpleicons.org/github/ffffff" class="social-icon" />
+        <img :src="githubIcon" class="social-icon" />
         <span>itenium-be</span>
       </a>
     </div>
@@ -39,6 +39,10 @@
 <script setup>
 const faviconUrl = new URL('../assets/favicon-white.png', import.meta.url).href
 const photoUrl = new URL('../assets/socials-photo.png', import.meta.url).href
+const instagramIcon = new URL('../assets/social-instagram.svg', import.meta.url).href
+const xIcon = new URL('../assets/social-x.svg', import.meta.url).href
+const youtubeIcon = new URL('../assets/social-youtube.svg', import.meta.url).href
+const githubIcon = new URL('../assets/social-github.svg', import.meta.url).href
 </script>
 
 <style scoped>

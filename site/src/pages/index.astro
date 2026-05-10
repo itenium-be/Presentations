@@ -69,9 +69,9 @@ const enriched = allTalks
     }
   })
   .sort((a, b) => {
-    const aDate = String(a.lastUpdate || a.date)
-    const bDate = String(b.lastUpdate || b.date)
-    return bDate.localeCompare(aDate)
+    const aTime = new Date(a.lastUpdate || a.date).getTime()
+    const bTime = new Date(b.lastUpdate || b.date).getTime()
+    return bTime - aTime
   })
 
 const allCategories = [...new Set(enriched.map(t => t.category).filter(Boolean))].sort()

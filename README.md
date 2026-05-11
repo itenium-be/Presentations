@@ -49,6 +49,23 @@ bun run dev
 
 See [LAYOUTS.md](LAYOUTS.md) for all available layouts, features, and usage examples.
 
+## Skills
+
+Skills for working on slide decks live in `skills/`:
+
+| Skill                                                          | Trigger                                                            |
+|----------------------------------------------------------------|--------------------------------------------------------------------|
+| [adding-slide-image](skills/adding-slide-image/SKILL.md)       | Adding an image to a slide, or converting `default` → `default-aside`. |
+
+To make these auto-discoverable by Claude Code from a talk repo, symlink them from the talk root:
+
+```bash
+mkdir -p .claude/skills
+ln -sf ../../presentation/theme/skills/adding-slide-image .claude/skills/adding-slide-image
+```
+
+Or invoke them by path: open `presentation/theme/skills/<name>/SKILL.md` in conversation.
+
 ## Creating a new presentation
 
 Each talk lives in its own repo with the theme as a git submodule.

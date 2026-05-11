@@ -90,7 +90,10 @@ first: 2026-01-01            # first presentation date
 ---
 ```
 
-Optional: `lastUpdate` (shown instead of `first` date on the site).
+Optional:
+
+- `lastUpdate` — shown instead of `first` date on the site.
+- `aspectRatio` — defaults to `16/10` (matches typical laptop screens). Override with `16/9` for projectors or `21/9` for ultrawide. Note: Slidev does not hot-reload this — restart the dev server after changing.
 
 ### ElevatorPitch.md
 

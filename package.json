@@ -21,7 +21,8 @@
     "defaults": {
       "favicon": "./theme/assets/favicon.png",
       "titleTemplate": "%s @ itenium",
-      "colorSchema": "dark"
+      "colorSchema": "dark",
+      "aspectRatio": "16/10"
     }
   },
   "peerDependencies": {

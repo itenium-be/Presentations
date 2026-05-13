@@ -21,14 +21,16 @@
     "defaults": {
       "favicon": "./theme/assets/favicon.png",
       "titleTemplate": "%s @ itenium",
-      "colorSchema": "dark"
+      "colorSchema": "dark",
+      "aspectRatio": "16/10"
     }
   },
   "peerDependencies": {
     "@slidev/types": ">=0.1.0"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "sharp": "^0.34.0"
   },
   "devDependencies": {
     "@slidev/cli": "^51.0.0",

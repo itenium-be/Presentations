@@ -10,7 +10,7 @@
  *   bun run presentation/theme/scripts/scaffold.ts
  */
 
-import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, appendFileSync, readdirSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync, appendFileSync, readdirSync, lstatSync, rmSync, symlinkSync } from 'fs'
 import { join, basename, resolve } from 'path'
 import { execSync } from 'child_process'
 
@@ -197,9 +197,37 @@ if (existsSync(readmePath)) {
   console.log('Created README.md')
 }
 
-// 9. Install
+// 9. Wire Claude Code skill discovery to the theme's skills/ dir.
+// A single directory symlink means every skill the theme ships — present and future —
+// is auto-discovered by any talk after a `git pull` of the submodule. Claude Code does
+// not scan the submodule path itself, so without this bridge the theme's skills never load.
+const claudeSkills = join(cwd, '.claude', 'skills')
+try {
+  if (existsSync(join(themeDir, 'skills'))) {
+    if (existsSync(claudeSkills) && !lstatSync(claudeSkills).isSymbolicLink()) {
+      console.log('.claude/skills exists as a real directory — leaving it; theme skills not linked.')
+    } else {
+      mkdirSync(join(cwd, '.claude'), { recursive: true })
+      rmSync(claudeSkills, { force: true }) // refresh a stale/relocated symlink
+      symlinkSync('../presentation/theme/skills', claudeSkills) // relative → portable across clones
+      console.log('Linked .claude/skills -> presentation/theme/skills')
+    }
+  }
+} catch (err) {
+  // Non-fatal: e.g. Windows without symlink permission. Scaffolding should still succeed.
+  console.log(`Could not link theme skills (${(err as Error).message}); skills won't auto-load.`)
+}
+
+// 10. Install
 console.log('\nRunning bun install...')
 execSync('bun install', { cwd: presDir, stdio: 'inherit' })
+
+// 11. Install the theme's own deps (sharp, etc.) so its scripts — e.g. the
+// adding-slide-image skill's resize-image.ts — work without a separate install step.
+if (!existsSync(join(themeDir, 'node_modules'))) {
+  console.log('\nInstalling theme tooling deps...')
+  execSync('bun install', { cwd: themeDir, stdio: 'inherit' })
+}
 
 console.log(`
 Done! Your slides are ready.

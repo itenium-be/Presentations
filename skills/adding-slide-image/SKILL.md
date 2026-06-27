@@ -15,17 +15,21 @@ Workflow for adding a Midjourney-generated image to a slide. Covers prompt gener
 
 ## Layouts That Accept Images
 
-| Layout                | Image role                       | Size               | MJ `--ar`         |
-|-----------------------|----------------------------------|--------------------|-------------------|
-| `default-aside`       | Circular aside (14rem, cover-crop)| 800x800            | `1:1`             |
-| `cover`               | Title-slide right column (`object-fit: contain`, ~35% width, tall) | 800x1200           | `2:3`             |
-| `quote-image`         | Quote backdrop (`object-fit: contain`) | 800x800 or 800x1200 | `1:1` or `2:3`    |
-| `two-col-image-text`  | Left column (~half width)        | 800x800 or 800x1200 | `1:1` or `2:3`    |
-| `section`             | Full-bleed background            | 1920x1200+ (out of scope) | n/a              |
+| Layout                | Image role                                                         | Size      | MJ `--ar`          |
+|-----------------------|--------------------------------------------------------------------|-----------|--------------------|
+| `default-aside`       | Circular aside (14rem, cover-crop)                                 | 800x800   | `1:1`              |
+| `statement`           | Circular aside (cover-crop) — same slot as `default-aside`         | 800x800   | `1:1`              |
+| `quote`               | Circular aside (cover-crop) — same slot as `default-aside`         | 800x800   | `1:1`              |
+| `cover`               | Title-slide right column (`object-fit: contain`, ~35% width, tall) | 800x1200  | `2:3`              |
+| `quote-image`         | Quote backdrop (`object-fit: contain`)                             | 800x1200  | `2:3`              |
+| `two-col-image-text`  | Left column (~half width, tall)                                    | 800x1200  | `2:3`              |
+| `section`             | Full-bleed background (cover-crop, behind 45% dark overlay)        | 1920x1200 | `16:10`            |
 
 `agenda` uses a theme-controlled left photo (not a per-slide slot). See `theme/LAYOUTS.md` for full layout reference.
 
-**Rule of thumb:** layouts that `cover-crop` (default-aside) need a centered subject. Layouts that `contain` (cover, quote-image) preserve the source aspect ratio — match the slot's shape to avoid letterboxing.
+**`section` `--ar` tracks the deck's `aspectRatio`** (theme default `16/10` → `16:10`, 1920x1200). If a deck overrides to `16/9` for a projector, generate `16:9` (1920x1080) instead. Keep detail off the top — the 45% overlay + white title sit there.
+
+**Rule of thumb:** circular-aside layouts (`default-aside`, `statement`, `quote`) `cover-crop` to a circle — center the subject. `contain` layouts (`cover`, `quote-image`) preserve the source aspect ratio — match the slot's shape to avoid letterboxing.
 
 ## Workflow
 
@@ -80,12 +84,18 @@ The user runs the chosen prompt externally (Discord / Midjourney web), downloads
 Run from the talk repo root:
 
 ```bash
-# Square (default-aside, default 800x800)
+# Square 1:1 (default-aside / statement / quote circle, default 800x800)
 bun run presentation/theme/scripts/resize-image.ts <input-path> <slug>
 
-# Portrait (cover layout — 2:3)
+# Portrait 2:3 (cover / quote-image / two-col-image-text)
 bun run presentation/theme/scripts/resize-image.ts <input-path> <slug> --width 800 --height 1200
+
+# Full-bleed 16:10 (section background — match the deck's aspectRatio)
+bun run presentation/theme/scripts/resize-image.ts <input-path> <slug> --width 1920 --height 1200
 ```
+
+For a `section` background the slug is referenced as `background: <slug>.jpg` in frontmatter,
+and the file MUST live in `presentation/images/` (the layout resolves it via Vite glob).
 
 Output: `presentation/images/<slug>.jpg`, smart-cropped on the subject (`fit: cover, position: attention`), quality 85, mozjpeg.
 
@@ -127,11 +137,14 @@ Just append the `::image::` block.
 ## Quick Reference
 
 ```bash
-# default-aside (square)
+# circle aside (square 1:1 — default-aside / statement / quote)
 bun run presentation/theme/scripts/resize-image.ts ~/Downloads/mj-output.png the-prompt
 
-# cover (portrait 2:3)
+# cover / two-col-image-text (portrait 2:3)
 bun run presentation/theme/scripts/resize-image.ts ~/Downloads/mj-output.png cover-art --width 800 --height 1200
+
+# section background (full-bleed 16:10)
+bun run presentation/theme/scripts/resize-image.ts ~/Downloads/mj-output.png knobs --width 1920 --height 1200
 
 # Slide edit (default -> default-aside):
 # 1. Change `layout: default` -> `layout: default-aside`

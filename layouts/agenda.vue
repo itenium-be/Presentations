@@ -8,7 +8,7 @@
       <div class="agenda-items">
         <template v-for="(item, i) in ($frontmatter?.items ?? [])" :key="i">
           <span class="agenda-number">{{ i + 1 }}</span>
-          <span class="agenda-label">{{ item }}</span>
+          <span class="agenda-label" v-html="item" />
         </template>
       </div>
     </div>
@@ -81,6 +81,7 @@ const agendaBg = new URL('../assets/agenda-bg.jpg', import.meta.url).href
   font-size: 2rem;
   font-family: var(--font-heading);
 }
+.agenda-label :deep(s) { opacity: .5; }
 
 /* Size variants via frontmatter `size` */
 .agenda-content.text-size-lg .agenda-items { gap: 1.2rem 1.5rem; }

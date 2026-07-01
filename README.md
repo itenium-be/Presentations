@@ -104,13 +104,13 @@ session-time: 60min
 track: Architecture          # category shown on site (lowercase)
 type: Theoretical            # or Practical, Workshop, etc.
 first: 2026-01-01            # first presentation date
+aspectRatio: 16/10           # 16/10 laptop, 16/9 projector, 21/9 ultrawide
 ---
 ```
 
 Optional:
 
 - `lastUpdate` — shown instead of `first` date on the site.
-- `aspectRatio` — defaults to `16/10` (matches typical laptop screens). Override with `16/9` for projectors or `21/9` for ultrawide. Note: Slidev does not hot-reload this — restart the dev server after changing.
 
 ### ElevatorPitch.md
 
@@ -153,3 +153,9 @@ All other metadata (title, description, category, dates) comes from the talk's f
 ```bash
 cd presentation/theme && git pull
 ```
+
+## Before presenting
+
+- Set `aspectRatio` frontmatter
+- Taskbar Settings > Taskbar behaviors > Automatically hide the taskbar
+- Close DisplayFusion

@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { encode } from 'uqr'
+import logoUrl from '../assets/favicon.png'
 
 const props = withDefaults(defineProps<{
   url: string
@@ -17,7 +18,8 @@ const container = ref<HTMLElement>()
 
 function render() {
   if (!container.value) return
-  const qr = encode(props.url)
+  // ecc 'H' (~30% recovery) is what makes the centered logo overlay stay scannable.
+  const qr = encode(props.url, { ecc: 'H' })
   const s = qr.size
   let rects = ''
   for (let y = 0; y < s; y++) {
@@ -27,7 +29,14 @@ function render() {
       }
     }
   }
-  container.value.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${s} ${s}" style="width:100%;height:100%">${rects}</svg>`
+  // Logo kept to ~24% width so the covered area stays within ecc 'H' recovery budget.
+  const logo = s * 0.24
+  const pad = s * 0.03
+  const box = logo + pad * 2
+  const overlay =
+    `<rect x="${(s - box) / 2}" y="${(s - box) / 2}" width="${box}" height="${box}" rx="${box * 0.15}" fill="#fff"/>` +
+    `<image href="${logoUrl}" x="${(s - logo) / 2}" y="${(s - logo) / 2}" width="${logo}" height="${logo}"/>`
+  container.value.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${s} ${s}" style="width:100%;height:100%">${rects}${overlay}</svg>`
 }
 
 onMounted(render)

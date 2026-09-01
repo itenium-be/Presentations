@@ -30,3 +30,6 @@
 
 - repo: itenium-be/Extending-Your-Agent
   published: true
+
+- repo: itenium-be/rag-and-embeddings
+  published: true

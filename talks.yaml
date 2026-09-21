@@ -33,3 +33,6 @@
 
 - repo: itenium-be/rag-and-embeddings
   published: true
+
+- repo: itenium-be/git-worktrees
+  published: true

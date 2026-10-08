@@ -36,3 +36,11 @@
 
 - repo: itenium-be/git-worktrees
   published: true
+
+- repo: itenium-be/git-worktrees
+  entry: guardrails.md
+  published: true
+
+- repo: itenium-be/git-worktrees
+  entry: dark-factory.md
+  published: true

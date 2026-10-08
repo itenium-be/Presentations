@@ -11,18 +11,15 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync } fr
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
-
-interface Talk {
-  repo: string
-  published: boolean
-}
+import { resolveTalk, type TalkYaml } from './talks'
 
 const root = resolve(import.meta.dir, '..')
 const cacheDir = join(root, '.talks-cache')
 const distDir = join(root, 'dist/Presentations')
 
-const talks = yaml.load(readFileSync(join(root, 'talks.yaml'), 'utf-8')) as Talk[]
-const published = talks.filter(t => t.published)
+const talks = yaml.load(readFileSync(join(root, 'talks.yaml'), 'utf-8')) as TalkYaml[]
+const published = talks.filter(t => t.published).map(resolveTalk)
+const pulledRepos = new Set<string>()
 
 if (!existsSync(cacheDir)) mkdirSync(cacheDir)
 if (existsSync(join(root, 'dist'))) rmSync(join(root, 'dist'), { recursive: true })
@@ -36,9 +33,9 @@ function run(cmd: string, cwd: string) {
 
 // 1. Clone & build each published talk
 for (const talk of published) {
-  const slug = talk.repo.split('/').pop()!
+  const { slug, repoName } = talk
   const repoUrl = `https://github.com/${talk.repo}.git`
-  const cloneDir = join(cacheDir, slug)
+  const cloneDir = join(cacheDir, repoName)
   const presDir = join(cloneDir, 'presentation')
 
   console.log(`\n=== ${slug} ===`)
@@ -47,11 +44,12 @@ for (const talk of published) {
     // Clone if not cached
     if (!existsSync(cloneDir)) {
       console.log(`Cloning ${talk.repo}...`)
-      run(`git clone --depth 1 ${repoUrl} ${slug}`, cacheDir)
-    } else {
+      run(`git clone --depth 1 ${repoUrl} ${repoName}`, cacheDir)
+    } else if (!pulledRepos.has(talk.repo)) {
       console.log('Using cached clone, pulling latest...')
       run('git pull', cloneDir)
     }
+    pulledRepos.add(talk.repo)
 
     if (!existsSync(presDir)) {
       console.error(`  ERROR: ${presDir} not found — skipping`)
@@ -59,9 +57,9 @@ for (const talk of published) {
     }
 
     // Verify PPTX exists in the repo
-    const pptxPath = join(cloneDir, `${slug}.pptx`)
+    const pptxPath = join(cloneDir, talk.pptx)
     if (!existsSync(pptxPath)) {
-      console.error(`  ERROR: ${slug}.pptx not found in repo root. Export it locally and commit it.`)
+      console.error(`  ERROR: ${talk.pptx} not found in repo root. Export it locally and commit it.`)
       errors.push(slug)
       continue
     }
@@ -77,12 +75,12 @@ for (const talk of published) {
     for (const f of themeFiles) cpSync(join(root, f), join(themeDir, f))
 
     // Clean previous build output
-    const distDir2 = join(presDir, 'dist')
+    const distDir2 = join(presDir, talk.distDir)
     if (existsSync(distDir2)) rmSync(distDir2, { recursive: true, force: true })
 
     // Install & build
     run('bun install', presDir)
-    run(`bunx slidev build --base /Presentations/${slug}/`, presDir)
+    run(`bunx slidev build ${talk.entry} --base /Presentations/${slug}/ --out ${talk.distDir}`, presDir)
   } catch (err) {
     console.error(`  FAILED: ${slug} — ${(err as Error).message}`)
     errors.push(slug)
@@ -113,8 +111,8 @@ try {
 // 4. Copy slidev builds into dist/Presentations
 const missing: string[] = []
 for (const talk of published) {
-  const slug = talk.repo.split('/').pop()!
-  const slidevDist = join(cacheDir, slug, 'presentation', 'dist')
+  const { slug } = talk
+  const slidevDist = join(cacheDir, talk.repoName, 'presentation', talk.distDir)
 
   if (!existsSync(slidevDist)) {
     missing.push(slug)
@@ -127,9 +125,9 @@ for (const talk of published) {
   cpSync(slidevDist, targetDir, { recursive: true })
 
   // Copy cover image to a predictable path
-  const imgDir = join(cacheDir, slug, 'presentation', 'images')
+  const imgDir = join(cacheDir, talk.repoName, 'presentation', 'images')
   for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
-    const src = join(imgDir, `cover-art.${ext}`)
+    const src = join(imgDir, `${talk.cover}.${ext}`)
     if (existsSync(src)) { cpSync(src, join(targetDir, `cover-art.${ext}`)); break }
   }
 

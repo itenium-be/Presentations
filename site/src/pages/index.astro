@@ -4,11 +4,7 @@ import { resolve } from 'path'
 import yaml from 'js-yaml'
 import matter from 'gray-matter'
 import TalkCard from '../components/TalkCard.astro'
-
-interface TalkYaml {
-  repo: string
-  published: boolean
-}
+import { resolveTalk, type TalkYaml } from '../../../scripts/talks'
 
 function countSlides(distAssetsPath: string): number {
   try {
@@ -21,8 +17,8 @@ function countSlides(distAssetsPath: string): number {
   } catch { return 0 }
 }
 
-function readElevatorTalk(cacheBase: string): string {
-  const elevatorPath = resolve(cacheBase, 'ElevatorPitch.md')
+function readElevatorTalk(cacheBase: string, fileName: string): string {
+  const elevatorPath = resolve(cacheBase, fileName)
   if (!existsSync(elevatorPath)) return ''
   const raw = readFileSync(elevatorPath, 'utf-8')
   const abstractMatch = raw.match(/## Abstract\s*\n([\s\S]*?)(?=\n## |\n$)/)
@@ -34,10 +30,11 @@ const allTalks = yaml.load(readFileSync(talksPath, 'utf-8')) as TalkYaml[]
 
 const enriched = allTalks
   .filter(t => t.published)
+  .map(resolveTalk)
   .map(talk => {
-    const slug = talk.repo.split('/').pop()!
-    const cacheBase = resolve(process.cwd(), `../.talks-cache/${slug}`)
-    const slidesPath = resolve(cacheBase, 'presentation/slides.md')
+    const { slug } = talk
+    const cacheBase = resolve(process.cwd(), `../.talks-cache/${talk.repoName}`)
+    const slidesPath = resolve(cacheBase, 'presentation', talk.entry)
     let fm: Record<string, any> = {}
     try {
       fm = matter(readFileSync(slidesPath, 'utf-8')).data
@@ -46,18 +43,19 @@ const enriched = allTalks
     // Cover image extension
     let coverExt = 'png'
     for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
-      if (existsSync(resolve(cacheBase, `presentation/images/cover-art.${ext}`))) { coverExt = ext; break }
+      if (existsSync(resolve(cacheBase, `presentation/images/${talk.cover}.${ext}`))) { coverExt = ext; break }
     }
 
     // Slide count from built chunks
-    const distAssets = resolve(cacheBase, 'presentation/dist/assets')
+    const distAssets = resolve(cacheBase, `presentation/${talk.distDir}/assets`)
     const slideCount = countSlides(distAssets)
 
-    // Description: ElevatorPitch.md abstract > frontmatter subTitle > fallback
-    const description = readElevatorTalk(cacheBase) || fm.subTitle || ''
+    // Description: elevator pitch abstract > frontmatter subTitle > fallback
+    const description = readElevatorTalk(cacheBase, talk.elevatorPitch) || fm.subTitle || ''
 
     return {
       repo: talk.repo,
+      slug,
       title: fm.title || slug,
       description,
       category: fm.track?.toLowerCase() || '',

@@ -1,9 +1,12 @@
 ---
+import { inlineCodeToHtml } from '../inlineCode'
+
 interface Props {
   talk: {
     title: string
     description: string
     repo: string
+    slug: string
     date: string
     lastUpdate?: string
     category: string
@@ -14,7 +17,7 @@ interface Props {
 }
 
 const { talk } = Astro.props
-const slug = talk.repo.split('/').pop()
+const { slug } = talk
 const slidesUrl = `/Presentations/${slug}/`
 const repoUrl = `https://github.com/${talk.repo}`
 const coverUrl = `/Presentations/${slug}/cover-art.${talk.coverExt}`
@@ -57,7 +60,7 @@ const talkType = talk.frontmatter?.type
         {track && <span class="meta-item">{track}</span>}
         {talkType && <span class="meta-item">{talkType}</span>}
       </div>
-      <p class="card-desc">{talk.description}</p>
+      <p class="card-desc" set:html={inlineCodeToHtml(talk.description)} />
       <div class="card-footer">
         <span class="card-date">{dateStr}</span>
         <div class="card-actions">
@@ -273,6 +276,15 @@ const talkType = talk.frontmatter?.type
   line-height: 1.55;
   margin: 0.75rem 0;
   flex: 1;
+}
+
+.card-desc :global(code) {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82em;
+  background: #f5f5f5;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
 }
 
 .card-footer {

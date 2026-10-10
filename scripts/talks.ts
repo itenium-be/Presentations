@@ -7,6 +7,9 @@ export interface TalkYaml {
   entry?: string
 }
 
+/** Deck root a deep link belongs to, for the GitHub Pages 404 SPA redirect */
+export const SPA_ROOT = /^\/Presentations\/(?:creators\/)?[^/]+\//
+
 export function resolveTalk(talk: TalkYaml) {
   const repoName = talk.repo.split('/').pop()!
   const slug = talk.entry ? basename(talk.entry, '.md') : repoName

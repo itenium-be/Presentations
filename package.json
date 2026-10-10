@@ -13,6 +13,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "slidev talks/showcase/slides.md",
+    "dev:creators": "bun run scripts/dev-creators.ts",
     "build": "slidev build talks/showcase/slides.md",
     "scaffold": "bun run scripts/scaffold.ts",
     "build-all": "bun run scripts/build-all.ts"

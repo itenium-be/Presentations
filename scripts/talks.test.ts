@@ -1,5 +1,19 @@
 import { describe, expect, test } from 'bun:test'
-import { resolveTalk } from './talks'
+import { resolveTalk, SPA_ROOT } from './talks'
+
+describe('SPA_ROOT', () => {
+  test('talk deep link resolves to the talk root', () => {
+    expect('/Presentations/git-worktrees/5'.match(SPA_ROOT)?.[0]).toBe('/Presentations/git-worktrees/')
+  })
+
+  test('creators deck deep link resolves to the deck root', () => {
+    expect('/Presentations/creators/showcase/cover'.match(SPA_ROOT)?.[0]).toBe('/Presentations/creators/showcase/')
+  })
+
+  test('presenter deep link resolves to the talk root', () => {
+    expect('/Presentations/git-worktrees/presenter/5'.match(SPA_ROOT)?.[0]).toBe('/Presentations/git-worktrees/')
+  })
+})
 
 describe('resolveTalk', () => {
   test('repo without entry is the slides.md talk named after the repo', () => {

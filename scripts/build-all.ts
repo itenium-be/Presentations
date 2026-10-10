@@ -5,13 +5,16 @@
  * 2. Build each talk's slidev presentation
  * 3. Build the Astro index site
  * 4. Copy slidev outputs into dist/presentations/{slug}/
+ * 5. Build the theme's own decks into dist/presentations/creators/{deck}/
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync } from 'fs'
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
-import { resolveTalk, type TalkYaml } from './talks'
+import { resolveTalk, SPA_ROOT, type TalkYaml } from './talks'
+import { copySiteAssets } from './site-assets'
+import { DECK_PORTS } from '../site/src/creators'
 
 const root = resolve(import.meta.dir, '..')
 const cacheDir = join(root, '.talks-cache')
@@ -25,6 +28,13 @@ if (!existsSync(cacheDir)) mkdirSync(cacheDir)
 if (existsSync(join(root, 'dist'))) rmSync(join(root, 'dist'), { recursive: true })
 
 const errors: string[] = []
+
+const spaScript = `<script>(function(){var r=sessionStorage.redirect;delete sessionStorage.redirect;if(r&&r!==location.href){history.replaceState(null,null,r)}})()</script>`
+
+function injectSpaRestore(deckDir: string) {
+  const indexPath = join(deckDir, 'index.html')
+  writeFileSync(indexPath, readFileSync(indexPath, 'utf-8').replace('<head>', '<head>' + spaScript))
+}
 
 function run(cmd: string, cwd: string) {
   console.log(`  $ ${cmd}`)
@@ -89,13 +99,7 @@ for (const talk of published) {
 
 // 2. Copy theme fonts + assets into site/public for the Astro build
 console.log('\n=== Copying theme assets to site/public ===')
-const sitePublic = join(root, 'site', 'public')
-mkdirSync(join(sitePublic, 'fonts'), { recursive: true })
-for (const f of ['rubik-400', 'rubik-500', 'rubik-700', 'inter-400', 'inter-600', 'ibm-plex-mono-400']) {
-  cpSync(join(root, 'assets', 'fonts', `${f}.woff2`), join(sitePublic, 'fonts', `${f}.woff2`))
-}
-cpSync(join(root, 'assets', 'dots-orange.png'), join(sitePublic, 'dots-orange.png'))
-cpSync(join(root, 'assets', 'logo-itenium.svg'), join(sitePublic, 'logo-itenium.svg'))
+copySiteAssets(root)
 
 // 3. Build Astro index site
 console.log('\n=== Building Astro site ===')
@@ -131,11 +135,7 @@ for (const talk of published) {
     if (existsSync(src)) { cpSync(src, join(targetDir, `cover-art.${ext}`)); break }
   }
 
-  // Inject SPA redirect restore script into each talk's index.html
-  const indexPath = join(targetDir, 'index.html')
-  const html = readFileSync(indexPath, 'utf-8')
-  const spaScript = `<script>(function(){var r=sessionStorage.redirect;delete sessionStorage.redirect;if(r&&r!==location.href){history.replaceState(null,null,r)}})()</script>`
-  writeFileSync(indexPath, html.replace('<head>', '<head>' + spaScript))
+  injectSpaRestore(targetDir)
 
   console.log(`Copied ${slug} → dist/Presentations/${slug}/`)
 }
@@ -145,12 +145,20 @@ if (missing.length) {
   process.exit(1)
 }
 
-// 5. Write root 404.html for SPA routing on GitHub Pages
+// 5. Build the theme's own decks for the creators page
+for (const deck of Object.keys(DECK_PORTS)) {
+  console.log(`\n=== creators/${deck} ===`)
+  const targetDir = join(distDir, 'creators', deck)
+  run(`bunx slidev build talks/${deck}/slides.md --base /Presentations/creators/${deck}/ --out ${targetDir}`, root)
+  injectSpaRestore(targetDir)
+}
+
+// 6. Write root 404.html for SPA routing on GitHub Pages
 const notFoundHtml = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><script>
 // Preserve SPA path through GitHub Pages 404 redirect
 sessionStorage.redirect = location.href;
-var m = location.pathname.match(/^\\/Presentations\\/[^/]+\\//);
+var m = location.pathname.match(${SPA_ROOT});
 if (m) location.replace(m[0]);
 </script></head><body></body></html>`
 writeFileSync(join(distDir, '404.html'), notFoundHtml)

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { resolveTalk, SPA_ROOT } from './talks'
+import { resolveTalk, SPA_NOT_FOUND_JS, SPA_RESTORE_JS, SPA_ROOT } from './talks'
 
 describe('SPA_ROOT', () => {
   test('talk deep link resolves to the talk root', () => {
@@ -42,5 +42,30 @@ describe('resolveTalk', () => {
       pptx: 'dark-factory.pptx',
       elevatorPitch: 'ElevatorPitch-dark-factory.md',
     })
+  })
+})
+
+describe('SPA redirect', () => {
+  function fakeLocation(href: string) {
+    const url = new URL(href)
+    return { href: url.href, pathname: url.pathname, search: url.search, hash: url.hash, replaced: '', replace(u: string) { this.replaced = u } }
+  }
+
+  function roundTrip(deepLink: string): string {
+    const notFound = fakeLocation(deepLink)
+    new Function('location', SPA_NOT_FOUND_JS)(notFound)
+    const deckRoot = fakeLocation(new URL(notFound.replaced, deepLink).href)
+    let restored = deckRoot.pathname + deckRoot.search + deckRoot.hash
+    new Function('location', 'history', SPA_RESTORE_JS)(deckRoot, { replaceState: (_s: unknown, _t: unknown, u: string) => { restored = u } })
+    return restored
+  }
+
+  test('deep link survives the 404 round trip', () => {
+    expect(roundTrip('https://x.be/Presentations/creators/showcase/conf-intro?embedded=true')).toBe('/Presentations/creators/showcase/conf-intro?embedded=true')
+  })
+
+  test('concurrent deep links each restore their own slide', () => {
+    expect(['cover', 'conf-intro', 'quote'].map(s => roundTrip(`https://x.be/Presentations/creators/showcase/${s}`)))
+      .toEqual(['/Presentations/creators/showcase/cover', '/Presentations/creators/showcase/conf-intro', '/Presentations/creators/showcase/quote'])
   })
 })

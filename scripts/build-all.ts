@@ -12,7 +12,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync } fr
 import { join, resolve } from 'path'
 import { execSync } from 'child_process'
 import yaml from 'js-yaml'
-import { resolveTalk, SPA_ROOT, type TalkYaml } from './talks'
+import { resolveTalk, SPA_NOT_FOUND_JS, SPA_RESTORE_JS, type TalkYaml } from './talks'
 import { copySiteAssets } from './site-assets'
 import { DECK_PORTS } from '../site/src/creators'
 
@@ -29,7 +29,7 @@ if (existsSync(join(root, 'dist'))) rmSync(join(root, 'dist'), { recursive: true
 
 const errors: string[] = []
 
-const spaScript = `<script>(function(){var r=sessionStorage.redirect;delete sessionStorage.redirect;if(r&&r!==location.href){history.replaceState(null,null,r)}})()</script>`
+const spaScript = `<script>(function(){${SPA_RESTORE_JS}})()</script>`
 
 function injectSpaRestore(deckDir: string) {
   const indexPath = join(deckDir, 'index.html')
@@ -156,10 +156,7 @@ for (const deck of Object.keys(DECK_PORTS)) {
 // 6. Write root 404.html for SPA routing on GitHub Pages
 const notFoundHtml = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><script>
-// Preserve SPA path through GitHub Pages 404 redirect
-sessionStorage.redirect = location.href;
-var m = location.pathname.match(${SPA_ROOT});
-if (m) location.replace(m[0]);
+${SPA_NOT_FOUND_JS}
 </script></head><body></body></html>`
 writeFileSync(join(distDir, '404.html'), notFoundHtml)
 

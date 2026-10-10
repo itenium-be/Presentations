@@ -26,3 +26,11 @@ export function resolveTalk(talk: TalkYaml) {
 }
 
 export type Talk = ReturnType<typeof resolveTalk>
+
+// The path travels in the query, not sessionStorage: the creators page embeds many deep-linked
+// iframes that share one sessionStorage and would race for a single slot.
+export const SPA_NOT_FOUND_JS = `var m = location.pathname.match(${SPA_ROOT});
+if (m) location.replace(m[0] + '?redirect=' + encodeURIComponent(location.pathname + location.search + location.hash));`
+
+export const SPA_RESTORE_JS = `var r = new URLSearchParams(location.search).get('redirect');
+if (r) history.replaceState(null, null, r);`

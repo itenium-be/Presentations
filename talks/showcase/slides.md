@@ -13,6 +13,14 @@ transition: fade
 ![](./images/cover-art.jpg)
 
 ---
+layout: conf-intro
+---
+
+# Your
+# Title
+# Etc
+
+---
 layout: default
 ---
 

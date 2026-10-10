@@ -34,6 +34,22 @@ transition: fade
 ![](./images/cover-art.jpg)
 ```
 
+## `conf-intro`
+
+Conference intro slide: itenium photo collage with the orange chevron, three title lines (cyan / white / orange), logo bottom-right. Use as the first slide of a conference deck.
+
+```markdown
+---
+theme: itenium
+title: My Talk
+layout: conf-intro
+---
+
+# Your
+# Title
+# Etc
+```
+
 ## `default`
 
 Standard content slide. White background, orange/green dot decorations, footer with slide number and favicon. Font size auto-scales based on bullet count.

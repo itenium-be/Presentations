@@ -1,4 +1,7 @@
 *
-!rosetta
-!showcase
-!starter
+!rosetta/
+!rosetta/**
+!showcase/
+!showcase/**
+!starter/
+!starter/**

@@ -160,7 +160,14 @@ const decks = [
   a { color: #e84700; }
   .mono { font-family: 'IBM Plex Mono', monospace; }
 
-  .hero { background: linear-gradient(135deg, #3a3532, #222); padding: 1.5rem 2rem 2rem; }
+  .hero {
+    background: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.6)), url('/Presentations/hero.webp') center/cover no-repeat #343434;
+    min-height: 240px;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem 2rem 2rem;
+  }
+  .hero-inner { width: 100%; }
   .hero-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
   .crumb { color: rgba(255,255,255,.7); font-size: .85rem; margin-bottom: 1rem; }
   .crumb a { color: rgba(255,255,255,.9); text-decoration: none; }

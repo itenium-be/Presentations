@@ -6,7 +6,7 @@ tags: ["code-size"]
 live: { deck: showcase, slide: code }
 ---
 
-Minimal padding, the code block fills the slide. `code-size` sets the code font size (default `0.58em`).
+Minimal padding, the code block fills the slide. `code-size` sets the maximum code font size (default `1em`); it shrinks to fit the slide.
 
 ````markdown
 ---

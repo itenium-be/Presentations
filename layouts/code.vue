@@ -1,7 +1,7 @@
 <template>
   <div class="slidev-layout code-layout">
     <img :src="dotsGreen" class="dots dots-green" aria-hidden="true" />
-    <div class="content" :style="$frontmatter?.['code-size'] ? { '--code-size': $frontmatter['code-size'] } : {}">
+    <div ref="content" class="content" :style="{ '--code-size': `${codeSize}em` }">
       <slot />
     </div>
     <TitleDecoration :frontmatter="$frontmatter" />
@@ -9,8 +9,39 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+import { useSlideContext } from '@slidev/client'
+import { fitFontSize } from '../components/fitFontSize'
+
 const dotsGreen = new URL('../assets/dots-green.png', import.meta.url).href
+
+const { $frontmatter } = useSlideContext()
+const maxSize = parseFloat($frontmatter['code-size'] ?? '1')
+const codeSize = ref(maxSize)
+const content = ref<HTMLElement>()
+
+function overflows(el: Element) {
+  return el.scrollHeight > el.clientHeight + 1
+}
+
+// Measures on resize too: slides render hidden (0 height) until navigated to.
+function fit() {
+  const el = content.value
+  if (!el?.clientHeight) return
+  codeSize.value = fitFontSize(maxSize, size => {
+    el.style.setProperty('--code-size', `${size}em`)
+    return ![el, ...el.querySelectorAll('.slidev-code-wrapper, div[class*="language-"]')].some(overflows)
+  })
+}
+
+let observer: ResizeObserver | undefined
+onMounted(() => {
+  observer = new ResizeObserver(fit)
+  observer.observe(content.value!)
+  document.fonts.ready.then(fit)
+})
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <style scoped>

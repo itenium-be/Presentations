@@ -35,20 +35,19 @@ const track = talk.frontmatter?.track
 const talkType = talk.frontmatter?.type
 ---
 
-<a href={slidesUrl} class="card-link">
 <article class="card">
     <div class="card-cover">
       <img src={coverUrl} alt="" loading="lazy" onerror="this.style.display='none'" />
-      <button class="btn-download" onclick={`event.preventDefault();event.stopPropagation();document.getElementById('modal-${slug}').showModal()`} aria-label="Download PPTX" title="Download PPTX">
+      <button class="btn-download" onclick={`document.getElementById('modal-${slug}').showModal()`} aria-label="Download PPTX" title="Download PPTX">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </button>
-      <a href={slidesUrl} class="cover-overlay">View Slides</a>
+      <a href={slidesUrl} class="cover-overlay" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">View Slides</a>
     </div>
     <div class="card-content">
       <div class="card-top">
         <div class="card-header">
           <div>
-            <h2 class="card-title">{talk.title}</h2>
+            <h2 class="card-title"><a href={slidesUrl} class="card-link" target="_blank" rel="noopener">{talk.title}</a></h2>
             {subTitle && <p class="card-subtitle">{subTitle}</p>}
           </div>
           <span class="card-badge">{talk.category}</span>
@@ -64,19 +63,18 @@ const talkType = talk.frontmatter?.type
       <div class="card-footer">
         <span class="card-date">{dateStr}</span>
         <div class="card-actions">
-          <a href={repoUrl} class="btn-icon" target="_blank" onclick="event.stopPropagation()" aria-label="GitHub repository" title="GitHub">
+          <a href={repoUrl} class="btn-icon" target="_blank" aria-label="GitHub repository" title="GitHub">
             <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           </a>
         </div>
       </div>
     </div>
-  </article>
-</a>
+</article>
 
 <dialog id={`modal-${slug}`} class="pptx-modal">
   <div class="modal-content">
     <h3>Download PowerPoint Copy</h3>
-    <p>This is a static export of the slides as images. Animations, transitions, and interactive elements are not included. For the full experience, <a href={slidesUrl}>view the slides online</a>.</p>
+    <p>This is a static export of the slides as images. Animations, transitions, and interactive elements are not included. For the full experience, <a href={slidesUrl} target="_blank" rel="noopener">view the slides online</a>.</p>
     <div class="modal-actions">
       <button class="modal-cancel" onclick={`document.getElementById('modal-${slug}').close()`}>Cancel</button>
       <a href={pptxUrl} class="modal-download" download>
@@ -91,8 +89,12 @@ const talkType = talk.frontmatter?.type
 .card-link {
   text-decoration: none;
   color: inherit;
-  display: block;
   cursor: default;
+}
+.card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
 .pptx-modal {
@@ -176,6 +178,7 @@ const talkType = talk.frontmatter?.type
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: row;
   background: white;
@@ -297,6 +300,7 @@ const talkType = talk.frontmatter?.type
 }
 .cover-overlay {
   position: absolute;
+  z-index: 1;
   bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
@@ -318,6 +322,7 @@ const talkType = talk.frontmatter?.type
 
 .btn-download {
   position: absolute;
+  z-index: 1;
   top: 0.5rem;
   left: 0.5rem;
   display: flex;
@@ -348,6 +353,8 @@ const talkType = talk.frontmatter?.type
 }
 
 .btn-icon {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -22,13 +22,13 @@ describe('deckUrl', () => {
 describe('groupBySection', () => {
   test('groups by folder and sorts on order', () => {
     const entries = [
-      { id: 'layouts/default.md', data: { order: 2 } },
-      { id: 'start/new-talk.md', data: { order: 1 } },
-      { id: 'layouts/cover.md', data: { order: 1 } },
+      { id: 'layouts/default', data: { order: 2 } },
+      { id: 'start/new-talk', data: { order: 1 } },
+      { id: 'layouts/cover', data: { order: 1 } },
     ]
     const grouped = groupBySection(entries)
-    expect(grouped.start.map(e => e.id)).toEqual(['start/new-talk.md'])
-    expect(grouped.layouts.map(e => e.id)).toEqual(['layouts/cover.md', 'layouts/default.md'])
+    expect(grouped.start.map(e => e.id)).toEqual(['start/new-talk'])
+    expect(grouped.layouts.map(e => e.id)).toEqual(['layouts/cover', 'layouts/default'])
     expect(grouped.recipes).toEqual([])
   })
 })

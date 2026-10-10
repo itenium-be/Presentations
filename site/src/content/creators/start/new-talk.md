@@ -16,6 +16,7 @@ order: 1
    ```bash
    bun run presentation/theme/scripts/scaffold.ts
    cd presentation && bun install
+   bun run dev       # http://localhost:3030 · /presenter for notes + timer
    ```
 
 3. Fill in the headmatter of `presentation/slides.md`. The site reads it for the talk card.

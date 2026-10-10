@@ -1,12 +1,18 @@
 ---
 title: Publish to this site
 summary: List the repo in talks.yaml of the theme repo and push.
-order: 3
+order: 2
 ---
+
+Export the pptx copy from `presentation/`:
+
+```bash
+bun run export    # ../<repo>.pptx
+```
 
 The talk repo needs, in its root:
 
-- `<repo>.pptx`, from `bun run export`
+- `<repo>.pptx`
 - `ElevatorPitch.md`
 - `presentation/images/cover-art.{png,jpg,webp}`: the card image (2:3, 1024×1536)
 

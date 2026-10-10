@@ -1,7 +1,7 @@
 ---
 title: Edit these docs
 summary: This page, Showcase and Rosetta all hot reload locally.
-order: 4
+order: 3
 ---
 
 From the theme repo:

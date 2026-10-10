@@ -3,6 +3,7 @@ theme: ../../
 title: Bootcamp AI
 date: 3/11/2026
 transition: fade
+routeAlias: cover
 ---
 
 # SkillForge
@@ -14,6 +15,7 @@ transition: fade
 
 ---
 layout: conf-intro
+routeAlias: conf-intro
 ---
 
 # Your
@@ -22,6 +24,7 @@ layout: conf-intro
 
 ---
 layout: default
+routeAlias: default
 ---
 
 # AI Track
@@ -40,6 +43,7 @@ Mention that dates might still shift.
 
 ---
 layout: agenda
+routeAlias: agenda
 items:
   - Dagindeling
   - Claude Code
@@ -50,6 +54,7 @@ items:
 
 ---
 layout: section
+routeAlias: section
 ---
 
 # Dagindeling
@@ -75,7 +80,8 @@ layout: default
 
 
 ---
-layout: two-col-text-image
+layout: default-aside
+routeAlias: default-aside
 ---
 
 # BMAD
@@ -95,6 +101,7 @@ claude
 
 ---
 layout: two-col-image-text
+routeAlias: two-col-image-text
 textSize: md
 ---
 
@@ -113,6 +120,7 @@ textSize: md
 
 ---
 layout: default
+routeAlias: monaco
 ---
 
 # Interactive Code
@@ -135,6 +143,7 @@ console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
 
 ---
 layout: default
+routeAlias: code-walkthrough
 ---
 
 # Code Walkthrough
@@ -163,6 +172,7 @@ console.log(`Devs: ${devs.map(d => d.name).join(', ')}`)
 
 ---
 layout: default
+routeAlias: magic-move
 ---
 
 # In-Depth Code Walkthrough
@@ -204,6 +214,7 @@ const devs = team.filter(u => u.role === 'dev')
 
 ---
 layout: default
+routeAlias: text-size
 textSize: sm
 ---
 
@@ -225,6 +236,22 @@ textSize: sm
 
 ---
 layout: default
+routeAlias: title-decorations
+h1:
+  type: braces
+  color: primary
+  position: 2
+h2:
+  type: slashes
+  color: muted
+---
+
+# What is UnitTesting
+## Title decorations via frontmatter
+
+---
+layout: default
+routeAlias: tables
 textSize: sm
 ---
 
@@ -253,6 +280,7 @@ Dense table (wrap in `<div class="dense">`):
 
 ---
 layout: default
+routeAlias: vclick-table
 ---
 
 # VClickTable Component
@@ -273,6 +301,7 @@ Click to reveal rows progressively:
 
 ---
 layout: comparison
+routeAlias: comparison
 ---
 
 # Team Demos
@@ -301,6 +330,7 @@ layout: comparison
 
 ---
 layout: statement
+routeAlias: statement
 ---
 
 The best way to predict the future is to invent it.
@@ -313,12 +343,29 @@ Computer Scientist
 
 ---
 layout: quote
+routeAlias: quote
 ---
 
 # Before we get started…
 
 ---
+layout: quote-image
+routeAlias: quote-image
+---
+
+# Teamwork makes the dream work
+
+::image::
+
+![](./images/teamwork.jpg)
+
+::author::
+
+**Every team lead, ever**
+
+---
 layout: break
+routeAlias: break
 ---
 
 # ☕ Break
@@ -333,6 +380,7 @@ layout: break
 
 ---
 layout: code
+routeAlias: code
 code-size: 1.4em
 ---
 
@@ -356,6 +404,34 @@ function isPrime(n: number): boolean {
   <div v-click="[2,3]" class="text-cyan-400 col-start-1 row-start-1"><strong>Trial division</strong> — check divisors up to √n</div>
   <div v-click="[3,4]" class="text-pink-400 col-start-1 row-start-1"><strong>Default</strong> — no divisors found, it's prime</div>
 </div>
+
+---
+layout: code-comparison
+routeAlias: code-comparison
+before-label: Callbacks
+after-label: async/await
+---
+
+# Code Comparison
+
+::before::
+
+```ts
+function loadUser(id, done) {
+  db.find(id, (err, user) => {
+    if (err) return done(err)
+    done(null, user)
+  })
+}
+```
+
+::after::
+
+```ts
+async function loadUser(id: string): Promise<User> {
+  return db.find(id)
+}
+```
 
 ---
 src: ./pages/after-break.md

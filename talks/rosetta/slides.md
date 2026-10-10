@@ -9,6 +9,7 @@ transition: fade
 
 ---
 layout: code
+routeAlias: typescript
 ---
 
 # TypeScript
@@ -44,6 +45,7 @@ class UserRepository implements Repository<User> {
 
 ---
 layout: code
+routeAlias: csharp
 ---
 
 # C\#
@@ -78,6 +80,7 @@ public class WeatherService(
 
 ---
 layout: code
+routeAlias: react
 ---
 
 # React
@@ -118,6 +121,7 @@ export function TodoList({ items, onToggle }: Props) {
 
 ---
 layout: code
+routeAlias: html
 ---
 
 # HTML
@@ -151,6 +155,7 @@ layout: code
 
 ---
 layout: code
+routeAlias: css
 ---
 
 # CSS
@@ -183,6 +188,7 @@ layout: code
 
 ---
 layout: code
+routeAlias: python
 ---
 
 # Python

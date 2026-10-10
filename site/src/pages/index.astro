@@ -130,6 +130,25 @@ const allCategories = [...new Set(enriched.map(t => t.category).filter(Boolean))
         margin: 0 auto;
         width: 100%;
       }
+      .hero-cta {
+        position: absolute;
+        top: 1.25rem;
+        right: 2rem;
+        z-index: 1;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: background 0.15s, border-color 0.15s;
+      }
+      .hero-cta:hover {
+        background: #e84700;
+        border-color: #e84700;
+      }
+
       .hero-logo {
         height: 36px;
         width: auto;
@@ -237,6 +256,7 @@ const allCategories = [...new Set(enriched.map(t => t.category).filter(Boolean))
   </head>
   <body>
     <header class="hero">
+      <a href="/Presentations/creators/" class="hero-cta">✎ Make your own talk →</a>
       <div class="hero-inner">
         <img src="/Presentations/logo-full-white.svg" alt="itenium" class="hero-logo" />
         <h1>Technical Talks</h1>
@@ -269,6 +289,7 @@ const allCategories = [...new Set(enriched.map(t => t.category).filter(Boolean))
       </div>
       <div class="footer-links">
         <a href="https://itenium.be" target="_blank">itenium.be</a>
+        <a href="/Presentations/creators/">Creators guide</a>
         <a href="https://github.com/itenium-be/Presentations" target="_blank">Theme source</a>
       </div>
     </footer>

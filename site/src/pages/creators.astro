@@ -1,0 +1,235 @@
+---
+import { getCollection } from 'astro:content'
+import { groupBySection, liveSlideUrl, deckUrl } from '../creators'
+
+const dev = import.meta.env.DEV
+const { start, layouts, recipes } = groupBySection(await getCollection('creators'))
+const anchor = (id: string) => id.replace(/\.md$/, '').replace('/', '-')
+
+const render = async (entries: typeof start) =>
+  Promise.all(entries.map(async entry => ({ entry, Content: (await entry.render()).Content })))
+const startDocs = await render(start)
+const layoutDocs = await render(layouts)
+const recipeDocs = await render(recipes)
+
+const decks = [
+  { deck: 'showcase' as const, title: 'Showcase', desc: 'Every layout & feature, one slide each.', thumb: 'Showcase' },
+  { deck: 'rosetta' as const, title: 'Rosetta', desc: 'Code slides: TypeScript, C#, React, HTML, CSS, Python.', thumb: '{ Rosetta }' },
+]
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creators — itenium Technical Talks</title>
+    <link rel="icon" href="/Presentations/favicon.png" type="image/png" />
+    <meta name="description" content="How to create a slide deck with the itenium Slidev theme: start a talk, layouts, recipes." />
+    <style is:global>
+      @font-face { font-family: 'Rubik'; font-weight: 400; src: url('/Presentations/fonts/rubik-400.woff2') format('woff2'); }
+      @font-face { font-family: 'Rubik'; font-weight: 500; src: url('/Presentations/fonts/rubik-500.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 400; src: url('/Presentations/fonts/inter-400.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 600; src: url('/Presentations/fonts/inter-600.woff2') format('woff2'); }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('/Presentations/fonts/ibm-plex-mono-400.woff2') format('woff2'); }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { font-family: 'Inter', system-ui, sans-serif; background: #f5f5f5; color: #343434; margin: 0; }
+      html { scroll-behavior: smooth; }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="crumb"><a href="/Presentations/">← Technical Talks</a> / Creators</div>
+          <h1>Creating a talk with the itenium theme</h1>
+          <p>Start a deck, pick layouts, copy snippets. Every layout links to the live slide.</p>
+        </div>
+        <input id="search" class="search" type="search" placeholder="Search layouts & recipes… (e.g. table)" />
+      </div>
+    </header>
+
+    <div class="wrap">
+      <nav class="toc">
+        <h4>Get started</h4>
+        {start.map(e => <a href={`#${anchor(e.id)}`}>{e.data.title}</a>)}
+        <a href="#decks">Reference decks</a>
+        <h4>Layouts</h4>
+        {layouts.map(e => <a href={`#${anchor(e.id)}`} class="mono">{e.data.title}</a>)}
+        <h4>Recipes</h4>
+        {recipes.map(e => <a href={`#${anchor(e.id)}`}>{e.data.title}</a>)}
+      </nav>
+
+      <main>
+        <section class="group">
+          {startDocs.map(({ entry, Content }) => (
+            <article class="doc start" id={anchor(entry.id)}>
+              <h2>{entry.data.title}</h2>
+              <p class="lead">{entry.data.summary}</p>
+              <div class="doc-body"><Content /></div>
+            </article>
+          ))}
+        </section>
+
+        <section class="group" id="decks">
+          <h2>Reference decks</h2>
+          <p class="lead">Click through every layout and feature, as an audience would see it.</p>
+          <div class="decks">
+            {decks.map(d => (
+              <a class="deck" href={deckUrl(d.deck, dev)} target="_blank" rel="noopener">
+                <div class={`deck-thumb ${d.deck}`}>{d.thumb}</div>
+                <div class="deck-body"><h3>{d.title} ↗</h3><p>{d.desc}</p></div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="group" id="layouts">
+          <h2>Layouts</h2>
+          <p class="lead">Set with <code>layout:</code> in the slide frontmatter.</p>
+          <div class="cards">
+            {layoutDocs.map(({ entry, Content }) => (
+              <article class="doc card" id={anchor(entry.id)}>
+                {entry.data.live && (
+                  <div class="preview">
+                    <iframe src={`${liveSlideUrl(entry.data.live, dev)}?embedded=true`} allow="screen-wake-lock" loading="lazy" tabindex="-1" aria-hidden="true" title="" />
+                    <a class="live" href={liveSlideUrl(entry.data.live, dev)} target="_blank" rel="noopener">▶ Live slide</a>
+                  </div>
+                )}
+                <div class="info">
+                  <h3><span class="mono">{entry.data.title}</span> <small>{entry.data.summary}</small></h3>
+                  {entry.data.tags.length > 0 && <div class="tags">{entry.data.tags.map(t => <span>{t}</span>)}</div>}
+                  <div class="doc-body"><Content /></div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="group" id="recipes">
+          <h2>Recipes</h2>
+          <p class="lead">The "how did I do that again?" list.</p>
+          <div class="recipe-index">
+            {recipes.map(e => <a href={`#${anchor(e.id)}`}><b>{e.data.title}</b><span>{e.data.tags[0]}</span></a>)}
+          </div>
+          <div class="cards">
+            {recipeDocs.map(({ entry, Content }) => (
+              <article class="doc card" id={anchor(entry.id)}>
+                {entry.data.live && (
+                  <div class="preview">
+                    <iframe src={`${liveSlideUrl(entry.data.live, dev)}?embedded=true`} allow="screen-wake-lock" loading="lazy" tabindex="-1" aria-hidden="true" title="" />
+                    <a class="live" href={liveSlideUrl(entry.data.live, dev)} target="_blank" rel="noopener">▶ Live slide</a>
+                  </div>
+                )}
+                <div class="info">
+                  <h3>{entry.data.title} <small>{entry.data.summary}</small></h3>
+                  {entry.data.tags.length > 0 && <div class="tags">{entry.data.tags.map(t => <span>{t}</span>)}</div>}
+                  <div class="doc-body"><Content /></div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const search = document.getElementById('search') as HTMLInputElement
+      const docs = document.querySelectorAll<HTMLElement>('.doc')
+      search.addEventListener('input', () => {
+        const q = search.value.trim().toLowerCase()
+        docs.forEach(d => { d.hidden = !!q && !d.textContent!.toLowerCase().includes(q) })
+      })
+
+      document.querySelectorAll<HTMLElement>('.doc-body pre').forEach(pre => {
+        const btn = document.createElement('button')
+        btn.className = 'copy'
+        btn.textContent = 'copy'
+        btn.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText)
+          btn.textContent = 'copied'
+          setTimeout(() => (btn.textContent = 'copy'), 1200)
+        })
+        pre.append(btn)
+      })
+    </script>
+  </body>
+</html>
+
+<style>
+  a { color: #e84700; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  .hero { background: linear-gradient(135deg, #3a3532, #222); padding: 1.5rem 2rem 2rem; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
+  .crumb { color: rgba(255,255,255,.7); font-size: .85rem; margin-bottom: 1rem; }
+  .crumb a { color: rgba(255,255,255,.9); text-decoration: none; }
+  .crumb a:hover { color: #E78200; }
+  .hero h1 { font-family: 'Rubik', sans-serif; font-weight: 500; color: white; font-size: 2rem; margin: 0; }
+  .hero p { color: rgba(255,255,255,.85); margin: .4rem 0 0; }
+  .search { border: 0; border-radius: 8px; padding: .6rem .9rem; width: 300px; max-width: 100%; font: inherit; font-size: .9rem; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 2.5rem; padding: 2rem 1.5rem; }
+  .toc { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; font-size: .88rem; }
+  .toc h4 { font-family: 'Rubik', sans-serif; font-weight: 500; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #7e7e7e; margin: 1.25rem 0 .4rem; }
+  .toc h4:first-child { margin-top: 0; }
+  .toc a { display: block; padding: .25rem .6rem; border-radius: 5px; color: #343434; text-decoration: none; }
+  .toc a:hover { background: #fff1ea; color: #e84700; }
+
+  .group { margin-bottom: 3rem; }
+  .group > h2, .doc.start h2 { font-family: 'Rubik', sans-serif; font-weight: 500; font-size: 1.5rem; margin: 0 0 .25rem; }
+  .lead { color: #7e7e7e; margin: 0 0 1rem; }
+  .doc { scroll-margin-top: 1rem; }
+  .doc.start { margin-bottom: 2.5rem; }
+
+  .decks { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .deck { background: white; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; transition: box-shadow .2s, transform .2s; }
+  .deck:hover { box-shadow: 0 6px 24px rgba(232,71,0,.12); transform: translateY(-2px); }
+  .deck-thumb { height: 120px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Rubik', sans-serif; font-size: 1.4rem; }
+  .deck-thumb.showcase { background: #E78200; }
+  .deck-thumb.rosetta { background: #1f2430; font-family: 'IBM Plex Mono', monospace; }
+  .deck-body { padding: .9rem 1.1rem; }
+  .deck h3 { margin: 0 0 .2rem; font-family: 'Rubik', sans-serif; font-weight: 500; }
+  .deck p { margin: 0; font-size: .85rem; color: #7e7e7e; }
+
+  .cards { display: flex; flex-direction: column; gap: 1rem; }
+  .card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; display: grid; grid-template-columns: 260px minmax(0, 1fr); overflow: hidden; }
+  .card:not(:has(.preview)) { grid-template-columns: minmax(0, 1fr); }
+  .preview { position: relative; width: 260px; height: 163px; overflow: hidden; background: #2D2A28; border-right: 1px solid #e0e0e0; }
+  .preview iframe { width: 980px; height: 613px; border: 0; transform: scale(0.2653); transform-origin: 0 0; pointer-events: none; }
+  .live { position: absolute; bottom: 8px; right: 8px; background: rgba(232,71,0,.95); color: white; font-size: .72rem; padding: .25rem .6rem; border-radius: 4px; text-decoration: none; }
+  .live:hover { background: #e84700; }
+  .info { padding: 1rem 1.25rem; }
+  .info h3 { margin: 0; font-family: 'Rubik', sans-serif; font-weight: 500; font-size: 1.05rem; }
+  .info h3 .mono { font-weight: 400; }
+  .info h3 small { font-family: 'Inter', sans-serif; font-weight: 400; color: #7e7e7e; font-size: .8rem; margin-left: .4rem; }
+  .tags { display: flex; gap: .35rem; flex-wrap: wrap; margin: .5rem 0 0; }
+  .tags span { font-size: .7rem; background: #f3f3f3; border-radius: 4px; padding: 1px 6px; color: #666; font-family: 'IBM Plex Mono', monospace; }
+
+  .recipe-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-bottom: 1.5rem; }
+  .recipe-index a { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: .7rem 1rem; font-size: .85rem; text-decoration: none; color: inherit; }
+  .recipe-index a:hover { border-color: #e84700; }
+  .recipe-index b { display: block; }
+  .recipe-index span { color: #7e7e7e; font-family: 'IBM Plex Mono', monospace; font-size: .75rem; }
+
+  .doc-body { font-size: .9rem; line-height: 1.55; }
+  .doc-body :global(p) { margin: .6rem 0; }
+  .doc-body :global(code) { font-family: 'IBM Plex Mono', monospace; font-size: .85em; }
+  .doc-body :global(:not(pre) > code) { background: #f3f3f3; padding: .1em .35em; border-radius: 3px; }
+  .doc-body :global(pre) { position: relative; border-radius: 7px; padding: .75rem 1rem; font-size: .8rem; overflow-x: auto; }
+  .doc-body :global(.copy) { position: absolute; top: 6px; right: 6px; font: .7rem 'Inter', sans-serif; background: rgba(255,255,255,.12); color: #ddd; border: 0; border-radius: 4px; padding: 2px 6px; cursor: pointer; }
+  .doc-body :global(.copy:hover) { background: #e84700; color: white; }
+  .doc-body :global(table) { border-collapse: collapse; font-size: .8rem; margin: .75rem 0; display: block; overflow-x: auto; }
+  .doc-body :global(th), .doc-body :global(td) { border: 1px solid #e0e0e0; padding: .3rem .6rem; text-align: left; }
+  .doc-body :global(th) { background: #fafafa; }
+  .doc-body :global(ol) { padding-left: 1.25rem; }
+  .doc-body :global(li) { margin: .4rem 0; }
+
+  @media (max-width: 800px) {
+    .wrap { grid-template-columns: minmax(0, 1fr); }
+    .toc { display: none; }
+    .decks { grid-template-columns: 1fr; }
+    .card { grid-template-columns: minmax(0, 1fr); }
+    .preview { border-right: 0; border-bottom: 1px solid #e0e0e0; }
+  }
+</style>

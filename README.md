@@ -47,7 +47,7 @@ bun run dev
 
 ## Layouts & Features
 
-See [LAYOUTS.md](LAYOUTS.md) for all available layouts, features, and usage examples.
+See the [creators guide](https://dev.itenium.be/Presentations/creators/) for all layouts, recipes and how to start a talk. Source: `site/src/content/creators/`; preview locally with `bun run dev:creators`.
 
 ## Skills
 

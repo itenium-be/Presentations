@@ -25,7 +25,7 @@ Workflow for adding a Midjourney-generated image to a slide. Covers prompt gener
 | `two-col-image-text`  | Left column (~half width, tall)                                    | 800x1200  | `2:3`              |
 | `section`             | Full-bleed background (cover-crop, behind 45% dark overlay)        | 1920x1200 | `16:10`            |
 
-`agenda` uses a theme-controlled left photo (not a per-slide slot). See `theme/LAYOUTS.md` for full layout reference.
+`agenda` uses a theme-controlled left photo (not a per-slide slot). See the [creators guide](https://dev.itenium.be/Presentations/creators/) for the full layout reference.
 
 **`section` `--ar` tracks the deck's `aspectRatio`** (theme default `16/10` → `16:10`, 1920x1200). If a deck overrides to `16/9` for a projector, generate `16:9` (1920x1080) instead. Keep detail off the top — the 45% overlay + white title sit there.
 
